@@ -15,10 +15,10 @@ namespace MedicamentosAPI.Models
 
         public int UtenteId { get; set; }
         public Pessoa Utente { get; set; }
-
+        /**
         public int MedicoId { get; set; }
         public Pessoa Medico { get; set; }
-
+        */
         public virtual ICollection<Prescricao> prescricoes { get; set; }
     }
 }

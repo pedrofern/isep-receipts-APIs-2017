@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MedicamentosAPI.Models;
+using System.Linq.Expressions;
+using MedicamentosAPI.DTOs;
 
 namespace MedicamentosAPI.Controllers
 {
@@ -14,6 +16,17 @@ namespace MedicamentosAPI.Controllers
     public class MedicamentosController : Controller
     {
         private readonly MedicamentosAPIContext _context;
+
+        // Typed lambda expression for Select() method.
+        private static readonly Expression<Func<Medicamento, MedicamentoDTO>> AsMedicamentoDTO =
+            x => new MedicamentoDTO
+            {
+                MedicamentoId = x.MedicamentoId,
+                nome = x.nome,
+                laboratorio = x.laboratorio,
+                validade= x.validade,
+                tamanho = x.tamanho,
+            };
 
         public MedicamentosController(MedicamentosAPIContext context)
         {
