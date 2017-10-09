@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MedicamentosAPI.Models
+namespace MedicamentosAPI.DTOs
 {
-    public class Farmaco
+    public class FarmacoDTO
     {
         public int FarmacoId { get; set; }
         public String principio_ativo { get; set; }
-
-        public virtual ICollection<Apresentacao> apresentacoes { get; set; }  
     }
 }

@@ -11,5 +11,14 @@ namespace MedicamentosAPI.Models
         public String forma { get; set; }
         public int dosagem { get; set; }
         public int quantidade { get; set; }
+
+        public int FarmacoId { get; set; }
+        public Farmaco Farmaco { get; set; }
+
+        public int MedicamentoId { get; set; }
+        public Medicamento Medicamento { get; set; }
+
+        public int Posologia_GenericaId { get; set; }
+        public Posologia Posologia_Generica { get; set; }
     }
 }

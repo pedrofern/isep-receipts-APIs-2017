@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MedicamentosAPI.Models
+namespace MedicamentosAPI.DTOs
 {
-    public class Posologia
+    public class PosologiaDTO
     {
         public int PosologiaId { get; set; }
         public int dose { get; set; }
