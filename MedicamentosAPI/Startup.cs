@@ -12,6 +12,9 @@ using Microsoft.EntityFrameworkCore;
 using MedicamentosAPI.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace MedicamentosAPI
 {
@@ -36,16 +39,44 @@ namespace MedicamentosAPI
                 AddEntityFrameworkStores<MedicamentosAPIContext>().
                 AddDefaultTokenProviders();
 
-            services.ConfigureApplicationCookie(config => 
+            services.AddAuthentication(authenticationOptions => 
             {
-                config.Events = new CookieAuthenticationEvents{
-                    OnRedirectToLogin = ctx => {
+                authenticationOptions.DefaultScheme = "Cookies";
+                authenticationOptions.DefaultChallengeScheme = "Cookies";
+            })
+
+            .AddCookie(config => 
+            config.Events = new CookieAuthenticationEvents
+            {               
+                    OnRedirectToLogin = ctx => 
+                    {
                         if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == 200)
                         {
                             ctx.Response.StatusCode = 401;
                             return Task.FromResult<object>(null);
                         }
                         ctx.Response.Redirect(ctx.RedirectUri);
+                        return Task.FromResult<object>(null);
+                    }
+                }
+            )
+
+            .AddJwtBearer(config =>
+            {
+                config.TokenValidationParameters = new TokenValidationParameters
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                        Configuration.GetSection("AppConfiguration:Key").Value)),
+                    ValidAudience = Configuration.GetSection("AppConfiguration:SiteUrl").Value,
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = Configuration.GetSection("AppConfiguration:SiteUrl").Value
+                };
+                config.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = ctx => 
+                    {
+                        ctx.Response.StatusCode = 401;
                         return Task.FromResult<object>(null);
                     }
                 };

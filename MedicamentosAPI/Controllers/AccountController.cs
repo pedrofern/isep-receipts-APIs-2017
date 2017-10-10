@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using MedicamentosAPI.Models;
+using Microsoft.Extensions.Configuration;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Security.Claims;
 
 namespace MedicamentosAPI.Controllers
 {
@@ -17,14 +22,17 @@ namespace MedicamentosAPI.Controllers
         private readonly UserManager<UserEntity> _userManager;
         private readonly SignInManager<UserEntity> _signInManager;
         private readonly IPasswordHasher<UserEntity> _passwordHasher;
+        private readonly IConfiguration _configuration;
 
         public AccountController(UserManager<UserEntity> userManager, 
             SignInManager<UserEntity> signInManager,
-            IPasswordHasher<UserEntity> passwordHasher)
+            IPasswordHasher<UserEntity> passwordHasher, 
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _passwordHasher = passwordHasher;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -72,6 +80,53 @@ namespace MedicamentosAPI.Controllers
         {
             await _signInManager.SignOutAsync();
             return Ok();
+        }
+
+        [HttpPost("token")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Token([FromBody] AccountRegisterLogin model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var user = await _userManager.FindByNameAsync(model.Email);
+            if (user == null || 
+                _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, model.Password) != 
+                PasswordVerificationResult.Success)
+            {
+                return BadRequest();
+            }
+
+            var token = await GetJwtSecurityToken(user);
+            return Ok(new
+            {
+                token = new JwtSecurityTokenHandler().WriteToken(token), expiration = token.ValidTo
+            });
+        }
+
+        private async Task<JwtSecurityToken> GetJwtSecurityToken(UserEntity user)
+        {
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            return new JwtSecurityToken(
+                issuer: _configuration.GetValue<string>("AppConfiguration:SiteUrl"), 
+                audience: _configuration.GetValue<string>("AppConfiguration:SiteUrl"), 
+                claims: GetTokenClaims(user).Union(userClaims),
+                expires: DateTime.UtcNow.AddMinutes(10), 
+                signingCredentials: new SigningCredentials(
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                        _configuration.GetValue<string>("AppConfiguration:Key"))), 
+                    SecurityAlgorithms.HmacSha256)
+                    );
+        }
+
+        private static IEnumerable<Claim> GetTokenClaims(UserEntity user)
+        {
+            return new List < Claim >
+            {
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserName)
+            };
         }
 
     }

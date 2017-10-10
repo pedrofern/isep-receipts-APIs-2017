@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MedicamentosAPI.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Produces("application/json")]
     [Route("api/Medicamento")]
     public class MedicamentosController : Controller
