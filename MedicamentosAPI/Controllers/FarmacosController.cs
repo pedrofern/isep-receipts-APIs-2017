@@ -50,7 +50,85 @@ namespace MedicamentosAPI.Controllers
             return Ok(dto);
         }
 
-         // GET: api/Farmacos/nome="{nome}"
+        // GET: api/Farmaco/5/Apresentacoes
+        [HttpGet("{id}/Apresentacoes")]
+        public async Task<IActionResult> GetApresentacoesDoFarmaco([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var farmaco = await _context.Farmaco.SingleOrDefaultAsync(m => m.FarmacoId == id);
+
+            if (farmaco == null)
+            {
+                return NotFound();
+            }
+
+            var apresentacoes = _context.Apresentacao.Select(a => new ApresentacaoDTO(a)).Where(a => id == farmaco.FarmacoId);
+
+            if (apresentacoes == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(apresentacoes);
+        }
+
+        // GET: api/Farmaco/5/Medicamentos
+        [HttpGet("{id}/Medicamentos")]
+        public async Task<IActionResult> GetMedicamentosDoFarmaco([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var farmaco = await _context.Farmaco.SingleOrDefaultAsync(m => m.FarmacoId == id);
+
+            if (farmaco == null)
+            {
+                return NotFound();
+            }
+
+            var medicamentos = _context.Medicamento.Select(m => new MedicamentoDTO(m)).Where(m => id == farmaco.FarmacoId);
+
+            if (medicamentos == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(medicamentos);
+        }
+
+        // GET: api/Farmaco/5/Posologias
+        [HttpGet("{id}/Posologias")]
+        public async Task<IActionResult> GetPosologiasDoFarmaco([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var farmaco = await _context.Farmaco.SingleOrDefaultAsync(m => m.FarmacoId == id);
+
+            if (farmaco == null)
+            {
+                return NotFound();
+            }
+
+            var posologias = _context.Posologia.Select(m => new PosologiaDTO(m)).Where(m => id == farmaco.FarmacoId);
+
+            if (posologias == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(posologias);
+        }
+
+        // GET: api/Farmacos/nome="{nome}"
         [HttpGet("nome=\"{nome}\"")]
         public async Task<IActionResult> GetFarmaco([FromRoute] string nome)
         {
