@@ -24,9 +24,9 @@ namespace MedicamentosAPI.Controllers
 
         // GET: api/Medicamentos
         [HttpGet]
-        public IEnumerable<Medicamento> GetMedicamento()
+        public IEnumerable<MedicamentoDTO> GetMedicamento()
         {
-            return _context.Medicamento;
+            return _context.Medicamento.Select(m => new MedicamentoDTO(m));
         }
 
         // GET: api/Medicamentos/5
@@ -50,7 +50,7 @@ namespace MedicamentosAPI.Controllers
             return Ok(dto);
         }
 
-        // GET: api/Medicamentos/nome={nome}
+        // GET: api/Medicamentos/nome="{nome}"
         [HttpGet("nome=\"{nome}\"")]
         public async Task<IActionResult> GetMedicamentoByNome([FromRoute] string nome)
         {

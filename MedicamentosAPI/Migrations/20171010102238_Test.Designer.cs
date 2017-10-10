@@ -11,9 +11,10 @@ using System;
 namespace MedicamentosAPI.Migrations
 {
     [DbContext(typeof(MedicamentosAPIContext))]
-    partial class MedicamentosAPIContextModelSnapshot : ModelSnapshot
+    [Migration("20171010102238_Test")]
+    partial class Test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +34,7 @@ namespace MedicamentosAPI.Migrations
 
                     b.Property<int>("dosagem");
 
-                    b.Property<string>("forma_adm");
+                    b.Property<int>("forma");
 
                     b.Property<int>("quantidade");
 

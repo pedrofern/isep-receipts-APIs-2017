@@ -6,11 +6,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MedicamentosAPI.Models;
+using MedicamentosAPI.DTOs;
 
 namespace MedicamentosAPI.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Posologias")]
+    [Route("api/Posologia")]
     public class PosologiasController : Controller
     {
         private readonly MedicamentosAPIContext _context;
@@ -22,9 +23,9 @@ namespace MedicamentosAPI.Controllers
 
         // GET: api/Posologias
         [HttpGet]
-        public IEnumerable<Posologia> GetPosologia()
+        public IEnumerable<PosologiaDTO> GetPosologia()
         {
-            return _context.Posologia;
+            return _context.Posologia.Select(m => new PosologiaDTO(m));
         }
 
         // GET: api/Posologias/5
@@ -43,7 +44,9 @@ namespace MedicamentosAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(posologia);
+            PosologiaDTO dto = new PosologiaDTO(posologia);
+
+            return Ok(dto);
         }
 
         // PUT: api/Posologias/5

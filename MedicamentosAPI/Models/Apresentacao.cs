@@ -8,7 +8,7 @@ namespace MedicamentosAPI.Models
     public class Apresentacao
     {
         public int ApresentacaoId { get; set; }
-        public FormaAdministracao forma { get; set; }
+        public string forma_adm { get; set; }
         public int dosagem { get; set; }
         public int quantidade { get; set; }
 

@@ -23,9 +23,9 @@ namespace MedicamentosAPI.Controllers
 
         // GET: api/Apresentacoes
         [HttpGet]
-        public IEnumerable<Apresentacao> GetApresentacao()
+        public IEnumerable<ApresentacaoDTO> GetApresentacao()
         {
-            return _context.Apresentacao;
+            return _context.Apresentacao.Select(m => new ApresentacaoDTO(m));
         }
 
         // GET: api/Apresentacoes/5

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MedicamentosAPI.Models;
+using MedicamentosAPI.DTOs;
 
 namespace MedicamentosAPI.Controllers
 {
@@ -20,11 +21,11 @@ namespace MedicamentosAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Farmacos
+        // GET: api/Farmaco
         [HttpGet]
-        public IEnumerable<Farmaco> GetFarmaco()
+        public IEnumerable<FarmacoDTO> GetFarmaco()
         {
-            return _context.Farmaco;
+            return _context.Farmaco.Select(m => new FarmacoDTO(m));
         }
 
         // GET: api/Farmacos/5
@@ -50,7 +51,7 @@ namespace MedicamentosAPI.Controllers
         }
 
          // GET: api/Farmacos/nome="{nome}"
-        [HttpGet("{nome=\"{nome}\"")]
+        [HttpGet("nome=\"{nome}\"")]
         public async Task<IActionResult> GetFarmaco([FromRoute] string nome)
         {
             if (!ModelState.IsValid)
