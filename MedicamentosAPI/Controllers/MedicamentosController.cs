@@ -12,21 +12,10 @@ using MedicamentosAPI.DTOs;
 namespace MedicamentosAPI.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Medicamentos")]
+    [Route("api/Medicamento")]
     public class MedicamentosController : Controller
     {
         private readonly MedicamentosAPIContext _context;
-
-        // Typed lambda expression for Select() method.
-        private static readonly Expression<Func<Medicamento, MedicamentoDTO>> AsMedicamentoDTO =
-            x => new MedicamentoDTO
-            {
-                MedicamentoId = x.MedicamentoId,
-                nome = x.nome,
-                laboratorio = x.laboratorio,
-                validade= x.validade,
-                tamanho = x.tamanho,
-            };
 
         public MedicamentosController(MedicamentosAPIContext context)
         {
@@ -56,7 +45,30 @@ namespace MedicamentosAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(medicamento);
+            MedicamentoDTO dto = new MedicamentoDTO(medicamento);
+
+            return Ok(dto);
+        }
+
+        // GET: api/Medicamentos/nome={nome}
+        [HttpGet("nome=\"{nome}\"")]
+        public async Task<IActionResult> GetMedicamentoByNome([FromRoute] string nome)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var medicamento = await _context.Medicamento.SingleOrDefaultAsync(m => m.nome == nome);
+
+            if (medicamento == null)
+            {
+                return NotFound();
+            }
+
+            MedicamentoDTO dto = new MedicamentoDTO(medicamento);
+
+            return Ok(dto);
         }
 
         // PUT: api/Medicamentos/5

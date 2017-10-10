@@ -9,5 +9,10 @@ namespace MedicamentosAPI.DTOs
     {
         public int FarmacoId { get; set; }
         public String principio_ativo { get; set; }
+
+        public FarmacoDTO(FarmacoDTO f)
+        {
+
+        }
     }
 }

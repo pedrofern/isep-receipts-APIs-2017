@@ -10,7 +10,7 @@ using MedicamentosAPI.Models;
 namespace MedicamentosAPI.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Farmacos")]
+    [Route("api/Farmaco")]
     public class FarmacosController : Controller
     {
         private readonly MedicamentosAPIContext _context;
