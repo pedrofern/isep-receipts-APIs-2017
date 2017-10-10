@@ -11,9 +11,10 @@ using System;
 namespace MedicamentosAPI.Migrations
 {
     [DbContext(typeof(MedicamentosAPIContext))]
-    partial class MedicamentosAPIContextModelSnapshot : ModelSnapshot
+    [Migration("20171010155018_UserIdentity")]
+    partial class UserIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using MedicamentosAPI.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace MedicamentosAPI
 {
@@ -29,6 +31,25 @@ namespace MedicamentosAPI
 
             services.AddDbContext<MedicamentosAPIContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("MedicamentosAPIContext")));
+
+            services.AddIdentity<UserEntity, IdentityRole>().
+                AddEntityFrameworkStores<MedicamentosAPIContext>().
+                AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(config => 
+            {
+                config.Events = new CookieAuthenticationEvents{
+                    OnRedirectToLogin = ctx => {
+                        if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == 200)
+                        {
+                            ctx.Response.StatusCode = 401;
+                            return Task.FromResult<object>(null);
+                        }
+                        ctx.Response.Redirect(ctx.RedirectUri);
+                        return Task.FromResult<object>(null);
+                    }
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,6 +60,7 @@ namespace MedicamentosAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using MedicamentosAPI.Models;
 using System.Linq.Expressions;
 using MedicamentosAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MedicamentosAPI.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/Medicamento")]
     public class MedicamentosController : Controller
@@ -111,16 +113,14 @@ namespace MedicamentosAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var medicamento = await _context.Medicamento.SingleOrDefaultAsync(m => m.nome == nome);
+            var medicamento = _context.Medicamento.Select(m => new MedicamentoDTO(m)).Where(m => m.nome == nome);
 
             if (medicamento == null)
             {
                 return NotFound();
             }
 
-            MedicamentoDTO dto = new MedicamentoDTO(medicamento);
-
-            return Ok(dto);
+            return Ok(medicamento);
         }
 
         // PUT: api/Medicamentos/5

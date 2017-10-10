@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MedicamentosAPI.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace MedicamentosAPI.Models
 {
-    public class MedicamentosAPIContext : DbContext
+    public class MedicamentosAPIContext : IdentityDbContext<UserEntity>
     {
         public MedicamentosAPIContext (DbContextOptions<MedicamentosAPIContext> options)
             : base(options)
