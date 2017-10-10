@@ -6,11 +6,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MedicamentosAPI.Models;
+using MedicamentosAPI.DTOs;
 
 namespace MedicamentosAPI.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Apresentacoes")]
+    [Route("api/Apresentacao")]
     public class ApresentacoesController : Controller
     {
         private readonly MedicamentosAPIContext _context;
@@ -43,7 +44,9 @@ namespace MedicamentosAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(apresentacao);
+            ApresentacaoDTO dto = new ApresentacaoDTO(apresentacao);
+
+            return Ok(dto);
         }
 
         // PUT: api/Apresentacoes/5

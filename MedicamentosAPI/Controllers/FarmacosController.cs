@@ -43,8 +43,34 @@ namespace MedicamentosAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(farmaco);
+            FarmacoDTO dto=new FarmacoDTO(farmaco);
+
+
+            return Ok(dto);
         }
+
+         // GET: api/Farmacos/nome="{nome}"
+        [HttpGet("{nome=\"{nome}\"")]
+        public async Task<IActionResult> GetFarmaco([FromRoute] string nome)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var farmaco = await _context.Farmaco.SingleOrDefaultAsync(m => m.principio_ativo== nome);
+
+            if (farmaco == null)
+            {
+                return NotFound();
+            }
+
+            FarmacoDTO dto=new FarmacoDTO(farmaco);
+
+
+            return Ok(dto);
+        }
+
 
         // PUT: api/Farmacos/5
         [HttpPut("{id}")]
