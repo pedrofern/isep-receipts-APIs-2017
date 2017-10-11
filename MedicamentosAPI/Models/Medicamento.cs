@@ -13,7 +13,6 @@ namespace MedicamentosAPI.Models
         public DateTime validade { get; set; }
         public int tamanho { get; set; }
 
-        public virtual ICollection<Prescricao> prescricoes { get; set; }
         public virtual ICollection<Apresentacao> apresentacoes { get; set; }
     }
 }

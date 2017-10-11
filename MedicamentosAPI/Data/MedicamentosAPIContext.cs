@@ -21,12 +21,7 @@ namespace MedicamentosAPI.Models
 
         public DbSet<MedicamentosAPI.Models.Medicamento> Medicamento { get; set; }
 
-        public DbSet<MedicamentosAPI.Models.Pessoa> Pessoa { get; set; }
-
         public DbSet<MedicamentosAPI.Models.Posologia> Posologia { get; set; }
 
-        public DbSet<MedicamentosAPI.Models.Prescricao> Prescricao { get; set; }
-
-        public DbSet<MedicamentosAPI.Models.Receita> Receita { get; set; }
     }
 }

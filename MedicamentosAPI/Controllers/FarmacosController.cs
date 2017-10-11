@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MedicamentosAPI.Models;
 using MedicamentosAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MedicamentosAPI.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Produces("application/json")]
     [Route("api/Farmaco")]
     public class FarmacosController : Controller
