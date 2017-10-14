@@ -1,0 +1,126 @@
+﻿@using System.Text
+@using System.Web
+@using Equinox.PTTrainer.Api.Services.Models.Equifit.v1
+
+           
+@{
+    var report = (EquifitReport) Model;
+}
+
+@functions
+{
+
+    private string GetAnswerText(EquifitQuestion question, EquifitReport report)
+    {
+        if (question.Text == "Date of Equifit" && report.AppointmentOn.HasValue)
+        {
+            return report.AppointmentOn.Value.ToString("MMMM d, yyyy");
+        }
+
+        var sb = new StringBuilder();
+        foreach (EquifitAnswer answer in question.Answers)
+        {
+            string value = !string.IsNullOrEmpty(answer.DisplayText) ? answer.DisplayText : answer.Text;
+            if (!string.IsNullOrEmpty(value))
+            {
+                string result = value
+                    .Replace("\r\n", "<br />")
+                    .Replace("\n", "<br />")
+                    .Replace("\r", "<br />");
+
+                if (sb.Length > 0)
+                    sb.Append(",");
+                sb.Append(result);
+            }
+        }
+        return sb.ToString();
+    }
+
+}
+
+<table width="100%" cellspacing="0" cellpadding="0">
+    <tbody>
+        <tr>
+            <td width="4%">&nbsp;</td>
+            <td width="92%">
+                <table width="100%" cellspacing="1" cellpadding="0" style="font-family: Arial, Helvetica, sans-serif; font-size: 16px;">
+                    <thead>
+                        <tr>
+                            <td>
+                                <table width="100%">
+                                    <tbody>
+                                        <tr align="center">
+                                            <td width="100%"><img width="280" height="90" border="0" style="display: block;" src="http://image.results.equinox.com/lib/fe93157073600c7e73/m/2/2014_EQX_Email_Header_Logo_280x90.png" alt="Equinox" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td valign="top">
+                                <table width="100%" cellspacing="0" cellpadding="0" style="border-bottom-color: rgb(187, 187, 187); border-bottom-style: solid; color: rgb(0, 0, 0); font-family: Arial, Helvetica, sans-serif;">
+                                    <tbody>
+                                        <tr>
+                                            <td width="100%" valign="top" style="font-size: 22px; font-weight: bold;">Equifit Details</td>
+                                        </tr>
+                                        <tr>
+                                            <td height="8px" style="font-size: 8px;">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top" height="16px" style="border-top-color: rgb(187, 187, 187); border-top-style: solid;">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td height="16px">&nbsp;</td>
+                                        </tr>
+                                        @foreach (EquifitForm form in report.Forms)
+                                        {
+                                            <tr>
+                                                <td width="100%" valign="top" style="font-size: 18px; font-weight: bold;">@form.Title</td>
+                                            </tr>
+                                            <tr>
+                                                <td height="16px">&nbsp;</td>
+                                            </tr>
+                                            foreach (EquifitSection sec in form.Sections)
+                                            {
+                                                <tr>
+                                                    <td width="100%" valign="top" style="font-weight: bold;">@sec.Name</td>
+                                                </tr>
+                                                <tr>
+                                                    <td height="16px">&nbsp;</td>
+                                                </tr>
+                                                foreach (EquifitQuestion question in sec.Questions)
+                                                {
+                                                    <tr>
+                                                        <td width="100%" valign="top" style="font-weight: bold;">
+                                                           @(new HtmlString(question.Text))
+                                                         
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="100%" valign="top">@GetAnswerText(question, report)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td height="8px" style="font-size: 8px;">&nbsp;</td>
+                                                    </tr>
+                                                }
+                                            }
+                                        }
+                                        <tr>
+                                            <td height="16px">&nbsp;</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top" height="38px">&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+            <td width="4%">&nbsp;</td>
+        </tr>
+    </tbody>
+</table>

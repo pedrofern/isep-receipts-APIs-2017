@@ -11,8 +11,8 @@ using System;
 namespace MedicamentosAPI.Migrations
 {
     [DbContext(typeof(MedicamentosAPIContext))]
-    [Migration("20171014181218_unit-test1")]
-    partial class unittest1
+    [Migration("20171014190429_unit_test1")]
+    partial class unit_test1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
