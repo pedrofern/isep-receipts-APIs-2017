@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace ProjetoTestes
 {
-    /*
+
+    //retirado de https://docs.microsoft.com/en-us/aspnet/web-api/overview/web-api-routing-and-actions/create-a-rest-api-with-attribute-routing
+
     public class TestDBSet<T> : DbSet<T>, IQueryable, IEnumerable<T>
             where T : class
     {
@@ -79,6 +81,5 @@ namespace ProjetoTestes
             return _data.GetEnumerator();
         }
     }
-    */
-
 }
+*/
