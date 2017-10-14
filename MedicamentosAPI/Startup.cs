@@ -35,7 +35,7 @@ namespace MedicamentosAPI
             services.AddDbContext<MedicamentosAPIContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("MedicamentosAPIContext")));
 
-            services.AddIdentity<UserEntity, IdentityRole>().
+            services.AddIdentity<UtilizadorEntidade, IdentityRole>().
                 AddEntityFrameworkStores<MedicamentosAPIContext>().
                 AddDefaultTokenProviders();
 

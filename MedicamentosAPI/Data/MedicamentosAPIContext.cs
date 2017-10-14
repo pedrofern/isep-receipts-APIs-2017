@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace MedicamentosAPI.Models
 {
-    public class MedicamentosAPIContext : IdentityDbContext<UserEntity>
+    public class MedicamentosAPIContext : IdentityDbContext<UtilizadorEntidade>
     {
         public MedicamentosAPIContext (DbContextOptions<MedicamentosAPIContext> options)
             : base(options)

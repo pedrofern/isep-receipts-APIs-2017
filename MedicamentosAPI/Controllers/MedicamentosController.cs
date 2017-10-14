@@ -31,7 +31,7 @@ namespace MedicamentosAPI.Controllers
             return _context.Medicamento.Select(m => new MedicamentoDTO(m));
         }
 
-        // GET: api/Medicamentos/5
+        // GET: api/Medicamentos/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetMedicamento([FromRoute] int id)
         {
@@ -52,7 +52,7 @@ namespace MedicamentosAPI.Controllers
             return Ok(dto);
         }
 
-        // GET: api/Medicamento/5/Apresentacoes
+        // GET: api/Medicamento/{id}/Apresentacoes
         [HttpGet("{id}/Apresentacoes")]
         public async Task<IActionResult> GetApresentacoesDoMedicamento([FromRoute] int id)
         {
@@ -78,7 +78,7 @@ namespace MedicamentosAPI.Controllers
             return Ok(apresentacoes);
         }
 
-        // GET: api/Medicamento/5/Posologias
+        // GET: api/Medicamento/{id}/Posologias
         [HttpGet("{id}/Posologias")]
         public async Task<IActionResult> GetPosologiasDoMedicamento([FromRoute] int id)
         {
@@ -123,7 +123,7 @@ namespace MedicamentosAPI.Controllers
             return Ok(medicamento);
         }
 
-        // PUT: api/Medicamentos/5
+        // PUT: api/Medicamentos/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMedicamento([FromRoute] int id, [FromBody] Medicamento medicamento)
         {

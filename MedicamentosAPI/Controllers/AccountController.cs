@@ -19,14 +19,14 @@ namespace MedicamentosAPI.Controllers
     [Route("api/Account")]
     public class AccountController : Controller
     {
-        private readonly UserManager<UserEntity> _userManager;
-        private readonly SignInManager<UserEntity> _signInManager;
-        private readonly IPasswordHasher<UserEntity> _passwordHasher;
+        private readonly UserManager<UtilizadorEntidade> _userManager;
+        private readonly SignInManager<UtilizadorEntidade> _signInManager;
+        private readonly IPasswordHasher<UtilizadorEntidade> _passwordHasher;
         private readonly IConfiguration _configuration;
 
-        public AccountController(UserManager<UserEntity> userManager, 
-            SignInManager<UserEntity> signInManager,
-            IPasswordHasher<UserEntity> passwordHasher, 
+        public AccountController(UserManager<UtilizadorEntidade> userManager, 
+            SignInManager<UtilizadorEntidade> signInManager,
+            IPasswordHasher<UtilizadorEntidade> passwordHasher, 
             IConfiguration configuration)
         {
             _userManager = userManager;
@@ -45,7 +45,7 @@ namespace MedicamentosAPI.Controllers
                     Select(modelError => modelError.ErrorMessage).ToList());
             }
 
-            var user = new UserEntity{ UserName = model.Email, Email = model.Email };
+            var user = new UtilizadorEntidade{ UserName = model.Email, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
@@ -105,7 +105,7 @@ namespace MedicamentosAPI.Controllers
             });
         }
 
-        private async Task<JwtSecurityToken> GetJwtSecurityToken(UserEntity user)
+        private async Task<JwtSecurityToken> GetJwtSecurityToken(UtilizadorEntidade user)
         {
             var userClaims = await _userManager.GetClaimsAsync(user);
             return new JwtSecurityToken(
@@ -120,7 +120,7 @@ namespace MedicamentosAPI.Controllers
                     );
         }
 
-        private static IEnumerable<Claim> GetTokenClaims(UserEntity user)
+        private static IEnumerable<Claim> GetTokenClaims(UtilizadorEntidade user)
         {
             return new List < Claim >
             {

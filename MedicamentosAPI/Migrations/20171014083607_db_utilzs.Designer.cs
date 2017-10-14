@@ -11,8 +11,8 @@ using System;
 namespace MedicamentosAPI.Migrations
 {
     [DbContext(typeof(MedicamentosAPIContext))]
-    [Migration("20171010155018_UserIdentity")]
-    partial class UserIdentity
+    [Migration("20171014083607_db_utilzs")]
+    partial class db_utilzs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -79,24 +79,6 @@ namespace MedicamentosAPI.Migrations
                     b.ToTable("Medicamento");
                 });
 
-            modelBuilder.Entity("MedicamentosAPI.Models.Pessoa", b =>
-                {
-                    b.Property<int>("PessoaId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("nif");
-
-                    b.Property<string>("nome");
-
-                    b.Property<int>("num_beneficiario");
-
-                    b.Property<int>("telefone");
-
-                    b.HasKey("PessoaId");
-
-                    b.ToTable("Pessoa");
-                });
-
             modelBuilder.Entity("MedicamentosAPI.Models.Posologia", b =>
                 {
                     b.Property<int>("PosologiaId")
@@ -115,47 +97,7 @@ namespace MedicamentosAPI.Migrations
                     b.ToTable("Posologia");
                 });
 
-            modelBuilder.Entity("MedicamentosAPI.Models.Prescricao", b =>
-                {
-                    b.Property<int>("PrescricaoId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("MedicamentoId");
-
-                    b.Property<int?>("ReceitaId");
-
-                    b.HasKey("PrescricaoId");
-
-                    b.HasIndex("MedicamentoId");
-
-                    b.HasIndex("ReceitaId");
-
-                    b.ToTable("Prescricao");
-                });
-
-            modelBuilder.Entity("MedicamentosAPI.Models.Receita", b =>
-                {
-                    b.Property<int>("ReceitaId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("UtenteId");
-
-                    b.Property<int>("codigo_acesso");
-
-                    b.Property<DateTime>("data");
-
-                    b.Property<string>("local");
-
-                    b.Property<DateTime>("validade");
-
-                    b.HasKey("ReceitaId");
-
-                    b.HasIndex("UtenteId");
-
-                    b.ToTable("Receita");
-                });
-
-            modelBuilder.Entity("MedicamentosAPI.Models.UserEntity", b =>
+            modelBuilder.Entity("MedicamentosAPI.Models.UtilizadorEntidade", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -332,25 +274,6 @@ namespace MedicamentosAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MedicamentosAPI.Models.Prescricao", b =>
-                {
-                    b.HasOne("MedicamentosAPI.Models.Medicamento")
-                        .WithMany("prescricoes")
-                        .HasForeignKey("MedicamentoId");
-
-                    b.HasOne("MedicamentosAPI.Models.Receita")
-                        .WithMany("prescricoes")
-                        .HasForeignKey("ReceitaId");
-                });
-
-            modelBuilder.Entity("MedicamentosAPI.Models.Receita", b =>
-                {
-                    b.HasOne("MedicamentosAPI.Models.Pessoa", "Utente")
-                        .WithMany()
-                        .HasForeignKey("UtenteId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -361,7 +284,7 @@ namespace MedicamentosAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("MedicamentosAPI.Models.UserEntity")
+                    b.HasOne("MedicamentosAPI.Models.UtilizadorEntidade")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -369,7 +292,7 @@ namespace MedicamentosAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("MedicamentosAPI.Models.UserEntity")
+                    b.HasOne("MedicamentosAPI.Models.UtilizadorEntidade")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -382,7 +305,7 @@ namespace MedicamentosAPI.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MedicamentosAPI.Models.UserEntity")
+                    b.HasOne("MedicamentosAPI.Models.UtilizadorEntidade")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -390,7 +313,7 @@ namespace MedicamentosAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("MedicamentosAPI.Models.UserEntity")
+                    b.HasOne("MedicamentosAPI.Models.UtilizadorEntidade")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

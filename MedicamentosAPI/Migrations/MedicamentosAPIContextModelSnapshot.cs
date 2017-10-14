@@ -96,7 +96,7 @@ namespace MedicamentosAPI.Migrations
                     b.ToTable("Posologia");
                 });
 
-            modelBuilder.Entity("MedicamentosAPI.Models.UserEntity", b =>
+            modelBuilder.Entity("MedicamentosAPI.Models.UtilizadorEntidade", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -283,7 +283,7 @@ namespace MedicamentosAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("MedicamentosAPI.Models.UserEntity")
+                    b.HasOne("MedicamentosAPI.Models.UtilizadorEntidade")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -291,7 +291,7 @@ namespace MedicamentosAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("MedicamentosAPI.Models.UserEntity")
+                    b.HasOne("MedicamentosAPI.Models.UtilizadorEntidade")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -304,7 +304,7 @@ namespace MedicamentosAPI.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MedicamentosAPI.Models.UserEntity")
+                    b.HasOne("MedicamentosAPI.Models.UtilizadorEntidade")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -312,7 +312,7 @@ namespace MedicamentosAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("MedicamentosAPI.Models.UserEntity")
+                    b.HasOne("MedicamentosAPI.Models.UtilizadorEntidade")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

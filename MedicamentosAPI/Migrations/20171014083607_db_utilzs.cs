@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MedicamentosAPI.Migrations
 {
-    public partial class UserIdentity : Migration
+    public partial class db_utilzs : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,6 +46,51 @@ namespace MedicamentosAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Farmaco",
+                columns: table => new
+                {
+                    FarmacoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    principio_ativo = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Farmaco", x => x.FarmacoId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Medicamento",
+                columns: table => new
+                {
+                    MedicamentoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    laboratorio = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    tamanho = table.Column<int>(type: "int", nullable: false),
+                    validade = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Medicamento", x => x.MedicamentoId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Posologia",
+                columns: table => new
+                {
+                    PosologiaId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    dose = table.Column<int>(type: "int", nullable: false),
+                    intervalo_tempo_horas = table.Column<int>(type: "int", nullable: false),
+                    periodo_tempo_dias = table.Column<int>(type: "int", nullable: false),
+                    via_administracao = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posologia", x => x.PosologiaId);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,6 +199,57 @@ namespace MedicamentosAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Apresentacao",
+                columns: table => new
+                {
+                    ApresentacaoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    FarmacoId = table.Column<int>(type: "int", nullable: false),
+                    MedicamentoId = table.Column<int>(type: "int", nullable: false),
+                    Posologia_GenericaId = table.Column<int>(type: "int", nullable: false),
+                    dosagem = table.Column<int>(type: "int", nullable: false),
+                    forma_adm = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    quantidade = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Apresentacao", x => x.ApresentacaoId);
+                    table.ForeignKey(
+                        name: "FK_Apresentacao_Farmaco_FarmacoId",
+                        column: x => x.FarmacoId,
+                        principalTable: "Farmaco",
+                        principalColumn: "FarmacoId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Apresentacao_Medicamento_MedicamentoId",
+                        column: x => x.MedicamentoId,
+                        principalTable: "Medicamento",
+                        principalColumn: "MedicamentoId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Apresentacao_Posologia_Posologia_GenericaId",
+                        column: x => x.Posologia_GenericaId,
+                        principalTable: "Posologia",
+                        principalColumn: "PosologiaId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Apresentacao_FarmacoId",
+                table: "Apresentacao",
+                column: "FarmacoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Apresentacao_MedicamentoId",
+                table: "Apresentacao",
+                column: "MedicamentoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Apresentacao_Posologia_GenericaId",
+                table: "Apresentacao",
+                column: "Posologia_GenericaId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -197,6 +293,9 @@ namespace MedicamentosAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Apresentacao");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -210,6 +309,15 @@ namespace MedicamentosAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Farmaco");
+
+            migrationBuilder.DropTable(
+                name: "Medicamento");
+
+            migrationBuilder.DropTable(
+                name: "Posologia");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

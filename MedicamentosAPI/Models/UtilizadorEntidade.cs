@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MedicamentosAPI.Models
 {
-    public class UserEntity : IdentityUser
+    public class UtilizadorEntidade : IdentityUser
     {
     }
 }
