@@ -106,7 +106,7 @@ namespace MedicamentosAPI.Controllers
 
         // GET: api/Medicamentos/nome="{nome}"
         [HttpGet("nome=\"{nome}\"")]
-        public async Task<IActionResult> GetMedicamentoByNome([FromRoute] string nome)
+        public IActionResult GetMedicamentoByNome([FromRoute] string nome)
         {
             if (!ModelState.IsValid)
             {
