@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MedicamentosAPI.Migrations
 {
-    public partial class unittest : Migration
+    public partial class untitest1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

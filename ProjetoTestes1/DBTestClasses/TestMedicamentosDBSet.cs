@@ -9,11 +9,14 @@ namespace ProjetoTestes
 { 
     class TestMedicamentosDBSet
     {
-        /*
-        public override Medicamento Find(params object[] keyValues)
+       /*
+        public override Medicamento Get(params object[] keyValues)
         {
-            return this.SingleOrDefault(medicamento => medicamento.Id == (int)keyValues.Single());
+          
+            return this.SingleOrDefaultAsync(medicamento => medicamento.Id == (int)keyValues.Single());
+    
         }
-        */
+       */
+
     }
 }

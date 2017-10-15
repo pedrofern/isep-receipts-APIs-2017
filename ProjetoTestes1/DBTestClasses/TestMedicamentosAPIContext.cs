@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-//using System.Data.Entity;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +13,7 @@ namespace ProjetoTestes.DBTestClasses
         /*
         public TestMedicamentosAPIContext()
         {
-            this.Medicamentos = new TestMedicamentosDBSet();
+           // this.Medicamentos = new TestMedicamentosDBSet();
         }
 
         public DbSet<Medicamento> Medicamentos { get; set; }
@@ -24,8 +24,7 @@ namespace ProjetoTestes.DBTestClasses
         }
 
         public void MarkAsModified(Medicamento item) { }
-        public void Dispose() { }
+        public void Dispose() { }                
         */
-
     }
 }

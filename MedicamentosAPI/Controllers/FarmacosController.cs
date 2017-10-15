@@ -30,7 +30,7 @@ namespace MedicamentosAPI.Controllers
             return _context.Farmaco.Select(m => new FarmacoDTO(m));
         }
 
-        // GET: api/Farmacos/5
+        // GET: api/Farmacos/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetFarmaco([FromRoute] int id)
         {
@@ -52,83 +52,6 @@ namespace MedicamentosAPI.Controllers
             return Ok(dto);
         }
 
-        // GET: api/Farmaco/5/Apresentacoes
-        [HttpGet("{id}/Apresentacoes")]
-        public async Task<IActionResult> GetApresentacoesDoFarmaco([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var farmaco = await _context.Farmaco.SingleOrDefaultAsync(m => m.FarmacoId == id);
-
-            if (farmaco == null)
-            {
-                return NotFound();
-            }
-
-            var apresentacoes = _context.Apresentacao.Select(a => new ApresentacaoDTO(a)).Where(a => id == farmaco.FarmacoId);
-
-            if (apresentacoes == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(apresentacoes);
-        }
-
-        // GET: api/Farmaco/5/Medicamentos
-        [HttpGet("{id}/Medicamentos")]
-        public async Task<IActionResult> GetMedicamentosDoFarmaco([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var farmaco = await _context.Farmaco.SingleOrDefaultAsync(m => m.FarmacoId == id);
-
-            if (farmaco == null)
-            {
-                return NotFound();
-            }
-
-            var medicamentos = _context.Medicamento.Select(m => new MedicamentoDTO(m)).Where(m => id == farmaco.FarmacoId);
-
-            if (medicamentos == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(medicamentos);
-        }
-
-        // GET: api/Farmaco/5/Posologias
-        [HttpGet("{id}/Posologias")]
-        public async Task<IActionResult> GetPosologiasDoFarmaco([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var farmaco = await _context.Farmaco.SingleOrDefaultAsync(m => m.FarmacoId == id);
-
-            if (farmaco == null)
-            {
-                return NotFound();
-            }
-
-            var posologias = _context.Posologia.Select(m => new PosologiaDTO(m)).Where(m => id == farmaco.FarmacoId);
-
-            if (posologias == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(posologias);
-        }
 
         // GET: api/Farmacos/nome="{nome}"
         [HttpGet("nome=\"{nome}\"")]
@@ -152,6 +75,91 @@ namespace MedicamentosAPI.Controllers
             return Ok(dto);
         }
 
+
+        // GET: api/Farmaco/{id}/Medicamentos
+        [Route("~/api/Farmaco/{id}/Medicamentos")]
+        public async Task<IActionResult> GetMedicamentosFarmacos([FromRoute]int Id)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+
+            List<Apresentacao> apresentacoes_med_farm = await _context.Apresentacao.Include(a => a.Medicamento).Where(b => b.FarmacoId == Id).ToListAsync();
+            HashSet<int> lista_medicamentos = new HashSet<int>();
+
+            foreach (Apresentacao a in apresentacoes_med_farm.ToList())
+            {
+              
+                    lista_medicamentos.Add(a.MedicamentoId);
+            }
+
+            if (lista_medicamentos == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(lista_medicamentos);
+
+        }
+
+        // GET: api/Farmaco/{id}/Posologias
+        [Route("~/api/Farmaco/{id}/Posologias")]
+        public async Task<IActionResult> GetPosologiasFarmaco([FromRoute]int Id)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            List<Apresentacao> apresentacoes_farm_pos = await _context.Apresentacao.Include(a => a.Posologia_Generica).Where(b => b.FarmacoId == Id).ToListAsync();
+            HashSet<PosologiaIdDTO> lista_posologias = new HashSet<PosologiaIdDTO>();
+
+            foreach (Apresentacao a in apresentacoes_farm_pos.ToList())
+            {
+
+                lista_posologias.Add(new PosologiaIdDTO(a.Posologia_GenericaId));
+            }
+
+            if (lista_posologias == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(lista_posologias);
+
+        }
+
+        // GET: api/Farmaco/{id}/Apresentacoes
+        [Route("~/api/Farmaco/{id}/Apresentacoes")]
+        public async Task<IActionResult> GetApresentacoesFarmaco([FromRoute]int Id)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            List<Apresentacao> apres_farm = await _context.Apresentacao.Where(a => a.FarmacoId == Id).ToListAsync();
+            HashSet<ApresentacaoDTO> lista_apresentacoes = new HashSet<ApresentacaoDTO>();
+
+            foreach (Apresentacao a in apres_farm.ToList())
+            {
+
+                lista_apresentacoes.Add(new ApresentacaoDTO(a));
+            }
+
+            if (lista_apresentacoes == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(lista_apresentacoes);
+
+        }
 
         // PUT: api/Farmacos/5
         [HttpPut("{id}")]

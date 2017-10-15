@@ -30,7 +30,7 @@ namespace MedicamentosAPI.Controllers
             return _context.Apresentacao.Select(m => new ApresentacaoDTO(m));
         }
 
-        // GET: api/Apresentacoes/5
+        // GET: api/Apresentacoes/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetApresentacao([FromRoute] int id)
         {
@@ -51,7 +51,34 @@ namespace MedicamentosAPI.Controllers
             return Ok(dto);
         }
 
-        // PUT: api/Apresentacoes/5
+        // GET: api/Medicamento/{id}/Apresentacoes
+        [Route("~/api/Medicamento/{id}/Apresentacoes")]
+        public IActionResult GetApresentacaosMedicamentos([FromRoute]int Id)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            IQueryable<Apresentacao> apresentacoes = _context.Apresentacao.Where(m => m.Medicamento.MedicamentoId == Id);
+            List<ApresentacaoDTO> lista_apresentacoes = new List<ApresentacaoDTO>();
+
+            foreach (Apresentacao a in apresentacoes.ToList())
+            {
+                lista_apresentacoes.Add(new ApresentacaoDTO(a));
+            }
+
+            if (lista_apresentacoes == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(lista_apresentacoes);
+
+        }
+
+        // PUT: api/Apresentacoes/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> PutApresentacao([FromRoute] int id, [FromBody] Apresentacao apresentacao)
         {
@@ -101,7 +128,7 @@ namespace MedicamentosAPI.Controllers
             return CreatedAtAction("GetApresentacao", new { id = apresentacao.ApresentacaoId }, apresentacao);
         }
 
-        // DELETE: api/Apresentacoes/5
+        // DELETE: api/Apresentacoes/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteApresentacao([FromRoute] int id)
         {

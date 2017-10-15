@@ -52,58 +52,6 @@ namespace MedicamentosAPI.Controllers
             return Ok(dto);
         }
 
-        // GET: api/Medicamento/{id}/Apresentacoes
-        [HttpGet("{id}/Apresentacoes")]
-        public async Task<IActionResult> GetApresentacoesDoMedicamento([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var medicamento = await _context.Medicamento.SingleOrDefaultAsync(m => m.MedicamentoId == id);
-
-            if (medicamento == null)
-            {
-                return NotFound();
-            }
-
-            var apresentacoes = _context.Apresentacao.Select(a => new ApresentacaoIdDTO(a)).Where(a => id == medicamento.MedicamentoId);
-
-            if (apresentacoes == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(apresentacoes);
-        }
-
-        // GET: api/Medicamento/{id}/Posologias
-        [HttpGet("{id}/Posologias")]
-        public async Task<IActionResult> GetPosologiasDoMedicamento([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var medicamento = await _context.Medicamento.SingleOrDefaultAsync(m => m.MedicamentoId == id);
-
-            if (medicamento == null)
-            {
-                return NotFound();
-            }
-
-            var posologias = _context.Posologia.Select(p => new PosologiaIdDTO(p)).Where(p => id == medicamento.MedicamentoId);
-
-            if (posologias == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(posologias);
-        }
-
         // GET: api/Medicamentos/nome="{nome}"
         [HttpGet("nome=\"{nome}\"")]
         public IActionResult GetMedicamentoByNome([FromRoute] string nome)
@@ -173,7 +121,7 @@ namespace MedicamentosAPI.Controllers
             return CreatedAtAction("GetMedicamento", new { id = medicamento.MedicamentoId }, medicamento);
         }
 
-        // DELETE: api/Medicamentos/5
+        // DELETE: api/Medicamentos/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMedicamento([FromRoute] int id)
         {

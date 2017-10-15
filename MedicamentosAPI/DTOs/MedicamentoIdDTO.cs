@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace MedicamentosAPI.DTOs
 {
-    public class PosologiaIdDTO
+    public class MedicamentoIdDTO
     {
         public int id { get; set; }
 
-        public PosologiaIdDTO(int id)
+        public MedicamentoIdDTO(int id)
         {
             this.id = id;
         }

@@ -30,7 +30,7 @@ namespace MedicamentosAPI.Controllers
             return _context.Posologia.Select(m => new PosologiaDTO(m));
         }
 
-        // GET: api/Posologias/5
+        // GET: api/Posologias/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPosologia([FromRoute] int id)
         {
@@ -51,7 +51,35 @@ namespace MedicamentosAPI.Controllers
             return Ok(dto);
         }
 
-        // PUT: api/Posologias/5
+
+        // GET: api/Medicamentos/3/Posologias
+        [Route("~/api/Medicamento/{id}/Posologias")]
+        public async Task<IActionResult> GetPosologiasMedicamento([FromRoute]int Id)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+   
+            List<Apresentacao> apres_med_pos = await _context.Apresentacao.Include(a => a.Farmaco).Where(b => b.MedicamentoId == Id).ToListAsync();
+            List<PosologiaIdDTO> lista_posologias = new List<PosologiaIdDTO>();
+
+            foreach (Apresentacao a in apres_med_pos.ToList())
+            {
+                lista_posologias.Add(new PosologiaIdDTO(a.Posologia_GenericaId));
+            }
+
+            if (lista_posologias == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(lista_posologias);
+
+        }
+
+        // PUT: api/Posologias/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPosologia([FromRoute] int id, [FromBody] Posologia posologia)
         {
