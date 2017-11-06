@@ -29,7 +29,7 @@ namespace MedicamentosAPI.Migrations
 
                     b.Property<int>("MedicamentoId");
 
-                    b.Property<int>("Posologia_GenericaId");
+                    b.Property<int>("PosologiaId");
 
                     b.Property<int>("dosagem");
 
@@ -43,7 +43,7 @@ namespace MedicamentosAPI.Migrations
 
                     b.HasIndex("MedicamentoId");
 
-                    b.HasIndex("Posologia_GenericaId");
+                    b.HasIndex("PosologiaId");
 
                     b.ToTable("Apresentacao");
                 });
@@ -258,18 +258,18 @@ namespace MedicamentosAPI.Migrations
             modelBuilder.Entity("MedicamentosAPI.Models.Apresentacao", b =>
                 {
                     b.HasOne("MedicamentosAPI.Models.Farmaco", "Farmaco")
-                        .WithMany("apresentacoes")
+                        .WithMany()
                         .HasForeignKey("FarmacoId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MedicamentosAPI.Models.Medicamento", "Medicamento")
-                        .WithMany("apresentacoes")
+                        .WithMany()
                         .HasForeignKey("MedicamentoId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MedicamentosAPI.Models.Posologia", "Posologia_Generica")
+                    b.HasOne("MedicamentosAPI.Models.Posologia", "Posologia")
                         .WithMany()
-                        .HasForeignKey("Posologia_GenericaId")
+                        .HasForeignKey("PosologiaId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

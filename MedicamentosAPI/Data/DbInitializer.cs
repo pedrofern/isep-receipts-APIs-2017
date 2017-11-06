@@ -88,35 +88,35 @@ namespace MedicamentosAPI.Data
                 }
 
 
-            //Procura por apresentacoes
+            //Procura por Apresentacoes
             if (!context.Apresentacao.Any())
             {
 
                 var apresentacoes = new Apresentacao[]
                 {
                     new Apresentacao{ forma_adm="Xarope", dosagem=25, quantidade=1,
-                                        FarmacoId=2, MedicamentoId=6, Posologia_GenericaId=2},
+                                        FarmacoId=2, MedicamentoId=6, PosologiaId=2},
 
                     new Apresentacao{ forma_adm="Comprimido", dosagem=10, quantidade=10,
-                                    FarmacoId=3, MedicamentoId=5, Posologia_GenericaId=2},
+                                    FarmacoId=3, MedicamentoId=5, PosologiaId=2},
 
                     new Apresentacao{ forma_adm="Supositorio", dosagem=10, quantidade=2,
-                                    FarmacoId=3, MedicamentoId=5, Posologia_GenericaId=5},
+                                    FarmacoId=3, MedicamentoId=5, PosologiaId=5},
 
                     new Apresentacao{ forma_adm="Comprimido", dosagem=25, quantidade=10,
-                                    FarmacoId=1, MedicamentoId=1, Posologia_GenericaId=2},
+                                    FarmacoId=1, MedicamentoId=1, PosologiaId=2},
 
                     new Apresentacao{ forma_adm="Comprimido", dosagem=25, quantidade=8,
-                                    FarmacoId=3, MedicamentoId=2, Posologia_GenericaId=1},
+                                    FarmacoId=3, MedicamentoId=2, PosologiaId=1},
 
                     new Apresentacao{ forma_adm="Comprimido", dosagem=25, quantidade=8,
-                                    FarmacoId=3, MedicamentoId=3, Posologia_GenericaId=3},
+                                    FarmacoId=3, MedicamentoId=3, PosologiaId=3},
 
                     new Apresentacao{ forma_adm="Liquido", dosagem=50, quantidade=3,
-                                    FarmacoId=2, MedicamentoId=8, Posologia_GenericaId=4},
+                                    FarmacoId=2, MedicamentoId=8, PosologiaId=4},
 
                     new Apresentacao{ forma_adm="Comprimido", dosagem=25, quantidade=8,
-                                    FarmacoId=2, MedicamentoId=6, Posologia_GenericaId=3},
+                                    FarmacoId=2, MedicamentoId=6, PosologiaId=3},
 
 
                 };

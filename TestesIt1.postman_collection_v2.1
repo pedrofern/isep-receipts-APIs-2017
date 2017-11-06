@@ -1,0 +1,1105 @@
+{
+	"info": {
+		"name": "TestesIt1",
+		"_postman_id": "de8f903f-b983-85c3-073f-432d79fe2777",
+		"description": "Testes de integração do projeto da iteracao 1 (API RESTful)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "RegistoUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//Registar Utilizador",
+							"//var obj='{\"email\":\"a@a.pt\", \"password\":\"Qwerty1!\"}';",
+							"",
+							"tests[\"User criado - estado 200\"]=responseCode.code===200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{email:\"a@a.pt\", password:\"Qwerty1!\"}"
+				},
+				"url": {
+					"raw": "{{url}}/Account/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Account",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "LoginUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//Registar Utilizador",
+							"tests[\"Login efetuado - estado 200\"]=responseCode.code===200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{email:\"a@a.pt\", password:\"Qwerty1!\"}"
+				},
+				"url": {
+					"raw": "{{url}}/Account/Login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Account",
+						"Login"
+					]
+				},
+				"description": "É necessário log in para aceder aos dados"
+			},
+			"response": []
+		},
+		{
+			"name": "Autorizacao",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//Atribuir token",
+							"",
+							"",
+							"var data=JSON.parse(responseBody);",
+							"postman.clearEnvironmentVariable(\"jwt_token\");",
+							"postman.setEnvironmentVariable(\"jwt_token\", data.token);",
+							"",
+							"tests[\"Token atribuido\"]=responseCode.code===200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{email:\"a@a.pt\", password:\"Qwerty1!\"}"
+				},
+				"url": {
+					"raw": "{{url}}/Account/Token",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Account",
+						"Token"
+					]
+				},
+				"description": "Verificacao de obtencao de medicamento existente na base de dados\nVerificaca de nao obtencao de medicamento inexistente na base de dados"
+			},
+			"response": []
+		},
+		{
+			"name": "MedicamentoGet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//GET",
+							"//postman.clearEnvironmentVariable(\"variable_key\");",
+							"//postman.setEnvironmentVariable(\"url\",\"urlGet\");",
+							"tests[\"Codigo com estado 200\"]=responseCode.code===200;",
+							"",
+							"var obj='{\"nome\":\"Aspirina Prevent\"}';    //presente na base de dados",
+							"var data=JSON.parse(obj);",
+							"var obj2='{\"id\":2, \"nome\":\"Cucu\"}';  //nao presente na base de dados",
+							"var data2=JSON.parse(obj2);",
+							"",
+							"tests[\"Listas Medicamentos (json contem medicamento com id)\"]=responseBody.has(data.nome);",
+							"tests[\"Listas Medicamentos (nao contem medicamento com id)\"]=!responseBody.has(data2.nome);",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/Medicamento",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Medicamento"
+					]
+				},
+				"description": "Verificacao de obtencao de medicamento existente na base de dados\nVerificaca de nao obtencao de medicamento inexistente na base de dados"
+			},
+			"response": []
+		},
+		{
+			"name": "ApresentacaoGetID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//GET Apresentacoes",
+							"",
+							"tests[\"Codigo com estado 200\"]=responseCode.code===200;",
+							"",
+							"var obj='{\"id\":3,\"forma_adm\":\"Supositorio\",\"concentracao\":\"10mg\",\"qtd\":\"2ml\",\"farmaco\":\"Paracetamol\",\"medicamento\":\"Ben-u-ron\",\"posologia\":\"via retal\"}'; //presente na base de dados",
+							"var obj2='{\"forma_adm\":\"Cucu\", \"concentracao\":\"1000mg\", \"qtd\":\"200ml\"}'; //nao presente na base de dados",
+							"",
+							"tests[\"Apresentacao (contem id)\"]=responseBody.has(obj);",
+							"tests[\"Lista Apresentacoes (nao contem)\"]=!responseBody.has(obj2);",
+							"",
+							"tests[\"Codigo para falhar\"]=!(responseCode.code===400 || responseCode.code===404);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{email:\"a@a.pt\", password:\"Qwerty1!\"}"
+				},
+				"url": {
+					"raw": "{{url}}/Apresentacao/3",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Apresentacao",
+						"3"
+					]
+				},
+				"description": "ApresentacaoGet"
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteApresentacao",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//GET Apresentacoes",
+							"",
+							"tests[\"Codigo com estado 200\"]=responseCode.code===200;",
+							"",
+							"var obj='{\"id\":1,\"forma_adm\":\"Xarope\",\"concentracao\":\"25mg\",\"qtd\":\"1ml\"}'; //presente na base de dados",
+							"",
+							"tests[\"Apresentacao (contem id)\"]=!responseBody.has(obj);",
+							"",
+							"tests[\"Codigo para falhar\"]=!(responseCode.code===400 || responseCode.code===404);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/Apresentacao/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Apresentacao",
+						"1"
+					]
+				},
+				"description": "ApresentacaoDelete"
+			},
+			"response": []
+		},
+		{
+			"name": "ListaApresentacoes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//Delete - verificacao se Apresentacao foi removida ",
+							"",
+							"tests[\"Codigo com estado 200\"]=responseCode.code===200;",
+							"",
+							"var obj='{\"id\":1,\"forma_adm\":\"Xarope\",\"concentracao\":\"25mg\",\"qtd\":\"1ml\"}'; //presente na base de dados",
+							"",
+							"tests[\"Lista Apresentacoes (nao contem)\"]=!responseBody.has(obj);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{email:\"a@a.pt\", password:\"Qwerty1!\"}"
+				},
+				"url": {
+					"raw": "{{url}}/Apresentacao",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Apresentacao"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteVerificacaoCascate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//Delete - verificacao se Apresentacao foi removida ",
+							"",
+							"tests[\"Codigo com estado 200\"]=responseCode.code===200;",
+							"",
+							"var obj2='{\"id\":2, \"nome\":\"Aspirina Protectt\"}';  // presente na base de dados",
+							"",
+							"tests[\"Listas Medicamentos (contem medicamento que estava asssociado a apresentacao)\"]=!responseBody.has(obj2);",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{email:\"a@a.pt\", password:\"Qwerty1!\"}"
+				},
+				"url": {
+					"raw": "{{url}}/Apresentacao",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Apresentacao"
+					]
+				},
+				"description": "Verificar se ao eliminar apresentacao, nao elimina medicamento"
+			},
+			"response": []
+		},
+		{
+			"name": "PostMedicamento",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//POST medicamento",
+							"",
+							"tests[\"Codigo com estado ok\"]=responseCode.code===201;",
+							"",
+							"var obj='{\"medicamentoId\":11,\"nome\":\"Landus\",\"laboratorio\":\"Sanofi-Synthelabo\",\"validade\":\"2020-01-01T00:00:00\",\"tamanho\":20}';",
+							"",
+							"tests[\"Listas Medicamentos (json contem medicamento)\"]=responseBody.has(obj);",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"nome\":\"Landus\",\"laboratorio\":\"Sanofi-Synthelabo\",\"validade\":\"2020-01-01T00:00:00\",\"tamanho\":20}"
+				},
+				"url": {
+					"raw": "{{url}}/Medicamento",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Medicamento"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "PostAssociativo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//POST Apresentacao com Farmaco",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"forma_adm\":\"Liquido\",\"dosagem\":\"25\",\"quantidade\":\"100\",\n\t\"Farmaco\": { \"principio_ativo\":\"Adalimumab\"},\n\t\"Medicamento\":{\"nome\":\"Humira\", \"laboratorio\":\"AbbVie\"},\n\t\"Posologia\": { \"dose\":40, \"via_administracao\":\"Injeccao\"\t}\n}"
+				},
+				"url": {
+					"raw": "{{url}}/Apresentacao",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Apresentacao"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "PostAssociativoConfirm",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//POST Apresentacao com Farmaco",
+							"",
+							"tests[\"Codigo 200 ok\"]=responseCode.code===200;",
+							"",
+							"var obj='{\"id\":5,\"principio_ativo\":\"Adalimumab\"}';",
+							"var data=JSON.parse(obj);",
+							"",
+							"tests[\"FArmaco criado no post associativo\"]=responseBody.has(data.principio_ativo);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"forma_adm\":\"Liquido\",\n \"dosagem\":25,\n \"quantidade\":100,\n \"FarmacoId\":5,\n \"Farmaco\":{\"principio_ativo\":\"Insulina glargina\"},\n \"MedicamentoId\":11,\n \"Posologia_GenericaId\":4\n}\n"
+				},
+				"url": {
+					"raw": "{{url}}/Farmaco",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Farmaco"
+					]
+				},
+				"description": "Confirmacao de Farmaco criado aquando da apresentacao"
+			},
+			"response": []
+		},
+		{
+			"name": "PostAssociativoVerifFarmaco",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//POST Apresentacao com Farmaco mas sem Medicamento",
+							"",
+							"tests[\"Codigo com estado ok\"]=responseCode.code===201;",
+							"",
+							"var obj='{\"forma_adm\":\"Xarope\",\"dosagem\":25,\"quantidade\":100}';",
+							"var data=JSON.parse(responseBody);",
+							"",
+							"tests[\"Apresentacao criada com farmaco - verif1)\"]=responseBody.has(data.forma_adm);",
+							"tests[\"Apresentacao criada com farmaco - verif2)\"]=responseBody.has(data.dosagem);",
+							"tests[\"Apresentacao criada com farmaco - verif3)\"]=responseBody.has(data.quantidade);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"forma_adm\":\"Xarope\",\"dosagem\":\"25\",\"quantidade\":\"100\",\n\t\"Farmaco\": { \"principio_ativo\":\"Pregabalina\"},\n\t\"MedicamentoId\":2,\n\t\"PosologiaId\": 1\n}"
+				},
+				"url": {
+					"raw": "{{url}}/Apresentacao/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Apresentacao",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "PostAssociativoVerifMed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//POST Apresentacao com Farmaco mas sem Medicamento",
+							"",
+							"tests[\"Codigo com estado ok\"]=responseCode.code===200;",
+							"",
+							"var obj='{\"nome\":\"Humira\"}';",
+							"var data=JSON.parse(responseBody);",
+							"",
+							"tests[\"Medicamento atribuido a apresentacao\"]=responseBody.has(data.medicamento);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"forma_adm\":\"Xarope\",\"dosagem\":\"25\",\"quantidade\":\"100\",\n\t\"Farmaco\": { \"principio_ativo\":\"Pregabalina\"},\n\t\"MedicamentoId\":2,\n\t\"PosologiaId\": 1\n}"
+				},
+				"url": {
+					"raw": "{{url}}/Apresentacao/9",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Apresentacao",
+						"9"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "PutPosologia",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//PUT POSOLOGIA",
+							"",
+							"tests[\"Codigo com estado ok\"]=responseCode.code===204;",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"PosologiaId\":2,\"dose\":200,\"via_administracao\":\"via oral\",\"intervalo_tempo_horas\":6,\"periodo_tempo_dias\":5}"
+				},
+				"url": {
+					"raw": "{{url}}/Posologia/2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Posologia",
+						"2"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "PutPosologiaVerif",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Codigo com estado ok\"]=responseCode.code===200;",
+							"",
+							"var obj='{\"dose\":200}';",
+							"var data=JSON.parse(obj);",
+							"",
+							"var objAntigo='{\"dose\":400}';",
+							"var data2=JSON.parse(objAntigo);",
+							"",
+							"tests[\"Valor antigo alterado \"]=!responseBody.has(data2.dose);",
+							"tests[\"Valor atualizado\"]=responseBody.has(data.dose);",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"PosologiaId\":2,\"dose\":200,\"via_administracao\":\"via oral\",\"intervalo_tempo_horas\":6,\"periodo_tempo_dias\":5}"
+				},
+				"url": {
+					"raw": "{{url}}/Posologia/2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Posologia",
+						"2"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "PutInvalido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Codigo com estado invalido\"]=responseCode.code===400;",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"Id\":2,\"dose\":200,\"via_administracao\":\"via oral\",\"intervalo_tempo_horas\":6,\"periodo_tempo_dias\":5}"
+				},
+				"url": {
+					"raw": "{{url}}/Posologia/2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Posologia",
+						"2"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Apresentacoes de Medicamento",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//GET Apresentacoes",
+							"",
+							"tests[\"Codigo com estado 200\"]=responseCode.code===200;",
+							"",
+							"var obj='{\"id\":4,\"forma_adm\":\"Comprimido\",\"concentracao\":\"25mg\",\"qtd\":\"10ml\",\"farmaco\":\"Acido acetil-salicilico\",\"medicamento\":\"Aspirina Prevent\",\"posologia\":\"via oral\"}'; //presente na base de dados",
+							"var obj2='{\"forma_adm\":\"Cucu\", \"concentracao\":\"1000mg\", \"qtd\":\"200ml\"}'; //nao presente na base de dados",
+							"",
+							"tests[\"Apresentacao (contem id)\"]=responseBody.has(obj);",
+							"tests[\"Lista Apresentacoes (nao contem)\"]=!responseBody.has(obj2);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{email:\"a@a.pt\", password:\"Qwerty1!\"}"
+				},
+				"url": {
+					"raw": "{{url}}/Medicamento/1/Apresentacoes",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Medicamento",
+						"1",
+						"Apresentacoes"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Posologias de Medicamento",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//GET Apresentacoes",
+							"",
+							"tests[\"Codigo com estado 200\"]=responseCode.code===200;",
+							"",
+							"var obj='[{\"id\":2}]';",
+							"var obj2='[{\"id:3\"}]';",
+							"",
+							"tests[\"Posologia (contem id)\"]=responseBody.has(obj);",
+							"tests[\"Nao e posologia do medicamento com id 1\"]=!responseBody.has(obj2);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{email:\"a@a.pt\", password:\"Qwerty1!\"}"
+				},
+				"url": {
+					"raw": "{{url}}/Medicamento/1/Posologias",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Medicamento",
+						"1",
+						"Posologias"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "FarmacoPeloNome",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Codigo com estado 200\"]=responseCode.code===200;",
+							"",
+							"var obj='{\"principio_ativo\":\"Ipobrufeno\"}';",
+							"var data=JSON.parse(obj);",
+							"",
+							"tests[\"Posologia (contem id)\"]=responseBody.has(data.principio_ativo);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{email:\"a@a.pt\", password:\"Qwerty1!\"}"
+				},
+				"url": {
+					"raw": "{{url}}/Farmaco/nome=\"Ipobrufeno\"",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Farmaco",
+						"nome=\"Ipobrufeno\""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ApresentacoesDeFarmaco",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Codigo com estado 200\"]=responseCode.code===200;",
+							"",
+							"var obj='[{\"id\":7,\"forma_adm\":\"Liquido\",\"concentracao\":\"50mg\",\"qtd\":\"3ml\",\"farmaco\":\"Ipobrufeno\",\"medicamento\":\"Alivium\",\"posologia\":\"via injeccao\"},{\"id\":8,\"forma_adm\":\"Comprimido\",\"concentracao\":\"25mg\",\"qtd\":\"8ml\",\"farmaco\":\"Ipobrufeno\",\"medicamento\":\"Brufen\",\"posologia\":\"via oral\"}]';",
+							"",
+							"tests[\"Apresentacoes 7 e 8 contem farmaco Ipobrufeno\"]=responseBody.has(obj);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{email:\"a@a.pt\", password:\"Qwerty1!\"}"
+				},
+				"url": {
+					"raw": "{{url}}/Farmaco/2/Apresentacoes",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Farmaco",
+						"2",
+						"Apresentacoes"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "MedicamentosDeFarmaco",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Codigo com estado 200\"]=responseCode.code===200;",
+							"",
+							"var obj='[8,6]';",
+							"",
+							"tests[\"Medicamentos 8 e 6 contem farmaco Ipobrufeno\"]=responseBody.has(obj);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{email:\"a@a.pt\", password:\"Qwerty1!\"}"
+				},
+				"url": {
+					"raw": "{{url}}/Farmaco/2/Medicamentos",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Farmaco",
+						"2",
+						"Medicamentos"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "PosologiasDeFarmaco",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Codigo com estado 200\"]=responseCode.code===200;",
+							"",
+							"var obj='[{\"id\":4},{\"id\":3}]';",
+							"",
+							"tests[\"Posologias 4 e 3 contem farmaco Ipobrufeno\"]=responseBody.has(obj);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{email:\"a@a.pt\", password:\"Qwerty1!\"}"
+				},
+				"url": {
+					"raw": "{{url}}/Farmaco/2/Posologias",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Farmaco",
+						"2",
+						"Posologias"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

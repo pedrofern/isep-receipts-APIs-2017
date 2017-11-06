@@ -115,13 +115,13 @@ namespace MedicamentosAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            List<Apresentacao> apresentacoes_farm_pos = await _context.Apresentacao.Include(a => a.Posologia_Generica).Where(b => b.FarmacoId == Id).ToListAsync();
+            List<Apresentacao> apresentacoes_farm_pos = await _context.Apresentacao.Include(a => a.Posologia).Where(b => b.FarmacoId == Id).ToListAsync();
             HashSet<PosologiaIdDTO> lista_posologias = new HashSet<PosologiaIdDTO>();
 
             foreach (Apresentacao a in apresentacoes_farm_pos.ToList())
             {
 
-                lista_posologias.Add(new PosologiaIdDTO(a.Posologia_GenericaId));
+                lista_posologias.Add(new PosologiaIdDTO(a.PosologiaId));
             }
 
             if (lista_posologias == null)
@@ -143,13 +143,13 @@ namespace MedicamentosAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            List<Apresentacao> apres_farm = await _context.Apresentacao.Where(a => a.FarmacoId == Id).ToListAsync();
+            List<Apresentacao> apres_farm = await _context.Apresentacao.Include(f=>f.Farmaco).Include(m=>m.Medicamento).Include(p=>p.Posologia).Where(a => a.FarmacoId == Id).ToListAsync();
             HashSet<ApresentacaoDTO> lista_apresentacoes = new HashSet<ApresentacaoDTO>();
 
             foreach (Apresentacao a in apres_farm.ToList())
             {
 
-                lista_apresentacoes.Add(new ApresentacaoDTO(a));
+                lista_apresentacoes.Add(new ApresentacaoDTO(a, a.Medicamento, a.Farmaco, a.Posologia));
             }
 
             if (lista_apresentacoes == null)
@@ -161,7 +161,7 @@ namespace MedicamentosAPI.Controllers
 
         }
 
-        // PUT: api/Farmacos/5
+        // PUT: api/Farmaco/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFarmaco([FromRoute] int id, [FromBody] Farmaco farmaco)
         {
@@ -196,7 +196,7 @@ namespace MedicamentosAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Farmacos
+        // POST: api/Farmaco
         [HttpPost]
         public async Task<IActionResult> PostFarmaco([FromBody] Farmaco farmaco)
         {
@@ -211,7 +211,7 @@ namespace MedicamentosAPI.Controllers
             return CreatedAtAction("GetFarmaco", new { id = farmaco.FarmacoId }, farmaco);
         }
 
-        // DELETE: api/Farmacos/5
+        // DELETE: api/Farmaco/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFarmaco([FromRoute] int id)
         {

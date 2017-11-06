@@ -67,7 +67,7 @@ namespace MedicamentosAPI.Controllers
 
             foreach (Apresentacao a in apres_med_pos.ToList())
             {
-                lista_posologias.Add(new PosologiaIdDTO(a.Posologia_GenericaId));
+                lista_posologias.Add(new PosologiaIdDTO(a.PosologiaId));
             }
 
             if (lista_posologias == null)

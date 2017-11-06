@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MedicamentosAPI.Migrations
 {
-    public partial class mig : Migration
+    public partial class testesInteg : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -207,7 +207,7 @@ namespace MedicamentosAPI.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     FarmacoId = table.Column<int>(type: "int", nullable: false),
                     MedicamentoId = table.Column<int>(type: "int", nullable: false),
-                    Posologia_GenericaId = table.Column<int>(type: "int", nullable: false),
+                    PosologiaId = table.Column<int>(type: "int", nullable: false),
                     dosagem = table.Column<int>(type: "int", nullable: false),
                     forma_adm = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     quantidade = table.Column<int>(type: "int", nullable: false)
@@ -228,8 +228,8 @@ namespace MedicamentosAPI.Migrations
                         principalColumn: "MedicamentoId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Apresentacao_Posologia_Posologia_GenericaId",
-                        column: x => x.Posologia_GenericaId,
+                        name: "FK_Apresentacao_Posologia_PosologiaId",
+                        column: x => x.PosologiaId,
                         principalTable: "Posologia",
                         principalColumn: "PosologiaId",
                         onDelete: ReferentialAction.Cascade);
@@ -246,9 +246,9 @@ namespace MedicamentosAPI.Migrations
                 column: "MedicamentoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Apresentacao_Posologia_GenericaId",
+                name: "IX_Apresentacao_PosologiaId",
                 table: "Apresentacao",
-                column: "Posologia_GenericaId");
+                column: "PosologiaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

@@ -27,7 +27,7 @@ namespace MedicamentosAPI.Controllers
         [HttpGet]
         public IEnumerable<ApresentacaoDTO> GetApresentacao()
         {
-            return _context.Apresentacao.Select(m => new ApresentacaoDTO(m));
+            return _context.Apresentacao.Include(b=>b.Medicamento).Include(c=>c.Farmaco).Include(d=>d.Posologia).Select(a => new ApresentacaoDTO(a, a.Medicamento, a.Farmaco, a.Posologia));   
         }
 
         // GET: api/Apresentacoes/{id}
@@ -39,14 +39,14 @@ namespace MedicamentosAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var apresentacao = await _context.Apresentacao.SingleOrDefaultAsync(m => m.ApresentacaoId == id);
+            var apresentacao = await _context.Apresentacao.Include(a=>a.Medicamento).Include(b=>b.Farmaco).Include(c=>c.Posologia).SingleOrDefaultAsync(a => a.ApresentacaoId == id);
 
             if (apresentacao == null)
             {
                 return NotFound();
             }
 
-            ApresentacaoDTO dto = new ApresentacaoDTO(apresentacao);
+            ApresentacaoDTO dto = new ApresentacaoDTO(apresentacao, apresentacao.Medicamento, apresentacao.Farmaco, apresentacao.Posologia);
 
             return Ok(dto);
         }
@@ -61,12 +61,13 @@ namespace MedicamentosAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            IQueryable<Apresentacao> apresentacoes = _context.Apresentacao.Where(m => m.Medicamento.MedicamentoId == Id);
+            IQueryable<Apresentacao> apresentacoes = _context.Apresentacao.Include(f=>f.Farmaco).Include(p=>p.Posologia).Include(m=>m.Medicamento).Where(m => m.Medicamento.MedicamentoId == Id);
+
             List<ApresentacaoDTO> lista_apresentacoes = new List<ApresentacaoDTO>();
 
             foreach (Apresentacao a in apresentacoes.ToList())
             {
-                lista_apresentacoes.Add(new ApresentacaoDTO(a));
+                lista_apresentacoes.Add(new ApresentacaoDTO(a, a.Medicamento, a.Farmaco, a.Posologia));
             }
 
             if (lista_apresentacoes == null)
@@ -113,7 +114,7 @@ namespace MedicamentosAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Apresentacoes
+         // POST: api/Apresentacoes
         [HttpPost]
         public async Task<IActionResult> PostApresentacao([FromBody] Apresentacao apresentacao)
         {
@@ -121,12 +122,14 @@ namespace MedicamentosAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            _context.Apresentacao.Add(apresentacao);
+            _context.Add(apresentacao);
+            _context.Apresentacao.Include(a => a.Medicamento).Include(b => b.Farmaco).Include(c => c.Posologia);
+            
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetApresentacao", new { id = apresentacao.ApresentacaoId }, apresentacao);
         }
+
 
         // DELETE: api/Apresentacoes/{id}
         [HttpDelete("{id}")]
@@ -138,6 +141,7 @@ namespace MedicamentosAPI.Controllers
             }
 
             var apresentacao = await _context.Apresentacao.SingleOrDefaultAsync(m => m.ApresentacaoId == id);
+
             if (apresentacao == null)
             {
                 return NotFound();

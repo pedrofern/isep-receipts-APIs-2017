@@ -18,7 +18,7 @@ namespace MedicamentosAPI.Models
         public int MedicamentoId { get; set; }
         public Medicamento Medicamento { get; set; }
 
-        public int Posologia_GenericaId { get; set; }
-        public Posologia Posologia_Generica { get; set; }
+        public int PosologiaId { get; set; }
+        public Posologia Posologia { get; set; }
     }
 }

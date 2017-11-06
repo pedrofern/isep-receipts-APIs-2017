@@ -10,6 +10,6 @@ namespace MedicamentosAPI.Models
         public int FarmacoId { get; set; }
         public string principio_ativo { get; set; }
 
-        public virtual ICollection<Apresentacao> apresentacoes { get; set; }  
+        //public virtual ICollection<Apresentacao> apresentacoes { get; set; }  
     }
 }
