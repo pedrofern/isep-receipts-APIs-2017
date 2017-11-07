@@ -4,7 +4,6 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var PessoaSchema =  new Schema({
-    id: Number,   
     email: String,
     password: String,
     nome: String,
