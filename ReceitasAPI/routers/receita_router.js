@@ -1,3 +1,36 @@
+var http = require("http");
+
+var apt;
+
+var options = {
+    "method": "GET",
+    "hostname": "medicamentosapi2017.azurewebsites.net",
+   // "port": "",
+    "path": "/api/Apresentacao/2",
+    "headers":{
+       "Content-Type":"application/json",
+       "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzNGMwMTkwYy1hN2NmLTRkZDYtYjcxNy0wYmEwY2VhMTRhMjYiLCJzdWIiOiJhQGEucHQiLCJleHAiOjE1MTAwNzUyMDAsImlzcyI6Imh0dHA6Ly9zZW1lbnRld2ViYXBpLmxvY2FsIiwiYXVkIjoiaHR0cDovL3NlbWVudGV3ZWJhcGkubG9jYWwifQ.YJM9XQcBMvIx1ecXFhPKIQB_CV1Lv-_-TudG0aDqlwk"
+    }
+};
+
+var apresentacao = http.request(options, function(res) {
+    var chunks=[];
+
+    res.on("data", function(chunk){
+        chunks.push(chunk);
+        
+    });
+
+    res.on("end", function(){
+        var body_apt = Buffer.concat(chunks);
+        console.log(body_apt.toString()); 
+        apt = JSON.parse(body_apt.toString());  
+    });
+    
+});
+
+apresentacao.end();
+
 var express = require('express');
 var router = express.Router();              // get an instance of the express Router
 
@@ -12,39 +45,42 @@ router.use(function(req, res, next) {
 
 // more routes for our API will happen here
 router.route('/')
-    // create receita (accessed at POST http://localhost:8080/pessoas)
+    // create receita (accessed at POST http://localhost:8080/receitas)
     .post(function(req, res) {
     
         var receita = new Receita();      // create a new instance of the Receita model
-        
-        pessoa.email = req.body.email;
-        pessoa.password = req.body.password;
-        pessoa.papel = req.body.papel;
-        pessoa.nome = req.body.nome;
-        pessoa.nif = req.body.nif;
-        pessoa.num_beneficiario = req.body.num_beneficiario;
+       
+        receita.num_receita = req.body.num_receita;
+        receita.cod_acesso = req.body.cod_acesso;
+        receita.data = req.body.data;
+        receita.validade = req.body.validade;
+        receita.local = req.body.local;
+        receita.medico = req.body.medico;
+        receita.utente = req.body.utente;
+        receita.prescricoes.quantidade = req.body.prescricoes.quantidade;
 
         // save the pessoa and check for errors
-        pessoa.save(function(err) {
+        receita.save(function(err) {
             if (err)
                 res.send(err);
 
-            res.json(pessoa);
+            res.json(receita);
         });
 
     })
 
-    // get all pessoas (accessed at GET http://localhost:8080/pessoas)
+    // get all receitas (accessed at GET http://localhost:8080/receitas)
     .get(function(req, res) {
 
-        Pessoa.find(function(err, pessoas) {
+        Receita.find(function(err, receitas) {
             if (err)
                 res.send(err);
 
-            res.json(pessoas);
+            res.json(receitas);
         });
     });
 
+    /*
     // on routes that end in /pessoas/:pessoa_id
 // ----------------------------------------------------
 router.route('/:pessoa_id')
@@ -91,5 +127,6 @@ router.route('/:pessoa_id')
             res.json();
         });
     });
+    */
         
 module.exports = router;

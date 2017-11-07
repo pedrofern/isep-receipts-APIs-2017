@@ -32,12 +32,14 @@ app.use('/home', router);
 
 // ======= PESSOAS ==========
 var pessoas = require('./routers/pessoa_router');
+var receitas = require('./routers/receita_router');
 
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /
 
 app.use('/pessoas', pessoas);
+app.use('/receitas', receitas);
 
 // START THE SERVER
 // =============================================================================
