@@ -7,18 +7,26 @@
 var express    = require('express');        // call express
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
+var morgan=require('morgan');
 
+//database
+var config=require('./config');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://admin:admin@ds149865.mlab.com:49865/arqsi2017', 
-{useMongoClient: true}); 
+mongoose.connect(config.database, {useMongoClient: true}); 
+var User   = require('./app/models/pessoa'); // get our mongoose model
+
+app.set('superSecret', config.secret);
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var port = process.env.PORT || 8080;        // set our port
+//use morgan to log requests to the console
+app.use(morgan('dev'));
 
+var port = process.env.PORT || 8080;        // set our port
+app.set('superSecret', config.secret);
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -30,20 +38,21 @@ router.get('/', function(req, res) {
 });
 app.use('/home', router);
 
+// ======= AUTENTICACAO ========
+var autenticacoes=require('./routers/autent_router');
+
 // ======= PESSOAS ==========
 var pessoas = require('./routers/pessoa_router');
 var receitas = require('./routers/receita_router');
 
-
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /
-
+app.use(morgan('dev'));
 app.use('/pessoas', pessoas);
 app.use('/receitas', receitas);
+app.use('/autenticacao', autenticacoes);
 
 // START THE SERVER
 // =============================================================================
 app.listen(port);
 console.log('Magic happens on port ' + port);
-
-
