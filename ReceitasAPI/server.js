@@ -7,10 +7,10 @@
 var express    = require('express');        // call express
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
-var morgan=require('morgan');
+var morgan = require('morgan');
 
 //database
-var config=require('./config');
+var config = require('./config');
 var mongoose = require('mongoose');
 mongoose.connect(config.database, {useMongoClient: true}); 
 var User   = require('./app/models/pessoa'); // get our mongoose model
@@ -47,10 +47,11 @@ var receitas = require('./routers/receita_router');
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /
-app.use(morgan('dev'));
+
+app.use('/autenticacao', autenticacoes);
 app.use('/pessoas', pessoas);
 app.use('/receitas', receitas);
-app.use('/autenticacao', autenticacoes);
+
 
 // START THE SERVER
 // =============================================================================

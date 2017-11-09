@@ -12,7 +12,7 @@ var ReceitaSchema = mongoose.Schema({
     medico: { type: mongoose.Schema.Types.ObjectId, ref:'Pessoa', required: true},
     utente: { type: mongoose.Schema.Types.ObjectId, ref:'Pessoa', required: true},
     prescricoes: [{
-        quantidade: Number,
+        quantidade: String,
         apresentacao: {     
             id_apresentacao: Number,
             forma: String,
@@ -20,12 +20,12 @@ var ReceitaSchema = mongoose.Schema({
             quantidade_embalagem: String,       
             farmaco: String,
             medicamento: String,       
-            posologia: [{
+            posologia: {
                 dose: String,
                 via_administracao: String,
                 intervalo_tempo_horas: Number,
                 periodo_tempo_dias: Number
-            }],            
+            },            
         },   
         aviamento: [{
             data_aviamento: Date,

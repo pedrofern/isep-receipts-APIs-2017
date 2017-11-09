@@ -5,11 +5,10 @@ var apt;
 var options = {
     "method": "GET",
     "hostname": "medicamentosapi2017.azurewebsites.net",
-   // "port": "",
     "path": "/api/Apresentacao/2",
     "headers":{
        "Content-Type":"application/json",
-       "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2ZTU5ZGVjMi1mZTk4LTQ2MTItOTZjMi1lNGEzZTYxMzhiNDUiLCJzdWIiOiJhQGEucHQiLCJleHAiOjE1MTAxMDc5NTAsImlzcyI6Imh0dHA6Ly9zZW1lbnRld2ViYXBpLmxvY2FsIiwiYXVkIjoiaHR0cDovL3NlbWVudGV3ZWJhcGkubG9jYWwifQ.ZeiHirxcug6muISmFcs7Sk6htBXP8KeedNyYMp3zZRU"
+       "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiZDQyYWNlZC1kNjdlLTQzYzktODdiYS00YzMxZDcyYjRlZDIiLCJzdWIiOiJhQGEucHQiLCJleHAiOjE1MTAyNDU5MDQsImlzcyI6Imh0dHA6Ly9zZW1lbnRld2ViYXBpLmxvY2FsIiwiYXVkIjoiaHR0cDovL3NlbWVudGV3ZWJhcGkubG9jYWwifQ.TcTgPCsiE7gISTXnoiU6BGzsLwUQ2MXmp-yOL8bVA3o"
     }
 };
 
@@ -57,7 +56,26 @@ router.route('/')
         receita.local = req.body.local;
         receita.medico = req.body.medico;
         receita.utente = req.body.utente;
-        receita.prescricoes.quantidade = req.body.prescricoes.quantidade;
+
+        var presc = {
+            "quantidade": req.body.prescricoes.quantidade,
+            "apresentacao": {
+                "id_apresentacao": apt.id,
+                "forma": apt.forma_adm,
+                "dosagem": apt.concentracao,
+                "quantidade_embalagem": apt.qtd,       
+                "farmaco": apt.farmaco,
+                "medicamento": apt.medicamento,       
+                "posologia": {
+                    //"dose": String,
+                    "via_administracao": apt.posologia,
+                    //"intervalo_tempo_horas": Number,
+                    //"periodo_tempo_dias": Number
+                },
+            }
+        };
+
+        receita.prescricoes.push(presc);
 
         // save the pessoa and check for errors
         receita.save(function(err) {
