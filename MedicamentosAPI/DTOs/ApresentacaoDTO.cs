@@ -15,7 +15,10 @@ namespace MedicamentosAPI.DTOs
         public string qtd { get; set; }
         public string farmaco { get; set; }
         public string medicamento { get; set; }
-        public string posologia { get; set; }
+        public string dose { get; set; }
+        public string via_administracao { get; set; }
+        public string intervalo_tempo_horas { get; set; }
+        public string periodo_tempo_dias { get; set; }
 
         public ApresentacaoDTO(Apresentacao a, Medicamento m, Farmaco f, Posologia p)
         {
@@ -25,7 +28,10 @@ namespace MedicamentosAPI.DTOs
             qtd=a.quantidade+"ml";
             farmaco = f.principio_ativo;
             medicamento = m.nome;
-            posologia = p.via_administracao;
+            dose = p.dose.ToString();
+            via_administracao = p.via_administracao;
+            intervalo_tempo_horas = p.intervalo_tempo_horas.ToString();
+            periodo_tempo_dias = p.periodo_tempo_dias.ToString();
         }
     }
 }
