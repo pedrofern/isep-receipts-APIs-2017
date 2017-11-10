@@ -1,34 +1,89 @@
-var http = require("http");
+var Client = require('node-rest-client').Client;
+var client = new Client();
+var config = require('../config');
 
-var apt;
+var getApresentacao = function (id, apt){
 
-var options = {
-    "method": "GET",
-    "hostname": "medicamentosapi2017.azurewebsites.net",
-    "path": "/api/Apresentacao/2",
-    "headers":{
-       "Content-Type":"application/json",
-       "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiZDQyYWNlZC1kNjdlLTQzYzktODdiYS00YzMxZDcyYjRlZDIiLCJzdWIiOiJhQGEucHQiLCJleHAiOjE1MTAyNDU5MDQsImlzcyI6Imh0dHA6Ly9zZW1lbnRld2ViYXBpLmxvY2FsIiwiYXVkIjoiaHR0cDovL3NlbWVudGV3ZWJhcGkubG9jYWwifQ.TcTgPCsiE7gISTXnoiU6BGzsLwUQ2MXmp-yOL8bVA3o"
-    }
-};
+    return new Promise((resolve, reject) => {
+        /*
+        var token;
+        var urlToken = config.urlMedicamentosToken;
+        var opt ={ 
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: { 
+                "email":"a@a.pt",
+                "password":"Qwerty1!"
+            }
+        }
 
-var apresentacao = http.request(options, function(res) {
-    var chunks=[];
-
-    res.on("data", function(chunk){
-        chunks.push(chunk);
+        client.get( urlToken, opt, function (data, response) {
+            //token = data.token;
+            console.log(JSON.stringify(data));
+        })
+*/
+        var url = config.urlApresentacoesPorId + id;
+        var args = {
+            headers: {
+                "Content-Type":"application/json",
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3YWEyZWRjNy1hZjI1LTQ1NWMtYTY1Yy1mMmRjYjA0Y2ZkNTUiLCJzdWIiOiJhQGEucHQiLCJleHAiOjE1MTYzMjI3MjYsImlzcyI6Imh0dHA6Ly9zZW1lbnRld2ViYXBpLmxvY2FsIiwiYXVkIjoiaHR0cDovL3NlbWVudGV3ZWJhcGkubG9jYWwifQ.pLWWxU-x12JkC_phHzbhyXq7oEbvN5xJ6qA7v-ObXwg"  
+                ////+ token + "",
+            }
+        }
+        client.get(url, args, function (data, response) {
+                resolve(data);
+            })
         
     });
+}
 
-    res.on("end", function(){
-        var body_apt = Buffer.concat(chunks);
-        console.log(body_apt.toString()); 
-        apt = JSON.parse(body_apt.toString());  
-    });
+var preencheReceita = function (req, res, apt, receita){
     
-});
+    return new Promise((resolve, reject) => {
 
-apresentacao.end();
+        console.log(apt);
+        console.log('TESTE **********************');
+
+        var presc = {
+            "quantidade": req.body.prescricoes.quantidade,
+            "apresentacao": {
+                "id_apresentacao": apt.id,
+                "forma": apt.forma_adm,
+                "dosagem": apt.concentracao,
+                "quantidade_embalagem": apt.qtd,       
+                "farmaco": apt.farmaco,
+                "medicamento": apt.medicamento,       
+                "posologia": {
+                    "dose": apt.dose,
+                    "via_administracao": apt.via_administracao,
+                    "intervalo_tempo_horas": apt.intervalo_tempo_horas,
+                    "periodo_tempo_dias": apt.periodo_tempo_dias
+                },
+            }
+        };
+
+        receita.prescricoes.push(presc);
+
+        resolve(receita);
+    });
+}
+
+var guardaReceita = function (receita){
+    
+    return new Promise((resolve, reject) => {
+
+        // save the pessoa and check for errors
+        receita.save(function(err) {
+            if (err)
+                res.send(err);
+
+            res.json(receita);
+        });
+
+        resolve(receita);
+    });
+}
 
 var express = require('express');
 var router = express.Router();              // get an instance of the express Router
@@ -46,45 +101,36 @@ router.use(function(req, res, next) {
 router.route('/')
     // create receita (accessed at POST http://localhost:8080/receitas)
     .post(function(req, res) {
-    
+
         var receita = new Receita();      // create a new instance of the Receita model
-       
-        receita.num_receita = req.body.num_receita;
-        receita.cod_acesso = req.body.cod_acesso;
-        receita.data = req.body.data;
-        receita.validade = req.body.validade;
-        receita.local = req.body.local;
-        receita.medico = req.body.medico;
-        receita.utente = req.body.utente;
+        
+         receita.num_receita = req.body.num_receita;
+         receita.cod_acesso = req.body.cod_acesso;
+         receita.data = req.body.data;
+         receita.validade = req.body.validade;
+         receita.local = req.body.local;
+         receita.medico = req.body.medico;
+         receita.utente = req.body.utente;
 
-        var presc = {
-            "quantidade": req.body.prescricoes.quantidade,
-            "apresentacao": {
-                "id_apresentacao": apt.id,
-                "forma": apt.forma_adm,
-                "dosagem": apt.concentracao,
-                "quantidade_embalagem": apt.qtd,       
-                "farmaco": apt.farmaco,
-                "medicamento": apt.medicamento,       
-                "posologia": {
-                    //"dose": String,
-                    "via_administracao": apt.posologia,
-                    //"intervalo_tempo_horas": Number,
-                    //"periodo_tempo_dias": Number
-                },
+        var ids_apt;
+       // for (let i = 0; i <2;i++){
+         //   console.log(i);
+
+         for (let i = 0; i < req.body.prescricoes.length; i++) {
+            var apID = req.body.prescricoes[i].id_apresentacao;
+            if(apID !== null){
+                receita.prescricoes.push(req.body.prescricoes[i]);
+                //getApresentacoes(req).then(x => console.log('Result: '+x));
+                getApresentacoes(apID,req).then(x => receita.prescricoes[i].apresentacao = x);
+    
             }
-        };
+        }
+        
+        getApresentacao(ids_apt).then(apt1 => {
+            preencheReceita(req, res, apt1, receita)})
+            .then(guardaReceita);
 
-        receita.prescricoes.push(presc);
-
-        // save the pessoa and check for errors
-        receita.save(function(err) {
-            if (err)
-                res.send(err);
-
-            res.json(receita);
-        });
-
+            guardaReceita();
     })
 
     // get all receitas (accessed at GET http://localhost:8080/receitas)
