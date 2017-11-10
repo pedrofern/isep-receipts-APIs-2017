@@ -39,11 +39,11 @@ router.get('/', function(req, res) {
 app.use('/home', router);
 
 // ======= AUTENTICACAO ========
-var autenticacoes=require('./routers/autent_router');
+var autenticacoes=require('./routes/autent_route');
 
 // ======= PESSOAS ==========
-var pessoas = require('./routers/pessoa_router');
-var receitas = require('./routers/receita_router');
+var pessoas = require('./routes/pessoa_route');
+var receitas = require('./routes/receita_route');
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /

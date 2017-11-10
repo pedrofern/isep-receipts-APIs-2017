@@ -1,6 +1,7 @@
 var Client = require('node-rest-client').Client;
 var client = new Client();
 var config = require('../config');
+var async = require('async');
 
 var getApresentacao = function (id, apt){
 
@@ -27,7 +28,7 @@ var getApresentacao = function (id, apt){
         var args = {
             headers: {
                 "Content-Type":"application/json",
-                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3YWEyZWRjNy1hZjI1LTQ1NWMtYTY1Yy1mMmRjYjA0Y2ZkNTUiLCJzdWIiOiJhQGEucHQiLCJleHAiOjE1MTYzMjI3MjYsImlzcyI6Imh0dHA6Ly9zZW1lbnRld2ViYXBpLmxvY2FsIiwiYXVkIjoiaHR0cDovL3NlbWVudGV3ZWJhcGkubG9jYWwifQ.pLWWxU-x12JkC_phHzbhyXq7oEbvN5xJ6qA7v-ObXwg"  
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmNWY4N2Y0NS1iYzRjLTQ1MWUtOGI5Mi0xNjg2ZmY3MzgwOWQiLCJzdWIiOiJhQGEucHQiLCJleHAiOjE1MTYzMzQ0NjQsImlzcyI6Imh0dHA6Ly9zZW1lbnRld2ViYXBpLmxvY2FsIiwiYXVkIjoiaHR0cDovL3NlbWVudGV3ZWJhcGkubG9jYWwifQ.-wA5o4yqqav5iTpu8BevvpjNAidw2CqS7OPDErQD4Io"  
                 ////+ token + "",
             }
         }
@@ -38,12 +39,12 @@ var getApresentacao = function (id, apt){
     });
 }
 
-var preencheReceita = function (req, res, apt, receita){
+var preencheReceita = function (req, res, apt){
     
-    return new Promise((resolve, reject) => {
 
         console.log(apt);
         console.log('TESTE **********************');
+
 
         var presc = {
             "quantidade": req.body.prescricoes.quantidade,
@@ -63,26 +64,7 @@ var preencheReceita = function (req, res, apt, receita){
             }
         };
 
-        receita.prescricoes.push(presc);
-
-        resolve(receita);
-    });
-}
-
-var guardaReceita = function (receita){
-    
-    return new Promise((resolve, reject) => {
-
-        // save the pessoa and check for errors
-        receita.save(function(err) {
-            if (err)
-                res.send(err);
-
-            res.json(receita);
-        });
-
-        resolve(receita);
-    });
+        return presc;
 }
 
 var express = require('express');
@@ -104,33 +86,45 @@ router.route('/')
 
         var receita = new Receita();      // create a new instance of the Receita model
         
-         receita.num_receita = req.body.num_receita;
-         receita.cod_acesso = req.body.cod_acesso;
-         receita.data = req.body.data;
-         receita.validade = req.body.validade;
-         receita.local = req.body.local;
-         receita.medico = req.body.medico;
-         receita.utente = req.body.utente;
+        receita.num_receita = req.body.num_receita;
+        receita.cod_acesso = req.body.cod_acesso;
+        receita.data = req.body.data;
+        // receita.validade = req.body.validade;
+        receita.local = req.body.local;
+        receita.medico = req.body.medico;
+        receita.utente = req.body.utente;
 
-        var ids_apt;
-       // for (let i = 0; i <2;i++){
-         //   console.log(i);
+        async.each(req.body.prescricoes, function(prescricao, callback) {
+            var idApresentacao = prescricao.id_apresentacao;
+            if(idApresentacao !== null){
+                var presc;
+                getApresentacao(idApresentacao, req).then(apt1 => {
+                    presc = preencheReceita(req, res, apt1); 
+                    receita.prescricoes.push(presc);
+                    callback();
+                });
+                
+                
+            }      
+        },
+            function (err) {
+                receita.save(function (err) {
+                    console.log(receita);
+                    if (err)
+                        return res.status(500).send("Erro ao registar a receita!")
+                    res.json({ message: 'Receita registada!' });
+                })
+        });
+/*
+        // save the pessoa and check for errors
+        receita.save(function(err) {
+            if (err)
+                res.send(err);
 
-         for (let i = 0; i < req.body.prescricoes.length; i++) {
-            var apID = req.body.prescricoes[i].id_apresentacao;
-            if(apID !== null){
-                receita.prescricoes.push(req.body.prescricoes[i]);
-                //getApresentacoes(req).then(x => console.log('Result: '+x));
-                getApresentacoes(apID,req).then(x => receita.prescricoes[i].apresentacao = x);
-    
-            }
-        }
-        
-        getApresentacao(ids_apt).then(apt1 => {
-            preencheReceita(req, res, apt1, receita)})
-            .then(guardaReceita);
+            res.json(receita);
+        });
+*/
 
-            guardaReceita();
     })
 
     // get all receitas (accessed at GET http://localhost:8080/receitas)
