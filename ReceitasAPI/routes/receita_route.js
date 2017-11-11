@@ -2,7 +2,7 @@ var Client = require('node-rest-client').Client;
 var client = new Client();
 var jwt = require('jsonwebtoken');
 var config = require('../config');
-var mailTransporter = require('./sendmail');
+//var mailTransporter = require('./sendmail');
 var async = require('async');
 var request = require("request");
 var express = require('express');
@@ -180,7 +180,10 @@ router.route('/')
         receita.cod_acesso = req.body.cod_acesso;
         receita.data = req.body.data;
         receita.local = req.body.local;
-        receita.medico = req.body.medico;
+        //receita.medico = req.body.medico;
+        var tokDec=jwt.decode(config.token);
+        receita.medico = tokDec.id;
+
         receita.utente = req.body.utente;
 
         // ciclo para 

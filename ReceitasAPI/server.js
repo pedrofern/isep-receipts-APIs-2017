@@ -44,6 +44,7 @@ var autenticacoes=require('./routes/autent_route');
 // ======= PESSOAS ==========
 var pessoas = require('./routes/pessoa_route');
 var receitas = require('./routes/receita_route');
+var utentes = require('./routes/utente_route');
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /
@@ -51,6 +52,7 @@ var receitas = require('./routes/receita_route');
 app.use('/autenticacao', autenticacoes);
 app.use('/pessoas', pessoas);
 app.use('/receita', receitas);
+app.use('/utente', utentes);
 
 // START THE SERVER
 // =============================================================================
