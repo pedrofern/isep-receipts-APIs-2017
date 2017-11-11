@@ -23,6 +23,9 @@ router.route('/')
         pessoa.nome = req.body.nome;
         pessoa.nif = req.body.nif;
         pessoa.num_beneficiario = req.body.num_beneficiario;
+        pessoa.medico = req.body.medico;
+        pessoa.utente = req.body.utente;
+        pessoa.farmaceutico = req.body.farmaceutico;
 
         // save the pessoa and check for errors
         pessoa.save(function(err) {
