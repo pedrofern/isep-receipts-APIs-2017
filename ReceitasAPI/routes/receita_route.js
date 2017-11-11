@@ -1,8 +1,10 @@
 var Client = require('node-rest-client').Client;
 var client = new Client();
+var jwt = require('jsonwebtoken');
 var config = require('../config');
 var async = require('async');
 var request = require("request");
+
 
 var getTokenMedicamentosAPI = function () {
     return new Promise((resolve, reject) => {
@@ -77,10 +79,44 @@ var Receita = require('../app/models/receita');
 
 // middleware to use for all requests
 router.use(function (req, res, next) {
-    // do logging
-    console.log('Something is happening.');
-    next(); // make sure we go to the next routes and don't stop here
-});
+    
+        // do logging
+        console.log('Verificando o token.');
+        var token=config.token;
+        // decode token
+        if (token) {
+
+
+            // verifies secret and checks exp
+            jwt.verify(token, config.secret, function (err, decoded) {
+          
+                var tokDec=jwt.decode(token);
+
+                if(!tokDec.medico){
+                    return res.json({ success: false, message: 'Nao tem permissoes.' });
+                }
+
+                if (err) {
+                    return res.json({ success: false, message: 'Failed to authenticate token.' });
+                } else {
+                    // if everything is good, save to request for use in other routes
+                    req.decoded = decoded;
+                    next();
+                }
+            });
+    
+        } else {
+    
+            // if there is no token
+            // return an error
+            return res.status(403).send({
+                success: false,
+                message: 'Não encontramos o token.'
+            });
+            
+        }
+        
+    });
 
 // more routes for our API will happen here
 router.route('/')

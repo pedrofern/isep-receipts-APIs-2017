@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();              // get an instance of the express Router
+var bcrypt = require('bcryptjs');
 
 var Pessoa = require('../app/models/pessoa');
 
@@ -18,7 +19,8 @@ router.route('/')
         var pessoa = new Pessoa();      // create a new instance of the Pessoa model
         
         pessoa.email = req.body.email;
-        pessoa.password = req.body.password;
+        var hashedPassword=bcrypt.hashSync(req.body.password);
+        pessoa.password = hashedPassword;
         pessoa.papel = req.body.papel;
         pessoa.nome = req.body.nome;
         pessoa.nif = req.body.nif;

@@ -52,7 +52,6 @@ app.use('/autenticacao', autenticacoes);
 app.use('/pessoas', pessoas);
 app.use('/receitas', receitas);
 
-
 // START THE SERVER
 // =============================================================================
 app.listen(port);
