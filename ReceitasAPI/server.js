@@ -50,7 +50,7 @@ var receitas = require('./routes/receita_route');
 
 app.use('/autenticacao', autenticacoes);
 app.use('/pessoas', pessoas);
-app.use('/receitas', receitas);
+app.use('/receita', receitas);
 
 // START THE SERVER
 // =============================================================================

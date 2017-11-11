@@ -27,12 +27,12 @@ var ReceitaSchema = mongoose.Schema({
                 periodo_tempo_dias: Number
             },            
         },   
-        aviamento: [{
+        aviamentos: [{
             data_aviamento: Date,
             quantidade: Number,
-            //farmaceutico: { type: Schema.Types.ObjectId, ref:'Pessoa', required: true},
-        }]  
-        
+            farmaceutico: { type: mongoose.Schema.Types.ObjectId, ref:'Pessoa', required: true},
+        }],  
+        c: Boolean
     }]
 });
 
