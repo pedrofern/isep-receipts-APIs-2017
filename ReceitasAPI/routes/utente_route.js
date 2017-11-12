@@ -120,4 +120,5 @@ router.get('/:utente_id/prescricao/poraviar/:a?', function (req, res) {
     });
 });
 
+
 module.exports = router;
