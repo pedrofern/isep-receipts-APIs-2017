@@ -180,7 +180,7 @@ router.route('/')
         receita.data = req.body.data;
         receita.local = req.body.local;
         //receita.medico = req.body.medico;
-        var tokDec=jwt.decode(config.token);
+        var tokDec = jwt.decode(config.token);
         receita.medico = tokDec.id;
 
         receita.utente = req.body.utente;
@@ -241,37 +241,38 @@ router.route('/:receita_id/prescricao/:id/aviar')
             if (err) return res.status(500).send("Erro ao encrontrar a Receita!");
             if (!receita) return res.status(404).send("Nao foi encontrada receita com id indicado!");
             var quantidadesAviadas = 0;
-            for (let i = 0; i < receita.prescricoes.length; i++) {
-                var quantidadesPrescritas = receita.prescricoes[i].quantidade;
+            var t = receita.prescricoes.length;
+            for (let i = 0; i < t; i++) {
                 if (receita.prescricoes[i].id === req.params.id) {
-
-                    if(receita.prescricoes[i].closed == true){
+                    if (receita.prescricoes[i].fechada == true) {
                         break;
                     };
-                    // quantidades prescritas ate ao momento
-                    var tam = receita.prescricoes[i].aviamentos.length;
-                    for (let j = 0; j < tam; j++) {
+                    for (let j = 0; j < receita.prescricoes[i].aviamentos.length; j++) {
                         var number = receita.prescricoes[i].aviamentos[j].quantidade;
                         quantidadesAviadas += number;
                     }
-                    var qtdPossiveisPrescricao = quantidadesPrescritas - quantidadesAviadas;
-                    if (qtdPossiveisPrescricao  <= quantidadesPrescritas) {
-                        var tam2 = req.body.prescricoes[i].aviamentos.length;
+                    var quantidadeTotalPrescrita = receita.prescricoes[i].quantidade;
+                    var qtdPossiveisPrescricao = quantidadeTotalPrescrita - quantidadesAviadas;
+                    if (qtdPossiveisPrescricao > 0 && qtdPossiveisPrescricao <= quantidadeTotalPrescrita) {
+                        var tam2 = req.body.aviamentos.length;
                         for (let k = 0; k < tam2; k++) {
                             var novoAviamento = {
-                                "farmaceutico": req.body.prescricoes[i].aviamentos[k].farmaceutico,
+                                "farmaceutico": req.body.aviamentos[k].farmaceutico,
                                 "data": new Date(Date.now()),
-                                "quantidade": req.body.prescricoes[i].aviamentos[k].quantidade
+                                "quantidade": req.body.aviamentos[k].quantidade
                             };
-                            receita.prescricoes[i].aviamentos.push(novoAviamento);
-
-                            var novoTotal = qtdPossiveisPrescricao - novoAviamento.quantidade;
-                            if (novoTotal <= 0) {
-                                receita.prescricoes[i].closed = true;
+                            var novaQuant = qtdPossiveisPrescricao - req.body.aviamentos[k].quantidade;
+                            if (novaQuant > 0) {
+                                receita.prescricoes[i].aviamentos.push(novoAviamento);
+                            } else if (novaQuant == 0) {
+                                receita.prescricoes[i].fechada = true;
+                                receita.prescricoes[i].aviamentos.push(novoAviamento);
+                            } else{
+                                return res.status(500).send("Demasiados aviamentos para a quantidade prescrita!")
                             }
-                            break;
                         }
                     }
+
                 }
             }
             receita.save(function (err) {

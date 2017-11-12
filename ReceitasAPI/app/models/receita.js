@@ -32,7 +32,7 @@ var ReceitaSchema = mongoose.Schema({
             quantidade: Number,
             farmaceutico: { type: mongoose.Schema.Types.ObjectId, ref:'Pessoa', required: true},
         }],  
-        c: Boolean
+        fechada: Boolean
     }]
 });
 
