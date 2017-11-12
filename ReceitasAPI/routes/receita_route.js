@@ -2,7 +2,6 @@ var Client = require('node-rest-client').Client;
 var client = new Client();
 var jwt = require('jsonwebtoken');
 var config = require('../config');
-var mailTransporter = require('./sendmail');
 var async = require('async');
 var request = require("request");
 var express = require('express');
@@ -235,50 +234,50 @@ router.route('/:receita_id/prescricao/:id')
 // PUT http://localhost:8080/receita/:receita_id/prescricao/:id/aviar
 router.route('/:receita_id/prescricao/:id/aviar')
     .put(function (req, res) {
-        /*
-    Receita.findById(req.params.idReceita, function (err, receita) {
-        if (err) return res.status(500).send("Erro ao encrontrar a Receita!");
-        if (!receita) return res.status(404).send("Nao foi encontrada receita com id indicado!");
-        var quantidadesAviadas = 0;
-        for (let i = 0; i < receita.prescricoes.length; i++) {
-            var quantidadesPrescritas = receita.prescricoes[i].quantidade;
-            if (receita.prescricoes[i].id === req.params.idPrescricao) {
-                // quantidades prescritas ate ao momento
-                for (let j = 0; j < receita.prescricoes[i].aviamentos.length; j++) {
-                    var number = receita.prescricoes[i].aviamentos[j].quantidade;
-                    quantidadesAviadas += number;
-                }
-                var qtdPossiveisPrescrisao = quantidadesPrescritas - quantidadesAviadas;
-                if (req.body.quantidade <= qtdPossiveisPrescrisao) {
-                    var novoAviamento = {
-                        farmaceutico: { type: mongoose.Schema.Types.ObjectId, ref: 'Pessoa' },
-                        data: Date,
-                        quantidade: Number
-                    };
-                    novoAviamento.farmaceutico = req.body.farmaceutico;
-                    novoAviamento.data_aviamento = new Date(Date.now());
-                    novoAviamento.quantidade = req.body.quantidade;
+        Receita.findById(req.params.receita_id, function (err, receita) {
+            if (err) return res.status(500).send("Erro ao encrontrar a Receita!");
+            if (!receita) return res.status(404).send("Nao foi encontrada receita com id indicado!");
+            var quantidadesAviadas = 0;
+            for (let i = 0; i < receita.prescricoes.length; i++) {
+                var quantidadesPrescritas = receita.prescricoes[i].quantidade;
+                if (receita.prescricoes[i].id === req.params.id) {
 
-                    receita.prescricoes[i].aviamentos.push(novoAviamento);
-                    var novoTotal = qtdPossiveisPrescrisao - novoAviamento.quantidade;
-                    if (novoTotal <= 0) {
-                        receita.prescricoes[i].closed = true;
+                    if(receita.prescricoes[i].closed == true){
+                        break;
+                    };
+                    // quantidades prescritas ate ao momento
+                    var tam = receita.prescricoes[i].aviamentos.length;
+                    for (let j = 0; j < tam; j++) {
+                        var number = receita.prescricoes[i].aviamentos[j].quantidade;
+                        quantidadesAviadas += number;
                     }
-                    break;
+                    var qtdPossiveisPrescricao = quantidadesPrescritas - quantidadesAviadas;
+                    if (qtdPossiveisPrescricao  <= quantidadesPrescritas) {
+                        var tam2 = req.body.prescricoes[i].aviamentos.length;
+                        for (let k = 0; k < tam2; k++) {
+                            var novoAviamento = {
+                                "farmaceutico": req.body.prescricoes[i].aviamentos[k].farmaceutico,
+                                "data": new Date(Date.now()),
+                                "quantidade": req.body.prescricoes[i].aviamentos[k].quantidade
+                            };
+                            receita.prescricoes[i].aviamentos.push(novoAviamento);
+
+                            var novoTotal = qtdPossiveisPrescricao - novoAviamento.quantidade;
+                            if (novoTotal <= 0) {
+                                receita.prescricoes[i].closed = true;
+                            }
+                            break;
+                        }
+                    }
                 }
             }
-        }
-
-        receita.save(function (err) {
-            console.log("in save");
-            if (err)
-                return res.status(500).send("there was a problem registering the receita.")
-            res.json({ message: 'Receita registered' });
-        })
-
-        res.status(200).send(receita);
-    });*/
-});
+            receita.save(function (err) {
+                if (err)
+                    return res.status(500).send("Erro ao fazer update da receita!")
+                res.json({ message: 'Update da receita realizado com sucesso!', receita });
+            })
+        });
+    });
 
 
 
