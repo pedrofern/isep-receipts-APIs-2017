@@ -191,7 +191,6 @@ router.route('/')
        
               receita.medico =pessoa;
          });
-
         receita.utente = req.body.utente;
 
         // ciclo para 
@@ -216,7 +215,7 @@ router.route('/')
                 if (err)
                     return res.status(500).send("Erro ao registar a receita!")
                 res.json({ message: 'Receita registada!', receita });
-                enviaMail(receita);
+                //enviaMail(receita);
             })
         });
     });

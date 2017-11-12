@@ -11,13 +11,40 @@ router.use(function(req, res, next) {
     next(); // make sure we go to the next routes and don't stop here
 });
 
+var existeNif = function (nifProcurado) {
+    
+        return new Promise((resolve) => {
+              
+            //valida se existe pessoa com o nif 
+            Pessoa.findOne({
+                nif: nifProcurado
+            }, function (err, pessoa) {      
+                if(pessoa!=null){
+                    resolve(pessoa);
+                }else{
+                    resolve('Nif inexistente'); 
+                }
+                resolve(err);   
+            });
+        });
+    }
+
 // more routes for our API will happen here
 router.route('/')
     // create pessoa (accessed at POST http://localhost:8080/pessoas)
     .post(function(req, res) {
     
+        var promise1 = existeNif(req.body.nif).then(function (data) {
+            
+        if (data != 'Nif inexistente') {
+            res.status(401).send('Ja se encontra no sistema (nif)');        
+        } else {
+            
+            var pessoa = new Pessoa();      // create a new instance of the Pessoa model
+            
+		 
         var pessoa = new Pessoa();      // create a new instance of the Pessoa model
-        
+        pessoa.nif=req.body.nif;     
         pessoa.email = req.body.email;
         var hashedPassword=bcrypt.hashSync(req.body.password);
         pessoa.password = hashedPassword;
@@ -37,6 +64,8 @@ router.route('/')
             res.json(pessoa);
         });
 
+        }
+    }).catch(console.error);
     })
 
     // get all pessoas (accessed at GET http://localhost:8080/pessoas)
@@ -52,15 +81,24 @@ router.route('/')
 
     // on routes that end in /pessoas/:pessoa_id
 // ----------------------------------------------------
-router.route('/:pessoa_id')
+router.route('/:pessoa_nif')
 
     // get the pessoa with that id (accessed at GET http://localhost:8080/pessoas/:pessoa_id)
     .get(function(req, res) {
-        Pessoa.findById(req.params.pessoa_id, function(err, pessoa) {
+        Pessoa.find(function(err, data) {
             if (err)
                 res.send(err);
-            res.json(pessoa);
-        });
+            var promise1 = existeNif(req.body.nif).then(function (data) {
+                
+                if (data != 'Nif inexistente') 
+                   res.json(data); 
+                
+                if(data==err)
+                    res.send(err);                   
+                res.json({ success: false, message: 'Autenticacao falhada' });
+                
+            })
+         })
     })
 
     // update the pessoa with this id (accessed at PUT http://localhost:8080/pessoas/:pessoa_id)
