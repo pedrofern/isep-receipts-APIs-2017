@@ -48,7 +48,7 @@ router.route('/')
                     // create a token with only our given payload
                     // we don't want to pass in the entire user since that has the password
                     const payload = {
-                        admin:true,
+                        id:pessoa.nif,
                         medico:pessoa.medico,
                         farmaceutico:pessoa.farmaceutico,
                         utente: pessoa.utente

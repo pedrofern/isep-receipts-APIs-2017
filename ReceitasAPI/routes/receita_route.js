@@ -179,7 +179,10 @@ router.route('/')
         receita.cod_acesso = req.body.cod_acesso;
         receita.data = req.body.data;
         receita.local = req.body.local;
-        receita.medico = req.body.medico;
+        //receita.medico = req.body.medico;
+        var tokDec=jwt.decode(config.token);
+        receita.medico = tokDec.id;
+
         receita.utente = req.body.utente;
 
         // ciclo para 
