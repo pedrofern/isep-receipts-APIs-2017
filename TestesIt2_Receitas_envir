@@ -1,0 +1,34 @@
+{
+  "id": "5e6a69f2-097b-b86d-5b72-c65b2c9e8a20",
+  "name": "LocalReceitas",
+  "values": [
+    {
+      "enabled": true,
+      "key": "url",
+      "value": "http://localhost:8080",
+      "type": "text"
+    },
+    {
+      "enabled": true,
+      "key": "urlAzureMedicamentos",
+      "value": "http://medicamentosapi2017.azurewebsites.net/api/",
+      "type": "text"
+    },
+    {
+      "enabled": true,
+      "key": "idFarmaceuticoCriado",
+      "value": "",
+      "type": "text"
+    },
+    {
+      "enabled": true,
+      "key": "IdMedicoCriado",
+      "value": "",
+      "type": "text"
+    }
+  ],
+  "timestamp": 1510501718140,
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2017-11-12T22:19:32.169Z",
+  "_postman_exported_using": "Postman/5.3.2"
+}

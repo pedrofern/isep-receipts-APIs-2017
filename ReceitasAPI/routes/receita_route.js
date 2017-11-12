@@ -115,6 +115,19 @@ var sendEmail = function (to) {
     });
 }
 
+var encontraNif = function (nifProcurado) {
+    Pessoa.findOne({
+        nif: nifProcurado
+    }, function (err, pessoa) {      
+        if(pessoa!=null){
+            return pessoa;
+        }else{
+            return 'Nif inexistente'; 
+        }
+        return err;   
+    });
+}
+
 // middleware to use for all requests
 router.use(function (req, res, next) {
 
@@ -191,8 +204,42 @@ router.route('/')
        
               receita.medico =pessoa;
          });
-        receita.utente = req.body.utente;
 
+      receita.utente = req.body.utente;
+
+/*
+         //insere utente  	 
+         var bodyUtente=req.body.utente;
+         if(bodyUtente!=undefined){
+      
+            var utenteParse=JSON.stringify(bodyUtente);  
+            var countUtente= utenteParse.length;
+
+            if(countUtente==12){
+   
+                Pessoa.findOne({
+                    nif: bodyUtente
+                }, function ( pessoa2) {      
+                    receita.utente=pessoa2;
+                });
+              
+               //se nao encontrar cria
+                          
+            }else{
+                
+                var bodyUtenteNif=req.body.utente.nif;
+                var utenteNifParse=JSON.stringify(bodyUtenteNif);
+                var countUtenteNif=utenteNifParse.length;
+        
+            if (countUtenteNif==9){
+              
+                }else{
+                    res.send.json('Verifique por favor se introduziu 9 digitos no nif');
+                }
+            }
+        }
+*/
+        
         // ciclo para 
         async.each(req.body.prescricoes, function (prescricao, callback) {
             var idApresentacao = prescricao.id_apresentacao;
@@ -215,7 +262,7 @@ router.route('/')
                 if (err)
                     return res.status(500).send("Erro ao registar a receita!")
                 res.json({ message: 'Receita registada!', receita });
-                //enviaMail(receita);
+                enviaMail(receita);
             })
         });
     });

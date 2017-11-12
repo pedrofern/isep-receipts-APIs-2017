@@ -81,24 +81,15 @@ router.route('/')
 
     // on routes that end in /pessoas/:pessoa_id
 // ----------------------------------------------------
-router.route('/:pessoa_nif')
+router.route('/:pessoa_id')
 
-    // get the pessoa with that id (accessed at GET http://localhost:8080/pessoas/:pessoa_id)
-    .get(function(req, res) {
-        Pessoa.find(function(err, data) {
+     // get the pessoa with that id (accessed at GET http://localhost:8080/pessoa/:id)
+     .get(function (req, res) {
+        Pessoa.findById(req.params.pessoa_id, function (err, pessoa) {
             if (err)
                 res.send(err);
-            var promise1 = existeNif(req.body.nif).then(function (data) {
-                
-                if (data != 'Nif inexistente') 
-                   res.json(data); 
-                
-                if(data==err)
-                    res.send(err);                   
-                res.json({ success: false, message: 'Autenticacao falhada' });
-                
-            })
-         })
+            res.json(pessoa);
+        });
     })
 
     // update the pessoa with this id (accessed at PUT http://localhost:8080/pessoas/:pessoa_id)
