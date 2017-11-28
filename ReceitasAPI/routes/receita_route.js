@@ -270,7 +270,7 @@ router.route('/')
 
     // cria receita 
     .post(function (req, res) {
-        
+
         var tokDec = jwt.decode(config.token);
 
         // apenas se for medico é que pode criar receitas
@@ -287,21 +287,67 @@ router.route('/')
 router.route('/:id')
     // get the receita with that id (accessed at GET http://localhost:8080/receita/:id)
     .get(function (req, res) {
+        var tokDec = jwt.decode(config.token);
+
         Receita.findById(req.params.id, function (err, receita) {
-            if (err)
-                res.send(err);
-            res.json(receita);
+            if (err) return res.status(500).send("Erro ao encrontrar a Receita!");
+            if (!receita) return res.status(404).send("Nao foi encontrada receita com id indicado!");
+
+            if (tokDec.medico) {
+                if (receita.medico.toString() == tokDec.id) {
+                    return res.status(200).send(receita);
+                } else {
+                    return res.json({ success: false, message: 'A receita não foi prescrita por si!' });
+                }
+            } else if (tokDec.farmaceutico) {
+                // no caso de farmaceutico pode ler desde que tenha o identificador da receita, que é este o caso
+                return res.status(200).send(receita);
+
+            } else if (tokDec.utente) {
+                if (receita.utente.toString() == tokDec.id) {
+                    return res.status(200).send(receita);
+                } else {
+                    return res.json({ success: false, message: 'A receita não lhe pertence!' });
+                }
+
+            } else {
+                return res.json({ success: false, message: 'Nao tem permissoes.' });
+            }
         });
+
     });
 
 // GET http://localhost:8080/receita/:receita_id/prescricao/:id
 router.route('/:receita_id/prescricao/:id')
     .get(function (req, res) {
+        var tokDec = jwt.decode(config.token);
+
         Receita.findById(req.params.receita_id, function (err, receita) {
-            if (err) return res.status(500).send("there was a problem finding the receita");
-            if (!receita) return res.status(404).send("Get receita failed.");
+            if (err) return res.status(500).send("Erro ao encrontrar a Receita!");
+            if (!receita) return res.status(404).send("Nao foi encontrada receita com id indicado!");
+
             var ret = receita.prescricoes.find(o => o.id === req.params.id);
-            res.status(200).send(ret);
+
+            if (tokDec.medico) {
+                if (receita.medico.toString() == tokDec.id) {
+                    return res.status(200).send(ret);
+                } else {
+                    return res.json({ success: false, message: 'A receita não foi prescrita por si!' });
+                }
+            } else if (tokDec.farmaceutico) {
+                // no caso de farmaceutico pode ler desde que tenha o identificador da receita, que é este o caso
+                return res.status(200).send(ret);
+
+            } else if (tokDec.utente) {
+                if (receita.utente.toString() == tokDec.id) {
+                    return res.status(200).send(ret);
+                } else {
+                    return res.json({ success: false, message: 'A receita não lhe pertence!' });
+                }
+
+            } else {
+                return res.json({ success: false, message: 'Nao tem permissoes.' });
+            }
         });
     });
 
