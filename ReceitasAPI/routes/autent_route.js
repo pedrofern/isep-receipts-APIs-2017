@@ -35,15 +35,13 @@ router.route('/')
             if (err) throw err;
 
             if (!pessoa) {
-                res.json({ success: false, message: 'Autenticacao falhada' });
+                return res.status(400).send("Autenticacao falhada!");
             } else if (pessoa) {
 
                 var checkPass=bcrypt.compareSync(req.body.password,pessoa.password);
                 // check if password matches
                 if (!checkPass) {
-
-                    return res.status(400).send("Autenticacao falhada!");
-              
+                    res.json({ success: false, message: 'Autenticacao falhada!' });
                 } else {
 
                     // if user is found and password is right
