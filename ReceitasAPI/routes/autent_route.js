@@ -41,14 +41,16 @@ router.route('/')
                 var checkPass=bcrypt.compareSync(req.body.password,pessoa.password);
                 // check if password matches
                 if (!checkPass) {
-                    res.json({ success: false, message: 'Autenticacao falhada' });
+
+                    return res.status(400).send("Autenticacao falhada!");
+              
                 } else {
 
                     // if user is found and password is right
                     // create a token with only our given payload
                     // we don't want to pass in the entire user since that has the password
                     const payload = {
-                       // id:pessoa.nif,
+                        id:pessoa.id,
                         medico:pessoa.medico,
                         assinMedico:pessoa.nif,
                         farmaceutico:pessoa.farmaceutico,

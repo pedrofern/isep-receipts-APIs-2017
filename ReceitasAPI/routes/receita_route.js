@@ -177,12 +177,28 @@ router.route('/')
     // get todas as receitas
     .get(function (req, res) {
 
+        var tokDec = jwt.decode(config.token);
+        
+            //MEDICO LÊ SE AUTOR DA RECEITA
+            if(tokDec.medico){
+                var idMedico=JSON.stringify(tokDec.id);
+                
+                Receita.find({
+                    medico:idMedico
+                },function (err, receitas) {
+                    if(receitas!=undefined)
+                        res.json(receitas);
+                    else
+                        return res.status(400).send("Medico não tem receitas registadas");    
+                });
+            }
+            /*
         Receita.find(function (err, receitas) {
             if (err)
                 res.send(err);
 
             res.json(receitas);
-        });
+        });*/
     })
 
     // cria receita 
@@ -219,17 +235,22 @@ router.route('/')
             var nifUtente = req.body.utente;
         } else {
 
-            //descobrindo o nif
-            var bodyPostUtente = req.body.utente;
-            var utenteBodyParse = JSON.stringify(bodyPostUtente.nif);
-            var countBodyUtente = utenteBodyParse.length;
+            if(req.body.utente!=undefined){
+                //descobrindo o nif
+                var bodyPostUtente = req.body.utente;
+                var utenteBodyParse = JSON.stringify(bodyPostUtente);
+                var countBodyUtente = utenteBodyParse.length;
 
-            if (countBodyUtente != 9) {
-                return res.send.json('Verifique por favor se introduziu 9 digitos no nif');
-            } else {
-                var nifUtente = req.body.utente.nif;
+                if (countBodyUtente != 9) {
+                    return res.status(400).send('Verifique por favor se introduziu 9 digitos no nif');
+                } else {
+                    var nifUtente = req.body.utente.nif;
+                }
             }
         }
+        if(nifUtente==null)
+            return res.status(400).send('Não foi possível encontrar o utente');
+
         mongoose.Promise = global.Promise;
         var insereUtente = preencheUtente(nifUtente)
             .then(utente => {
