@@ -182,9 +182,10 @@ router.route('/')
             //MEDICO LÊ SE AUTOR DA RECEITA
             if(tokDec.medico){
                 var idMedico=JSON.stringify(tokDec.id);
-                
+                var idMed=JSON.parse(idMedico);
+
                 Receita.find({
-                    medico:idMedico
+                    medico: idMed
                 },function (err, receitas) {
                     if(receitas!=undefined)
                         res.json(receitas);
