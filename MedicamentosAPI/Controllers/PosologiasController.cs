@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MedicamentosAPI.Controllers
 {
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    //[Authorize(AuthenticationSchemes = "Bearer")]
     [Produces("application/json")]
     [Route("api/Posologia")]
     public class PosologiasController : Controller
@@ -80,6 +80,7 @@ namespace MedicamentosAPI.Controllers
         }
 
         // PUT: api/Posologias/{id}
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPosologia([FromRoute] int id, [FromBody] Posologia posologia)
         {
@@ -115,6 +116,7 @@ namespace MedicamentosAPI.Controllers
         }
 
         // POST: api/Posologias
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost]
         public async Task<IActionResult> PostPosologia([FromBody] Posologia posologia)
         {
@@ -130,6 +132,7 @@ namespace MedicamentosAPI.Controllers
         }
 
         // DELETE: api/Posologias/5
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePosologia([FromRoute] int id)
         {

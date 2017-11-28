@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MedicamentosAPI.Controllers
 {
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    //[Authorize(AuthenticationSchemes = "Bearer")]
     [Produces("application/json")]
     [Route("api/Apresentacao")]
     public class ApresentacoesController : Controller
@@ -23,14 +23,14 @@ namespace MedicamentosAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Apresentacoes
+        // GET: api/Apresentacao
         [HttpGet]
         public IEnumerable<ApresentacaoDTO> GetApresentacao()
         {
             return _context.Apresentacao.Include(b=>b.Medicamento).Include(c=>c.Farmaco).Include(d=>d.Posologia).Select(a => new ApresentacaoDTO(a, a.Medicamento, a.Farmaco, a.Posologia));   
         }
 
-        // GET: api/Apresentacoes/{id}
+        // GET: api/Apresentacao/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetApresentacao([FromRoute] int id)
         {
@@ -79,7 +79,8 @@ namespace MedicamentosAPI.Controllers
 
         }
 
-        // PUT: api/Apresentacoes/{id}
+        // PUT: api/Apresentacao/{id}
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutApresentacao([FromRoute] int id, [FromBody] Apresentacao apresentacao)
         {
@@ -114,7 +115,8 @@ namespace MedicamentosAPI.Controllers
             return NoContent();
         }
 
-         // POST: api/Apresentacoes
+        // POST: api/Apresentacao
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost]
         public async Task<IActionResult> PostApresentacao([FromBody] Apresentacao apresentacao)
         {
@@ -131,7 +133,8 @@ namespace MedicamentosAPI.Controllers
         }
 
 
-        // DELETE: api/Apresentacoes/{id}
+        // DELETE: api/Apresentacao/{id}
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteApresentacao([FromRoute] int id)
         {
