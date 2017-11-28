@@ -25,7 +25,6 @@ app.use(bodyParser.json());
 //use morgan to log requests to the console
 app.use(morgan('dev'));
 
-var port = process.env.PORT || 8080;        // set our port
 app.set('superSecret', config.secret);
 
 // ROUTES FOR OUR API
@@ -54,9 +53,5 @@ app.use('/pessoas', pessoas);
 app.use('/receita', receitas);
 app.use('/utente', utentes);
 
-// START THE SERVER
-// =============================================================================
-app.listen(port);
-console.log('Magic happens on port ' + port);
 
 module.exports = app;

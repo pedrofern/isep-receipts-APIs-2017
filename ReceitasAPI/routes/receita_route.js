@@ -10,6 +10,7 @@ var Receita = require('../app/models/receita');
 var Pessoa = require('../app/models/pessoa');
 var nodemailer = require('nodemailer');
 var config = require('../config');
+var mongoose = require('mongoose');
 
 // funcao para ir receber token da aplicacao de mMedicamentosAPI
 var getTokenMedicamentosAPI = function () {
@@ -85,12 +86,13 @@ var enviaMail = function (receita) {
         if (err) return res.status(500).send('Erro ao encrontrar a Pessoa!');
         if (!pessoa) return res.status(404).send('Não encontrou a Pessoa com id indicado!');
         var mail = pessoa.email;
-        sendEmail(mail);
+        var codigoReceita = receita.num_receita;
+        sendEmail(mail, codigoReceita);
     });
 }
 
 // funcao para enviar email por mail.smtp2go.com
-var sendEmail = function (to) {
+var sendEmail = function (to, codigoReceita) {
 
     var transporter = nodemailer.createTransport({
         host: "mail.smtp2go.com",
@@ -105,7 +107,7 @@ var sendEmail = function (to) {
         from: "arqsi_teste@isep.ipp.pt",
         to: to,
         subject: "Receita Registada",
-        text: "Vimos por este meio, informar que foi registada uma receita"
+        text: "Vimos por este meio, informar que foi registada uma receita com o código "+ codigoReceita + "."
     }, function (error, response) {
         if (error) {
             console.log(error);
@@ -115,18 +117,18 @@ var sendEmail = function (to) {
     });
 }
 
-var encontraNif = function (nifProcurado) {
-    Pessoa.findOne({
-        nif: nifProcurado
-    }, function (err, pessoa) {      
-        if(pessoa!=null){
-            return pessoa;
-        }else{
-            return 'Nif inexistente'; 
-        }
-        return err;   
+// funcao para receber utente inserido
+var preencheUtente = function (nifUtente) {
+    return new Promise(function (resolve, reject) {
+
+        Pessoa.findOne({
+            nif: nifUtente
+        }, function (err, pessoa) {
+            resolve(pessoa)
+        });
+
     });
-}
+};
 
 // middleware to use for all requests
 router.use(function (req, res, next) {
@@ -143,7 +145,7 @@ router.use(function (req, res, next) {
 
             var tokDec = jwt.decode(token);
 
-            if (!tokDec.medico) {
+            if (! (tokDec.medico || tokDec.farmaceutico || tokDec.utente) ) {
                 return res.json({ success: false, message: 'Nao tem permissoes.' });
             }
 
@@ -192,79 +194,78 @@ router.route('/')
         receita.cod_acesso = req.body.cod_acesso;
         receita.data = req.body.data;
         receita.local = req.body.local;
-       
-         //   receita.medico = req.body.medico;
 
-         var tokDec = jwt.decode(config.token);
-         var nifMedico=JSON.stringify(tokDec.assinMedico);
-        
-         Pessoa.findOne({
-             nif: nifMedico
-         }, function (err, pessoa) {
-       
-              receita.medico =pessoa;
-         });
+        //   receita.medico = req.body.medico;
 
-      receita.utente = req.body.utente;
+        var tokDec = jwt.decode(config.token);
+        var nifMedico = JSON.stringify(tokDec.assinMedico);
 
-/*
-         //insere utente  	 
-         var bodyUtente=req.body.utente;
-         if(bodyUtente!=undefined){
-      
-            var utenteParse=JSON.stringify(bodyUtente);  
-            var countUtente= utenteParse.length;
+        Pessoa.findOne({
+            nif: nifMedico
+        }, function (err, pessoa) {
+            if (pessoa != undefined)
+                receita.medico = pessoa;
+            else
+                return res.status(400).send("Erro ao registar o médico!");
+        });
 
-            if(countUtente==12){
-   
-                Pessoa.findOne({
-                    nif: bodyUtente
-                }, function ( pessoa2) {      
-                    receita.utente=pessoa2;
-                });
-              
-               //se nao encontrar cria
-                          
-            }else{
-                
-                var bodyUtenteNif=req.body.utente.nif;
-                var utenteNifParse=JSON.stringify(bodyUtenteNif);
-                var countUtenteNif=utenteNifParse.length;
-        
-            if (countUtenteNif==9){
-              
-                }else{
-                    res.send.json('Verifique por favor se introduziu 9 digitos no nif');
-                }
+        var bodyUtente = req.body.utente;
+
+        //descobrindo o nif
+        var utenteParse = JSON.stringify(bodyUtente);
+        var countUtente = utenteParse.length;
+
+        if (countUtente == 9) {
+            var nifUtente = req.body.utente;
+        } else {
+
+            //descobrindo o nif
+            var bodyPostUtente = req.body.utente;
+            var utenteBodyParse = JSON.stringify(bodyPostUtente.nif);
+            var countBodyUtente = utenteBodyParse.length;
+
+            if (countBodyUtente != 9) {
+                return res.send.json('Verifique por favor se introduziu 9 digitos no nif');
+            } else {
+                var nifUtente = req.body.utente.nif;
             }
         }
-*/
-        
-        // ciclo para 
-        async.each(req.body.prescricoes, function (prescricao, callback) {
-            var idApresentacao = prescricao.id_apresentacao;
-            var qtd = prescricao.quantidade;
-            var valPresc = prescricao.validade;
-            if (idApresentacao !== null) {
-                var presc;
+        mongoose.Promise = global.Promise;
+        var insereUtente = preencheUtente(nifUtente)
+            .then(utente => {
 
-                var token = getTokenMedicamentosAPI()
-                    .then(token =>
-                        getApresentacao(idApresentacao, req, token))
-                    .then(apt1 => {
-                        presc = preenchePrescricao(qtd, valPresc, apt1);
-                        receita.prescricoes.push(presc);
-                        callback();
-                    });
-            }
-        }, function (err) {
-            receita.save(function (err) {
-                if (err)
-                    return res.status(500).send("Erro ao registar a receita!")
-                res.json({ message: 'Receita registada!', receita });
-                enviaMail(receita);
+                if (utente == null)
+                    return res.status(400).send("Utente não registado")
+
+                if (utente != undefined)
+                    receita.utente = utente;
+
+                // ciclo para 
+                async.each(req.body.prescricoes, function (prescricao, callback) {
+                    var idApresentacao = prescricao.id_apresentacao;
+                    var qtd = prescricao.quantidade;
+                    var valPresc = prescricao.validade;
+                    if (idApresentacao !== null) {
+                        var presc;
+
+                        var token = getTokenMedicamentosAPI()
+                            .then(token =>
+                                getApresentacao(idApresentacao, req, token))
+                            .then(apt1 => {
+                                presc = preenchePrescricao(qtd, valPresc, apt1);
+                                receita.prescricoes.push(presc);
+                                callback();
+                            });
+                    }
+                }, function (err) {
+                    receita.save(function (err) {
+                        if (err)
+                            return res.status(500).send("Erro ao registar a receita!")
+                        res.json({ message: 'Receita registada!', receita });
+                        enviaMail(receita);
+                    })
+                });
             })
-        });
     });
 
 // on routes that end in /receita/:id
@@ -286,55 +287,6 @@ router.route('/:receita_id/prescricao/:id')
             if (!receita) return res.status(404).send("Get receita failed.");
             var ret = receita.prescricoes.find(o => o.id === req.params.id);
             res.status(200).send(ret);
-        });
-    });
-
-// PUT http://localhost:8080/receita/:receita_id/prescricao/:id/aviar
-router.route('/:receita_id/prescricao/:id/aviar')
-    .put(function (req, res) {
-        Receita.findById(req.params.receita_id, function (err, receita) {
-            if (err) return res.status(500).send("Erro ao encrontrar a Receita!");
-            if (!receita) return res.status(404).send("Nao foi encontrada receita com id indicado!");
-            var quantidadesAviadas = 0;
-            var t = receita.prescricoes.length;
-            for (let i = 0; i < t; i++) {
-                if (receita.prescricoes[i].id === req.params.id) {
-                    if (receita.prescricoes[i].fechada == true) {
-                        break;
-                    };
-                    for (let j = 0; j < receita.prescricoes[i].aviamentos.length; j++) {
-                        var number = receita.prescricoes[i].aviamentos[j].quantidade;
-                        quantidadesAviadas += number;
-                    }
-                    var quantidadeTotalPrescrita = receita.prescricoes[i].quantidade;
-                    var qtdPossiveisPrescricao = quantidadeTotalPrescrita - quantidadesAviadas;
-                    if (qtdPossiveisPrescricao > 0 && qtdPossiveisPrescricao <= quantidadeTotalPrescrita) {
-                        var tam2 = req.body.aviamentos.length;
-                        for (let k = 0; k < tam2; k++) {
-                            var novoAviamento = {
-                                "farmaceutico": req.body.aviamentos[k].farmaceutico,
-                                "data": new Date(Date.now()),
-                                "quantidade": req.body.aviamentos[k].quantidade
-                            };
-                            var novaQuant = qtdPossiveisPrescricao - req.body.aviamentos[k].quantidade;
-                            if (novaQuant > 0) {
-                                receita.prescricoes[i].aviamentos.push(novoAviamento);
-                            } else if (novaQuant == 0) {
-                                receita.prescricoes[i].fechada = true;
-                                receita.prescricoes[i].aviamentos.push(novoAviamento);
-                            } else{
-                                return res.status(500).send("Demasiados aviamentos para a quantidade prescrita!")
-                            }
-                        }
-                    }
-
-                }
-            }
-            receita.save(function (err) {
-                if (err)
-                    return res.status(500).send("Erro ao fazer update da receita!")
-                res.json({ message: 'Update da receita realizado com sucesso!', receita });
-            })
         });
     });
 
