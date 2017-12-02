@@ -266,6 +266,20 @@ router.route('/')
                     return res.status(400).send("Medico não tem receitas registadas");
             });
         }
+
+        //UTENTE LÊ SE RECEITA FOR PARA SI
+        if (tokDec.utente) {
+            var idUtente = tokDec.id;
+
+            Receita.find({
+                utente: idUtente
+            }, function (err, receitas) {
+                if (receitas != undefined)
+                    res.json(receitas);
+                else
+                    return res.status(400).send("Utente não tem receitas registadas");
+         });
+        }
     })
 
     // cria receita 
