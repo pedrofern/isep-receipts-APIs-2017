@@ -28,7 +28,7 @@ app.set('superSecret', config.secret);
 
 // ROUTES FOR OUR API
 // =============================================================================
-var teste   = require('./app/models/pessoa'); // get our mongoose model
+//var teste   = require('./app/models/pessoa'); // get our mongoose model
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 var router = express.Router(); 
@@ -39,8 +39,8 @@ app.use('/home', router);
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /
-var pessoas=require('./routes/pessoa_route');
-app.use('/pessoas', pessoas);
+//var pessoas=require('./routes/pessoa_route');
+//app.use('/pessoas', pessoas);
 
 //----FRONTEND route --------------------------------
 app.get('*', function(req,res){
