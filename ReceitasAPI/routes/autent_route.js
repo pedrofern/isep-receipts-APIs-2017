@@ -5,6 +5,10 @@ var bcrypt = require('bcryptjs');
 
 var config = require('../config');
 
+//CORS activation to conect AngularJS and NodeJS
+var cors=require('cors');
+app.use(cors());
+
 var Pessoa = require('../app/models/pessoa');
 
 // middleware to use for all requests
@@ -49,6 +53,7 @@ router.route('/')
                     // we don't want to pass in the entire user since that has the password
                     const payload = {
                         id:pessoa.id,
+						email:pessoal.email,
                         medico:pessoa.medico,
                         assinMedico:pessoa.nif,
                         farmaceutico:pessoa.farmaceutico,
