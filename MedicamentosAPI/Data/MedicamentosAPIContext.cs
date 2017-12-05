@@ -23,5 +23,7 @@ namespace MedicamentosAPI.Models
 
         public DbSet<MedicamentosAPI.Models.Posologia> Posologia { get; set; }
 
+        public DbSet<MedicamentosAPI.Models.Comentario> Comentario { get; set; }
+
     }
 }

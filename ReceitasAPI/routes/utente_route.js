@@ -45,7 +45,39 @@ var naoEutente = function () {
 router.use(function (req, res, next) {
     // do logging
     console.log('Something is happening.');
-    next(); // make sure we go to the next routes and don't stop here
+    console.log(req.headers.authorization);
+
+    var token = req.headers.authorization;
+
+    if (token) {
+        // verifies secret and checks exp
+        jwt.verify(token, config.secret, function (err, decoded) {
+
+            var tokDec = jwt.decode(token);
+
+            if (!(tokDec.medico || tokDec.farmaceutico || tokDec.utente)) {
+                return res.json({ success: false, message: 'Nao tem permissoes.' });
+            }
+
+            if (err) {
+                return res.json({ success: false, message: 'Failed to authenticate token.' });
+            } else {
+                // if everything is good, save to request for use in other routes
+                req.decoded = decoded;
+                next();
+            }
+        });
+
+    } else {
+
+        // if there is no token
+        // return an error
+        return res.status(403).send({
+            success: false,
+            message: 'Não encontramos o token.'
+        });
+    }
+
 });
 
 // more routes for our API will happen here
@@ -90,35 +122,37 @@ router.route('/:utente_id')
     });
 
 // utente/{id}/prescricao/poraviar/{?data}
-router.get('/:utente_id/prescricao/poraviar/:a?', function (req, res) {
-    var query = { utente: req.params.utente_id };
-    Receita.find({}).where(query).exec(function (err, receitas) {
-        if (err) res.send(err);
-        var prescricoes = [];
-        receitas.forEach(function (receita) {
-            if (req.params.a) {
-                receita.prescricoes.forEach(function (prescricao) {
-                    if (new Date(prescricao.validade) <= new Date(req.params.a)) {
+router.route('/:utente_id/prescricao/poraviar/:a?')
+    .get(function (req, res) {
+        Receita.find({
+            utente: req.params.utente_id
+        }, function (err, receitas) {
+            if (err) res.send(err);
+            var prescricoes = [];
+            receitas.forEach(function (receita) {
+                if (req.params.a) {
+                    receita.prescricoes.forEach(function (prescricao) {
+                        if (new Date(prescricao.validade) <= new Date(req.params.a)) {
+                            // true a receita ta aberta, false a receita ta fechada
+                            if (prescricao.fechada === false)
+                                prescricoes.push(prescricao);
+                        }
+                    });
+                } else {
+                    receita.prescricoes.forEach(function (prescricao) {
                         // true a receita ta aberta, false a receita ta fechada
                         if (prescricao.fechada === false)
-                            prescricoes.push(prescricao);
-                    }
-                });
+                            prescricoes.push(prescricao,receita._id);
+                    });
+                }
+            });
+            if (prescricoes.length > 0) {
+                res.send(prescricoes);
             } else {
-                receita.prescricoes.forEach(function (prescricao) {
-                    // true a receita ta aberta, false a receita ta fechada
-                    if (prescricao.fechada === false)
-                        prescricoes.push(prescricao);
-                });
+                res.send("Nao Foram Encontradas Prescrições para a data indicada.");
             }
         });
-        if (prescricoes.length > 0) {
-            res.send(prescricoes);
-        } else {
-            res.send("Nao Foram Encontradas Prescrições para a data indicada.");
-        }
     });
-});
 
 
 module.exports = router;

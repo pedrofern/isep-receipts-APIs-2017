@@ -74,7 +74,8 @@ var preenchePrescricao = function (qtd, valPresc, apt) {
                 "intervalo_tempo_horas": apt.intervalo_tempo_horas,
                 "periodo_tempo_dias": apt.periodo_tempo_dias
             },
-        }
+        },
+        "fechada": false
     };
 
     return presc;
@@ -86,7 +87,7 @@ var enviaMail = function (receita) {
         if (err) return res.status(500).send('Erro ao encrontrar a Pessoa!');
         if (!pessoa) return res.status(404).send('Não encontrou a Pessoa com id indicado!');
         var mail = pessoa.email;
-        var codigoReceita = receita.num_receita;
+        var codigoReceita = receita._id;
         sendEmail(mail, codigoReceita);
     });
 }
@@ -131,8 +132,6 @@ var preencheUtente = function (nifUtente) {
 };
 
 var criaReceita = function (receita, req, res, tokDec) {
-    receita.num_receita = req.body.num_receita;
-    receita.cod_acesso = req.body.cod_acesso;
     receita.data = req.body.data;
     receita.local = req.body.local;
 
@@ -213,10 +212,10 @@ router.use(function (req, res, next) {
     // do logging
     console.log('Verificando o token.');
     console.log(req.headers.authorization);
-    
-    var token= req.headers.authorization;
-  
-    if(token){
+
+    var token = req.headers.authorization;
+
+    if (token) {
         // verifies secret and checks exp
         jwt.verify(token, config.secret, function (err, decoded) {
 
@@ -278,7 +277,7 @@ router.route('/')
                     res.json(receitas);
                 else
                     return res.status(400).send("Utente não tem receitas registadas");
-         });
+            });
         }
     })
 
@@ -329,6 +328,44 @@ router.route('/:id')
             }
         });
 
+    })
+    .put(function (req, res) {
+
+        var tokDec = req.decoded;
+
+        // apenas se for medico é que pode criar receitas
+        if (tokDec.medico) {
+
+            Receita.findById(req.params.id, function (err, receita) {
+                if (err) return res.status(500).send("Erro ao encrontrar a Receita!");
+                if (!receita) return res.status(404).send("Nao foi encontrada receita com id indicado!");
+
+                var idMedicoReceita = receita.medico.toString();
+                var idMedicoToken = tokDec.id;
+
+                if (idMedicoToken != idMedicoReceita) {
+                    return res.status(500).send("Esta receita não foi criada por si!");
+                } else {
+
+                    // verifica se ja existiram aviamentos
+                    var t = receita.prescricoes.length;
+                    for (let i = 0; i < t; i++) {
+                        if (!(receita.prescricoes[i].aviamentos.length == 0)) {
+                            return res.status(500).send("Não é possivel efetuar alteração na receita, pois já existem aviamentos efectuados!");
+                        }
+                    }
+
+                    receita.prescricoes = [];
+
+                    // faz o update da receita
+                    criaReceita(receita, req, res, tokDec);
+
+                }
+            });
+        } else {
+            return res.status(500).json({ success: false, message: 'Nao tem permissoes.' });
+        }
+
     });
 
 // GET http://localhost:8080/receita/:receita_id/prescricao/:id
@@ -365,42 +402,15 @@ router.route('/:receita_id/prescricao/:id')
         });
     });
 
+
+
 // PUT http://localhost:8080/receita/:receita_id/prescricao/:id/aviar
 router.route('/:receita_id/prescricao/:id/aviar')
     .put(function (req, res) {
 
-        var tokDec = req.decoded
+        var tokDec = req.decoded;
 
-        // apenas se for medico é que pode criar receitas
-        if (tokDec.medico) {
-
-            Receita.findById(req.params.receita_id, function (err, receita) {
-                if (err) return res.status(500).send("Erro ao encrontrar a Receita!");
-                if (!receita) return res.status(404).send("Nao foi encontrada receita com id indicado!");
-
-                var idMedicoReceita = receita.medico.toString();
-                var idMedicoToken = tokDec.id;
-
-                if (idMedicoToken != idMedicoReceita) {
-                    return res.status(500).send("Esta receita não foi criada por si!");
-                } else {
-
-                    // verifica se ja existiram aviamentos
-                    var t = receita.prescricoes.length;
-                    for (let i = 0; i < t; i++) {
-                        if (!(receita.prescricoes[i].aviamentos.length == 0)) {
-                            return res.status(500).send("Não é possivel efetuar alteração na receita, pois já existem aviamentos efectuados!");
-                        }
-                    }
-
-                    // faz o update da receita
-                    criaReceita(receita, req, res, tokDec);
-
-                }
-            });
-
-
-        } else if (tokDec.farmaceutico) {
+        if (tokDec.farmaceutico) {
 
             Receita.findById(req.params.receita_id, function (err, receita) {
                 if (err) return res.status(500).send("Erro ao encrontrar a Receita!");
@@ -424,7 +434,7 @@ router.route('/:receita_id/prescricao/:id/aviar')
                                 var novoAviamento = {
                                     // coloca automaticamente o id do farmaceutico na prescricao
                                     "farmaceutico": tokDec.id,
-                                    "data": new Date(Date.now()),
+                                    "data_aviamento": new Date(Date.now()),
                                     "quantidade": req.body.aviamentos[k].quantidade
                                 };
                                 var novaQuant = qtdPossiveisPrescricao - req.body.aviamentos[k].quantidade;
