@@ -5,10 +5,6 @@ var bcrypt = require('bcryptjs');
 
 var config = require('../config');
 
-//CORS activation to conect AngularJS and NodeJS
-var cors=require('cors');
-app.use(cors());
-
 var Pessoa = require('../app/models/pessoa');
 
 // middleware to use for all requests
@@ -42,7 +38,7 @@ router.route('/')
                 return res.status(400).send("Autenticacao falhada!");
             } else if (pessoa) {
 
-                var checkPass=bcrypt.compareSync(req.body.password,pessoa.password);
+                var checkPass = bcrypt.compareSync(req.body.password, pessoa.password);
                 // check if password matches
                 if (!checkPass) {
                     res.json({ success: false, message: 'Autenticacao falhada!' });
@@ -52,28 +48,39 @@ router.route('/')
                     // create a token with only our given payload
                     // we don't want to pass in the entire user since that has the password
                     const payload = {
-                        id:pessoa.id,
-						email:pessoal.email,
-                        medico:pessoa.medico,
-                        assinMedico:pessoa.nif,
-                        farmaceutico:pessoa.farmaceutico,
+                        id: pessoa.id,
+                        nif: pessoa.nif,
+                        medico: pessoa.medico,
+                        farmaceutico: pessoa.farmaceutico,
                         utente: pessoa.utente
                     };
-                 
-                    var token = jwt.sign(payload, config.secret,{
+
+                    var token = jwt.sign(payload, config.secret, {
                         expiresIn: 24 * 60 * 60, // expires in 24 hours
                     });
 
-                    // return the information including token as JSON
-                    res.json({
-                        success: true,
-                        message: 'Aproveita o token!',
-                        token: token
-                    });
+                    if (token) {
+                        pessoa.token = token;
+                        pessoa.tokenExp = token.expiresIn;
 
-                    config.token=token;
+                        // return the information including token as JSON
+                        res.json({
+                            success: true,
+                            message: 'Aproveita o token!',
+                            token: token
+                        });
+
+                    } else {
+                        res.json({ success: false, message: 'Nao foi possivel gerar o token' });
+
+                    }
+
                 }
+
+
+
             }
+
 
         });
     });

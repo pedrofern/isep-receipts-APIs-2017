@@ -137,7 +137,7 @@ var criaReceita = function (receita, req, res, tokDec) {
     receita.local = req.body.local;
 
     //   receita.medico = req.body.medico;
-    var nifMedico = JSON.stringify(tokDec.assinMedico);
+    var nifMedico = JSON.stringify(tokDec.nif);
 
     Pessoa.findOne({
         nif: nifMedico
@@ -212,10 +212,11 @@ router.use(function (req, res, next) {
 
     // do logging
     console.log('Verificando o token.');
-    var token = config.token;
-    // decode token
-    if (token) {
-
+    console.log(req.headers.authorization);
+    
+    var token= req.headers.authorization;
+  
+    if(token){
         // verifies secret and checks exp
         jwt.verify(token, config.secret, function (err, decoded) {
 
@@ -251,8 +252,7 @@ router.route('/')
     // get todas as receitas
     .get(function (req, res) {
 
-        var tokDec = jwt.decode(config.token);
-
+        var tokDec = req.decoded;
         //MEDICO LÊ SE AUTOR DA RECEITA
         if (tokDec.medico) {
             var idMedico = tokDec.id;
@@ -285,7 +285,7 @@ router.route('/')
     // cria receita 
     .post(function (req, res) {
 
-        var tokDec = jwt.decode(config.token);
+        var tokDec = req.decoded;
 
         // apenas se for medico é que pode criar receitas
         if (!tokDec.medico) {
@@ -301,7 +301,7 @@ router.route('/')
 router.route('/:id')
     // get the receita with that id (accessed at GET http://localhost:8080/receita/:id)
     .get(function (req, res) {
-        var tokDec = jwt.decode(config.token);
+        var tokDec = req.decoded;
 
         Receita.findById(req.params.id, function (err, receita) {
             if (err) return res.status(500).send("Erro ao encrontrar a Receita!");
@@ -334,7 +334,7 @@ router.route('/:id')
 // GET http://localhost:8080/receita/:receita_id/prescricao/:id
 router.route('/:receita_id/prescricao/:id')
     .get(function (req, res) {
-        var tokDec = jwt.decode(config.token);
+        var tokDec = req.decoded;
 
         Receita.findById(req.params.receita_id, function (err, receita) {
             if (err) return res.status(500).send("Erro ao encrontrar a Receita!");
@@ -369,7 +369,7 @@ router.route('/:receita_id/prescricao/:id')
 router.route('/:receita_id/prescricao/:id/aviar')
     .put(function (req, res) {
 
-        var tokDec = jwt.decode(config.token);
+        var tokDec = req.decoded
 
         // apenas se for medico é que pode criar receitas
         if (tokDec.medico) {

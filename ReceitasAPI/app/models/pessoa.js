@@ -4,6 +4,8 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var PessoaSchema =  new Schema({
+    token: String,
+    tokenExp: Number,
     email: String,
     password: String,
     nome: String,

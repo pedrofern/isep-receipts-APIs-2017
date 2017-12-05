@@ -27,6 +27,10 @@ app.use(morgan('dev'));
 
 app.set('superSecret', config.secret);
 
+//add possibility to connect to Angular app
+var cors = require('cors');
+app.use(cors());
+
 // ROUTES FOR OUR API
 // =============================================================================
 
