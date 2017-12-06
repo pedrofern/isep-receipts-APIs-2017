@@ -12,17 +12,17 @@ import {TabelaComponent} from './componentes/tabela/tabela.component';
 import { LoginComponent } from './componentes/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { MedicoGuard } from './guards/medico.guard';
+import { FarmaceuticoGuard } from './guards/farmaceutico.guard';
 import { UtenteGuard } from './guards/utente.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'tabela', component: TabelaComponent },
   { path: 'detalhe/:id', component: ReceitaDetalheComponent },
   { path: 'login', component: LoginComponent },
-  
   //RECEITAS PRECISAM DE LOGIN
   { path: 'receitas', component: ReceitasComponent, canActivate:
-  [AuthGuard, MedicoGuard] }
+  [AuthGuard, MedicoGuard, FarmaceuticoGuard, UtenteGuard] }
 ];
 
 @NgModule({

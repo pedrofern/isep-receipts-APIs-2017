@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       if (params['u'] !== undefined) {
         ;
-        this.error = 'Your user cannot access receitas';
+        this.error = 'Não tem permissões.';
       }
     });
   }
@@ -32,9 +32,9 @@ export class LoginComponent implements OnInit {
       .subscribe(result => {
         this.loading = false;
         if (result === true) {
-          this.router.navigate(['/receitas']);
+          this.router.navigate(['/tabela']);
         } else {
-          this.error = 'Username or password is incorrect';
+          this.error = 'Username ou password incorreta';
         }
       });
   }

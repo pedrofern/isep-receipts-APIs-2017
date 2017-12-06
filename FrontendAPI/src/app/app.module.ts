@@ -23,6 +23,7 @@ import {AutenticacaoService} from './servicos/autenticacao.service';
 import { LoginComponent } from './componentes/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { MedicoGuard } from './guards/medico.guard';
+import { FarmaceuticoGuard } from './guards/farmaceutico.guard';
 import { UtenteGuard } from './guards/utente.guard';
 
 @NgModule({
@@ -46,6 +47,7 @@ import { UtenteGuard } from './guards/utente.guard';
     //Autenticacao
     AuthGuard,
     MedicoGuard,
+    FarmaceuticoGuard,
     UtenteGuard,
     //Servicos
     AutenticacaoService,
