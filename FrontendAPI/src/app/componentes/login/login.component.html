@@ -1,0 +1,39 @@
+<div class="col-md-6 col-md-offset-3">
+  <h2>Login</h2>
+  <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm"
+ novalidate>
+  <div class="form-group" [ngClass]="{ 'has-error': f.submitted
+ && !nif.valid }">
+  <label for="nif">Username (nif)</label>
+  <input type="text" class="form-control" name="nif"
+ [(ngModel)]="model.nif" #nif="ngModel" required />
+  <div *ngIf="f.submitted && !nif.valid" class="helpblock">O nif é obrigatório</div>
+  </div>
+  <div class="form-group" [ngClass]="{ 'has-error': f.submitted
+ && !password.valid }">
+  <label for="password">Password</label>
+  <input type="password" class="form-control" name="password"
+ [(ngModel)]="model.password" #password="ngModel" required />
+  <div *ngIf="f.submitted && !password.valid" class="helpblock">Password
+ é obrigatório</div>
+  </div>
+  <div class="form-group">
+  <button [disabled]="loading" class="btn btnprimary">Login</button>
+  <img *ngIf="loading"
+ src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYo
+ KCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5
+ mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2
+ LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG
+ 4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAA
+ AsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJ
+ Z7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYum
+ CYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAE
+ AAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpF
+ KSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojE
+ MBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZ
+ nFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAi
+ B1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+  </div>
+  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+  </form>
+ </div>

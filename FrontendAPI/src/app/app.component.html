@@ -1,0 +1,12 @@
+<h1>{{title}}</h1>
+
+<nav>
+  <a routerLink="/tabela">Medicamentos</a>
+  <a routerLink="/receitas">Receitas</a>
+  <a *ngIf="userInfo && userInfo.medico"
+ routerLink="/receitas">Receitas</a>
+  <a *ngIf="!userInfo" routerLink="/login">Login</a>
+  <a *ngIf="userInfo" routerLink="/login">Logout</a>
+ </nav>
+ <router-outlet></router-outlet>
+ <!--<app-messages></app-messages>-->
