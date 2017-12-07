@@ -22,7 +22,7 @@ import { ReceitaService } from '../../servicos/receita.service';
 
 export class MedicPesquisaComponent implements OnInit {
 //async
-receitas$: Observable<Receita[]>;
+receitas$: Observable<{}|Receita[]>;
 private searchTerms = new Subject<string>();
 
 constructor(private receitaService: ReceitaService) {}
@@ -38,7 +38,7 @@ constructor(private receitaService: ReceitaService) {}
     //pos-async
 
     //Observable
-    /*this.receitas$ = this.searchTerms.pipe(
+    this.receitas$ = this.searchTerms.pipe(
       // wait 300ms after each keystroke before considering the term
       debounceTime(300),
  
@@ -48,6 +48,6 @@ constructor(private receitaService: ReceitaService) {}
       // switch to new search observable each time the term changes
     //  switchMap((term: string) => this.receitaService.searchReceitas(term)),
     );
-    */
+    
   }
 }

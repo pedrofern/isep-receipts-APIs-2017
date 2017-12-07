@@ -39,7 +39,9 @@ export class AutenticacaoService {
               tokenExp: tokenDecoded.exp,
               medico: tokenDecoded.medico,
               farmaceutico: tokenDecoded.farmaceutico,
-              utente: tokenDecoded.utente
+              utente: tokenDecoded.utente,
+              nif:tokenDecoded.nif,
+              nome:tokenDecoded.nome
             }
             localStorage.userInfo = this.userInfo;
 

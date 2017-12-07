@@ -21,6 +21,7 @@
    novalidate>
     <div class="form-group" [ngClass]="{ 'has-error': f.submitted
    && !nif.valid }">
+   
     <label for="nif">Username (nif)</label>
     <input type="text" class="form-control" name="nif"
    [(ngModel)]="model.nif" #nif="ngModel" required />

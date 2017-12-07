@@ -4,4 +4,6 @@ export class User {
     medico: boolean;
     farmaceutico: boolean;
     utente: boolean;
+    nif: number;
+    nome: string;
 }

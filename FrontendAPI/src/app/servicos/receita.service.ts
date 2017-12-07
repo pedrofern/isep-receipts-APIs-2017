@@ -13,10 +13,10 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { MensagensService } from '../servicos/mensagens.service';
 import { AutenticacaoService } from '../servicos/autenticacao.service';
 
-/*
+
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};*/
+};
 
 @Injectable()
 export class ReceitaService {
@@ -57,10 +57,10 @@ export class ReceitaService {
         };
         return httpOptions;
         }
-  }
+  
  
   /** GET hero by id. Return `undefined` when id not found */
-  /*getReceitaNo404<Data>(id: number): Observable<Receita> {
+  getReceitaNo404<Data>(id: number): Observable<{}|Receita> {
     const url = `${this.receitasUrl}/?id=${id}`;
     return this.http.get<Receita[]>(url)
       .pipe(
@@ -74,7 +74,7 @@ export class ReceitaService {
   }
  
   /** GET hero by id. Will 404 if id not found */
-  /*getReceita(id: number): Observable<Receita> {
+  getReceita(id: number): Observable<{}|Receita> {
     const url = `${this.receitasUrl}/${id}`;
     return this.http.get<Receita>(url).pipe(
       tap(_ => this.log(`fetched receita id=${id}`)),
@@ -83,7 +83,7 @@ export class ReceitaService {
   }
  
   /* GET receitas whose name contains search term */
-  /*searchReceitas(term: string): Observable<Receita[]> {
+  searchReceitas(term: string): Observable<Receita[]> {
     if (!term.trim()) {
       // if not search term, return empty hero array.
       return of([]);
@@ -97,16 +97,17 @@ export class ReceitaService {
   //////// Save methods //////////
  
   /** POST: add a new hero to the server */
-  /*addReceita (receita: Receita): Observable<Receita> {
+  //this.receitaService.addReceita({utente, medico, prescricoes} as Receita)
+  addReceita (receita: Receita): Observable<Receita> {
     return this.http.post<Receita>(this.receitasUrl, receita, httpOptions).pipe(
-      tap((receita: Receita) => this.log(`adicionada receita c/ id=${receita.id}`)),
+      tap((receita: Receita) => this.log(`adicionada receita c/ id=${receita._id}`)),
       catchError(this.handleError<Receita>('addReceita'))
     );
   }
  
   /** DELETE: delete the hero from the server */
-  /*deleteReceita (receita: Receita | number): Observable<Receita> {
-    const id = typeof receita === 'number' ? receita : receita.id
+  deleteReceita (receita: Receita | number): Observable<Receita> {
+    const id = typeof receita === 'number' ? receita : receita._id
     const url = `${this.receitasUrl}/${id}`;
  
     return this.http.delete<Receita>(url, httpOptions).pipe(
@@ -116,9 +117,9 @@ export class ReceitaService {
   }
  
   /** PUT: update the hero on the server */
-  /*updateReceita (receita: Receita): Observable<any> {
+  updateReceita (receita: Receita): Observable<any> {
     return this.http.put(this.receitasUrl, receita, httpOptions).pipe(
-      tap(_ => this.log(`updated receita id=${receita.id}`)),
+      tap(_ => this.log(`updated receita id=${receita._id}`)),
       catchError(this.handleError<any>('updateReceita'))
     );
   }
@@ -129,7 +130,7 @@ export class ReceitaService {
    * @param operation - name of the operation that failed
    * @param result - optional value to return as the observable result
    */
-  /*private handleError<T> (operation = 'operation', result?: T) {
+  private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
  
       // TODO: send the error to remote logging infrastructure
@@ -145,8 +146,7 @@ export class ReceitaService {
  
   /** Log a ReceitaService message with the MensagensService */
    //Cm e chamado muitas vezes, é colocado num metodo
-  /*private log(mensagem: string) {
+  private log(mensagem: string) {
     this.mensagensService.add('MensagensService: ' + mensagem);
   }
 }
-*/

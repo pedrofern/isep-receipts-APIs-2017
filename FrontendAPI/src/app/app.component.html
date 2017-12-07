@@ -6,6 +6,9 @@
           </a>
         <ul class="nav navbar-nav">
             <li >
+                    <a *ngIf="userInfo" routerLink="/">Olá {{userInfo.nome}}</a>
+                </li>
+            <li >
                 <a *ngIf="!userInfo" routerLink="/">Registo</a>
           </li>
           <li >
@@ -47,6 +50,3 @@
       </nav>
   </div>
   <router-outlet></router-outlet>
-
-
- <!--<app-messages></app-messages>-->

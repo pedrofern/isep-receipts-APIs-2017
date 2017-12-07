@@ -49,6 +49,7 @@ router.route('/')
                     // we don't want to pass in the entire user since that has the password
                     const payload = {
                         id: pessoa.id,
+                        nome:pessoa.nome,
                         nif: pessoa.nif,
                         medico: pessoa.medico,
                         farmaceutico: pessoa.farmaceutico,
