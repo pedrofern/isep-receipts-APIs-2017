@@ -39,12 +39,9 @@ router.route('/')
             if (data != false) {
                 res.status(401).send('NIF inserido já se encontra no sistema!');
             } else {
-                if(req.body.nif < 100000000 || req.body.nif > 999999999){
+                if (req.body.nif < 100000000 || req.body.nif > 999999999) {
                     res.status(401).send('NIF não tem 9 digitos!');
-                }else {
-
-                    var pessoa = new Pessoa();      // create a new instance of the Pessoa model
-
+                } else {
 
                     var pessoa = new Pessoa();      // create a new instance of the Pessoa model
                     pessoa.nif = req.body.nif;
@@ -55,11 +52,15 @@ router.route('/')
                     pessoa.nome = req.body.nome;
                     pessoa.nif = req.body.nif;
                     pessoa.num_beneficiario = req.body.num_beneficiario;
+                    pessoa.medico = false;
+                    pessoa.utente = true;
+                    pessoa.farmaceutico = false;
+                    /*
+                    IT3 - deixou de ser permitido existir registos de medicos e farmaceuticos, apenas de anonimos em utentes
                     pessoa.medico = req.body.medico;
                     pessoa.utente = req.body.utente;
-                    // pessoa.utente = true; -> para IT3
                     pessoa.farmaceutico = req.body.farmaceutico;
-
+                    */
                     // save the pessoa and check for errors
                     pessoa.save(function (err) {
                         if (err)
@@ -73,6 +74,7 @@ router.route('/')
         }).catch(console.error);
     })
 
+    // apenas para testes
     // get all pessoas (accessed at GET http://localhost:8080/pessoas)
     .get(function (req, res) {
 
@@ -87,6 +89,9 @@ router.route('/')
 // on routes that end in /pessoas/:pessoa_id
 // ----------------------------------------------------
 router.route('/:pessoa_id')
+    /*
+
+    Desta forma, seria possivel ver os dados de todos os utilizadores
 
     // get the pessoa with that id (accessed at GET http://localhost:8080/pessoa/:id)
     .get(function (req, res) {
@@ -96,7 +101,7 @@ router.route('/:pessoa_id')
             res.json(pessoa);
         });
     })
-
+    
     // update the pessoa with this id (accessed at PUT http://localhost:8080/pessoas/:pessoa_id)
     .put(function (req, res) {
 
@@ -117,7 +122,7 @@ router.route('/:pessoa_id')
 
         });
     })
-
+    
     // delete the pessoa with this id (accessed at DELETE http://localhost:8080/pessoa/:pessoa_id)
     .delete(function (req, res) {
         Pessoa.remove({
@@ -128,6 +133,8 @@ router.route('/:pessoa_id')
 
             res.json();
         });
-    });
+    })
+    */
+    ;
 
 module.exports = router;
