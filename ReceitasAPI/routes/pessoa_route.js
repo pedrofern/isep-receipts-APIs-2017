@@ -48,7 +48,6 @@ router.route('/')
                     pessoa.email = req.body.email;
                     var hashedPassword = bcrypt.hashSync(req.body.password);
                     pessoa.password = hashedPassword;
-                    pessoa.papel = req.body.papel;
                     pessoa.nome = req.body.nome;
                     pessoa.nif = req.body.nif;
                     pessoa.num_beneficiario = req.body.num_beneficiario;
