@@ -1,0 +1,527 @@
+{
+	"info": {
+		"name": "IT2_FINAL",
+		"_postman_id": "56fcebaa-8aed-c9c1-4ee3-77a039de8f94",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "RegistarMedico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"tests[\"User criado - estado 200\"]=responseCode.code===200;",
+							"",
+							"",
+							"var obj='{\"farmaceutico\": false, \"utente\": true, \"medico\": false, \"num_beneficiario\": 12345678911, \"nif\": 13333333, \"nome\": \"diana\", \"password\": \"pass\", \"email\": \"d@d.pt\"}';",
+							"var data=JSON.parse(obj);",
+							"",
+							"tests[\"User criado - informacao\"]=responseBody.has(data.nif);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n        \"farmaceutico\": false,\n        \"utente\": false,\n        \"medico\": true,\n        \"num_beneficiario\": 1234567891123,\n        \"nif\": 111111111,\n        \"nome\": \"medico1\",\n        \"password\": \"pass\",\n        \"email\": \"medico1@medicos.pt\"\n    }"
+				},
+				"url": {
+					"raw": "{{url}}/pessoas",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"pessoas"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "RegistarFarmaceutico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"tests[\"User criado - estado 200\"]=responseCode.code===200;",
+							"",
+							"",
+							"var obj='{\"farmaceutico\": false, \"utente\": true, \"medico\": false, \"num_beneficiario\": 12345678911, \"nif\": 13333333, \"nome\": \"diana\", \"password\": \"pass\", \"email\": \"d@d.pt\"}';",
+							"var data=JSON.parse(obj);",
+							"",
+							"tests[\"User criado - informacao\"]=responseBody.has(data.nif);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n        \"farmaceutico\": true,\n        \"utente\": false,\n        \"medico\": false,\n        \"num_beneficiario\": 1234567891123,\n        \"nif\": 222222221,\n        \"nome\": \"farmaceutico1\",\n        \"password\": \"pass\",\n        \"email\": \"farmaceutico1@farmaceuticos.pt\"\n    }"
+				},
+				"url": {
+					"raw": "{{url}}/pessoas",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"pessoas"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "RegistarUtente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"tests[\"User criado - estado 200\"]=responseCode.code===200;",
+							"",
+							"",
+							"var obj='{\"farmaceutico\": false, \"utente\": true, \"medico\": false, \"num_beneficiario\": 12345678911, \"nif\": 13333333, \"nome\": \"diana\", \"password\": \"pass\", \"email\": \"d@d.pt\"}';",
+							"var data=JSON.parse(obj);",
+							"",
+							"tests[\"User criado - informacao\"]=responseBody.has(data.nif);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n        \"farmaceutico\": false,\n        \"utente\": true,\n        \"medico\": false,\n        \"num_beneficiario\": 1234567891123,\n        \"nif\": 333333332,\n        \"nome\": \"utente2\",\n        \"password\": \"pass\",\n        \"email\": \"arqsi3da2017@gmail.com\"\n    }"
+				},
+				"url": {
+					"raw": "{{url}}/pessoas",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"pessoas"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "AutenticarMedico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"tests[\"Token criado Medico- estado 200\"]=responseCode.code===200;",
+							"",
+							"var data=JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"jwt_token\", data.token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n        \"nif\": 111111111,\n        \"password\": \"pass\"\n       \n    }"
+				},
+				"url": {
+					"raw": "{{url}}/autenticacao",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"autenticacao"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "AutenticarFarmaceutico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"tests[\"Token criado Medico- estado 200\"]=responseCode.code===200;",
+							"",
+							"var data=JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"jwt_token\", data.token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n        \"nif\": 222222223,\n        \"password\": \"pass\"\n       \n    }"
+				},
+				"url": {
+					"raw": "{{url}}/autenticacao",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"autenticacao"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "AutenticarUtente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"tests[\"Token criado Medico- estado 200\"]=responseCode.code===200;",
+							"",
+							"var data=JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"jwt_token\", data.token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n        \"nif\": 333333331,\n        \"password\": \"pass\"\n       \n    }"
+				},
+				"url": {
+					"raw": "{{url}}/autenticacao",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"autenticacao"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GetReceitas(doUserLoggado)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"utente\":333333331,\r\n\t\"prescricoes\":\r\n\t[\r\n\t\t{\r\n\t\t\"id_apresentacao\": 4,\r\n\t\t\"validade\": \"2017-1-5\",\r\n\t\t\"quantidade\": 23\r\n\t},\r\n\t{\r\n\t\t\"id_apresentacao\": 5,\r\n\t\t\"validade\": \"2017-3-3\",\r\n\t\t\"quantidade\": 2\r\n\t}\r\n\t\r\n\t]\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}/receita/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"receita",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GetReceitasByID(doUserLoggado)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"utente\":333333331,\r\n\t\"prescricoes\":\r\n\t[\r\n\t\t{\r\n\t\t\"id_apresentacao\": 4,\r\n\t\t\"validade\": \"2017-1-5\",\r\n\t\t\"quantidade\": 23\r\n\t},\r\n\t{\r\n\t\t\"id_apresentacao\": 5,\r\n\t\t\"validade\": \"2017-3-3\",\r\n\t\t\"quantidade\": 2\r\n\t}\r\n\t\r\n\t]\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}/receita/5a26cb6d75dcb207b46b94da",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"receita",
+						"5a26cb6d75dcb207b46b94da"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "MedicoCriaReceita",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"utente\":333333331,\r\n\t\"prescricoes\":\r\n\t[\r\n\t\t{\r\n\t\t\"id_apresentacao\": 4,\r\n\t\t\"validade\": \"2017-1-5\",\r\n\t\t\"quantidade\": 23\r\n\t},\r\n\t{\r\n\t\t\"id_apresentacao\": 2,\r\n\t\t\"validade\": \"2017-3-3\",\r\n\t\t\"quantidade\": 30\r\n\t}\r\n\t\r\n\t]\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}/receita",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"receita"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "MedicoModificaReceitaAntesAviamentos",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"utente\":333333331,\r\n\t\"prescricoes\":\r\n\t[\r\n\t\t{\r\n\t\t\"id_apresentacao\": 4,\r\n\t\t\"validade\": \"2017-1-5\",\r\n\t\t\"quantidade\": 23\r\n\t}\r\n\t\r\n\t]\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}/receita/5a26cb6d75dcb207b46b94da",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"receita",
+						"5a26cb6d75dcb207b46b94da"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "AviamentoPrescricão",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"aviamentos\": [{\r\n\t\"quantidade\": 5}]\r\n\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}/receita/5a26cb6d75dcb207b46b94da/prescricao/5a26e47341ce761558f366ac/aviar",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"receita",
+						"5a26cb6d75dcb207b46b94da",
+						"prescricao",
+						"5a26e47341ce761558f366ac",
+						"aviar"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "VerPrescricão",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"aviamentos\": [{\r\n\t\"quantidade\": 5}]\r\n\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}/receita/5a26cb6d75dcb207b46b94da/prescricao/5a26e47341ce761558f366ac/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"receita",
+						"5a26cb6d75dcb207b46b94da",
+						"prescricao",
+						"5a26e47341ce761558f366ac",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GetPrescricoesPorAviarDoUtente",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{jwt_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"utente\":333333331,\r\n\t\"prescricoes\":\r\n\t[\r\n\t\t{\r\n\t\t\"id_apresentacao\": 4,\r\n\t\t\"validade\": \"2017-1-5\",\r\n\t\t\"quantidade\": 23\r\n\t},\r\n\t{\r\n\t\t\"id_apresentacao\": 5,\r\n\t\t\"validade\": \"2017-3-3\",\r\n\t\t\"quantidade\": 2\r\n\t}\r\n\t\r\n\t]\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}/utente/5a26c4460017e11264d5d547/prescricao/poraviar/2017-01-05",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"utente",
+						"5a26c4460017e11264d5d547",
+						"prescricao",
+						"poraviar",
+						"2017-01-05"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

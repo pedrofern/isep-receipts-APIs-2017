@@ -6,6 +6,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="obj\**" />
+    <Content Remove="obj\**" />
+    <EmbeddedResource Remove="obj\**" />
+    <None Remove="obj\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="bin\Release\netcoreapp2.0\MedicamentosAPIAssembly.deps.json" />
+    <Content Include="bin\Release\netcoreapp2.0\MedicamentosAPIAssembly.runtimeconfig.dev.json" />
+    <Content Include="bin\Release\netcoreapp2.0\MedicamentosAPIAssembly.runtimeconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="bin\Debug\netcoreapp2.0\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -19,6 +33,11 @@
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bin\Release\netcoreapp2.0\MedicamentosAPIAssembly.dll" />
+    <None Include="bin\Release\netcoreapp2.0\MedicamentosAPIAssembly.pdb" />
   </ItemGroup>
 
 </Project>

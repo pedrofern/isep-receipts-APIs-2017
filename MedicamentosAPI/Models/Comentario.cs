@@ -13,7 +13,7 @@ namespace MedicamentosAPI.Models
         public Apresentacao Apresentacao { get; set; }
 
         public string nome_medico { get; set; }
-        public string comentario { get; set; }
+        public string comentario_medico { get; set; }
         public DateTime data_comentario { get; set; }
     }
 }

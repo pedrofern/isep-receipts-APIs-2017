@@ -279,6 +279,10 @@ router.route('/')
                     return res.status(400).send("Utente não tem receitas registadas");
             });
         }
+
+        if (tokDec.farmaceutico) {
+            return res.status(400).send("Tem de ter o id da receita!");
+        }
     })
 
     // cria receita 
