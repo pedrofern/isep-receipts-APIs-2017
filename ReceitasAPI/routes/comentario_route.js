@@ -37,7 +37,6 @@ var getTokenMedicamentosAPI = function () {
         });
     });
 }
-
 // funcao para fazer o get de uma apresentacao por id à Medicamentos API
 var getApresentacao = function (id, apt, token) {
 
@@ -57,7 +56,6 @@ var getApresentacao = function (id, apt, token) {
         })
     });
 }
-
 var criaComentario = function (req, nome_medico, id_apresentacao) {
     if (id_apresentacao == undefined || id_apresentacao == null) {
         return false;
@@ -87,14 +85,13 @@ var criaComentario = function (req, nome_medico, id_apresentacao) {
 
             request(options, function (error, response, body) {
                 if (error) throw new Error(error);
-                var aux = JSON.parse(body);
-                resolve(aux);
+                //var aux = JSON.parse(body);
+                resolve(body);
             });
 
         });
     }
 }
-
 var mostraMensagem = function (res, ret) {
     return new Promise((resolve, reject) => {
         if (ret == false) {
@@ -108,9 +105,6 @@ var mostraMensagem = function (res, ret) {
     });
 
 }
-
-
-
 // middleware to use for all requests
 router.use(function (req, res, next) {
 
