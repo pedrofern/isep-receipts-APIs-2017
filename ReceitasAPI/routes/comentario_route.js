@@ -64,10 +64,10 @@ var criaComentario = function (req, nome_medico, id_apresentacao) {
 
             var comentario =
                 {
-                    "apresentacaoId": id_apresentacao,
+                    "ApresentacaoId": id_apresentacao,
                     "nome_medico": nome_medico,
-                    "data_comentario": req.body.data,
-                    "comentario_medico": req.body.comentario
+                    "data_comentario": req.body.data_comentario,
+                    "comentario_medico": req.body.comentario_medico
                 }
             var bearer = "Bearer " + tokenMed;
             var options = {
@@ -85,7 +85,6 @@ var criaComentario = function (req, nome_medico, id_apresentacao) {
 
             request(options, function (error, response, body) {
                 if (error) throw new Error(error);
-                //var aux = JSON.parse(body);
                 resolve(body);
             });
 
@@ -156,15 +155,15 @@ router.route('/')
         if (!tokDec.medico) {
             return res.status(500).json({ success: false, message: 'Nao tem permissoes.' });
         } else {
-
+            var ret;
             var tokenMedicamentos = getTokenMedicamentosAPI()
                 .then(tokenMedicamentos =>
-                    getApresentacao(req.body.id_apresentacao, req, tokenMedicamentos))
-                .then(apt1 => {
-                    ret = criaComentario(req, tokDec.nome, apt1.id, tokenMed)
-                        .then(ret => mostraMensagem(res, ret))
-                });
-
+                    getApresentacao(req.body.ApresentacaoId, req, tokenMedicamentos))
+                .then(apt1 =>
+                   criaComentario(req, tokDec.nome, apt1.id, tokenMed)                    
+                ).then(ret => 
+                    mostraMensagem(res, ret)
+                );
         }
     });
 
