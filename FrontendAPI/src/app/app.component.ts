@@ -9,12 +9,15 @@ import { User } from './models/user';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
   title = 'Angular - UI';
   subscriptionAuth: Subscription;
   userInfo: User;
+
   constructor(
     private authenticationService: AutenticacaoService,
     private cdr: ChangeDetectorRef) { }
+
   ngOnInit() {
     this.userInfo = this.authenticationService.userInfo;
     this.subscriptionAuth =
@@ -23,6 +26,7 @@ export class AppComponent {
         this.cdr.detectChanges();
       });
   }
+  
   ngOnDestroy() {
     this.subscriptionAuth.unsubscribe();
   }
