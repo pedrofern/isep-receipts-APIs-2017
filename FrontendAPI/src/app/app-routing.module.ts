@@ -7,6 +7,7 @@ import { HttpClient } from 'selenium-webdriver/http';
 import { ReceitasComponent }      from './componentes/receitas/receitas.component';
 import {ReceitaDetalheComponent}  from './componentes/receita-detalhe/receita-detalhe.component';
 import {TabelaComponent} from './componentes/tabela/tabela.component';
+import {MedicamentosComponent} from './componentes/medicamentos/medicamentos.component';
 
 //AUTENTICACAO
 import { LoginComponent } from './componentes/login/login.component';
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'tabela', component: TabelaComponent },
   { path: 'detalhe/:id', component: ReceitaDetalheComponent },
+  {path : 'medicamentos', component: MedicamentosComponent},
   { path: 'login', component: LoginComponent },
   //RECEITAS PRECISAM DE LOGIN
   { path: 'receitas', component: ReceitasComponent, canActivate:

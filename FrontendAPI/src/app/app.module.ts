@@ -13,11 +13,13 @@ import { ReceitaDetalheComponent } from './componentes/receita-detalhe/receita-d
 import { MensagensComponent } from './componentes/mensagens/mensagens.component';
 import { TabelaComponent } from './componentes/tabela/tabela.component';
 import { MedicPesquisaComponent} from './componentes/medic-pesquisa/medic-pesquisa.component';
+import {MedicamentosComponent} from './componentes/medicamentos/medicamentos.component';
 
 //Servicos
 import { MensagensService } from './servicos/mensagens.service';
 import { ReceitaService } from './servicos/receita.service';
 import {AutenticacaoService} from './servicos/autenticacao.service';
+import {MedicamentosService} from './servicos/medicamentos.service';
 
 //Autententicacao
 import { LoginComponent } from './componentes/login/login.component';
@@ -41,7 +43,8 @@ import { UtenteGuard } from './guards/utente.guard';
     MensagensComponent,
     TabelaComponent,
     MedicPesquisaComponent,
-    LoginComponent
+    LoginComponent,
+    MedicamentosComponent
   ],
   providers: [
     //Autenticacao
@@ -51,7 +54,9 @@ import { UtenteGuard } from './guards/utente.guard';
     UtenteGuard,
     //Servicos
     AutenticacaoService,
-    ReceitaService, MensagensService],
+    ReceitaService,
+    MedicamentosService, 
+    MensagensService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
