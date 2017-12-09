@@ -124,34 +124,44 @@ router.route('/:utente_id')
 // utente/{id}/prescricao/poraviar/{?data}
 router.route('/:utente_id/prescricao/poraviar/:a?')
     .get(function (req, res) {
-        Receita.find({
-            utente: req.params.utente_id
-        }, function (err, receitas) {
-            if (err) res.send(err);
-            var prescricoes = [];
-            receitas.forEach(function (receita) {
-                if (req.params.a) {
-                    receita.prescricoes.forEach(function (prescricao) {
-                        if (new Date(prescricao.validade) <= new Date(req.params.a)) {
+        var tokDec = req.decoded;
+        var idToken = tokDec.id;
+
+        if (req.params.utente_id != idToken) {
+            res.json({ success: false, message: 'Não tem permissões para ver prescricoes de outros utentes!' });
+        } else {
+
+            Receita.find({
+                utente: req.params.utente_id
+            }, function (err, receitas) {
+                if (err) res.send(err);
+                var prescricoes = [];
+                receitas.forEach(function (receita) {
+                    if (req.params.a) {
+                        receita.prescricoes.forEach(function (prescricao) {
+                            if (new Date(prescricao.validade) <= new Date(req.params.a)) {
+                                // true a receita ta aberta, false a receita ta fechada
+                                if (prescricao.fechada === false)
+                                    prescricoes.push(prescricao);
+                            }
+                        });
+                    } else {
+                        receita.prescricoes.forEach(function (prescricao) {
                             // true a receita ta aberta, false a receita ta fechada
                             if (prescricao.fechada === false)
-                                prescricoes.push(prescricao);
-                        }
-                    });
+                                prescricoes.push(prescricao, receita._id);
+                        });
+                    }
+                });
+                if (prescricoes.length > 0) {
+                    res.send(prescricoes);
                 } else {
-                    receita.prescricoes.forEach(function (prescricao) {
-                        // true a receita ta aberta, false a receita ta fechada
-                        if (prescricao.fechada === false)
-                            prescricoes.push(prescricao,receita._id);
-                    });
+                    res.send("Nao Foram Encontradas Prescrições para a data indicada.");
                 }
             });
-            if (prescricoes.length > 0) {
-                res.send(prescricoes);
-            } else {
-                res.send("Nao Foram Encontradas Prescrições para a data indicada.");
-            }
-        });
+
+        }
+
     });
 
 
