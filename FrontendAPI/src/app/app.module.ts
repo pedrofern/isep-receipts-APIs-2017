@@ -21,6 +21,7 @@ import { UtenteGuard } from './guards/utente.guard';
 
 import { ReceitasComponent } from './componentes/receitas/receitas.component';
 import { MedicamentosComponent } from './componentes/medicamentos/medicamentos.component';
+import { DetalheReceitaComponent } from './componentes/detalhe-receita/detalhe-receita.component';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { MedicamentosComponent } from './componentes/medicamentos/medicamentos.c
     AppComponent,  
     LoginComponent, 
     ReceitasComponent, 
-    MedicamentosComponent,
+    MedicamentosComponent, 
+    DetalheReceitaComponent
   ],
   providers: [
     //Autenticacao

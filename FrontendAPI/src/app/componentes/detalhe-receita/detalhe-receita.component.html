@@ -1,0 +1,50 @@
+<div class="container">
+
+  <div class="col-md-6 col-md-offset-3">
+    <div class="panel panel-primary">
+      <div class="panel-heading">Receita {{receita._id}}</div>
+
+      <div class="panel-body">
+        <div>
+          <label>Medico:</label>
+          <p>{{receita.medico}}</p>
+
+          <label>Utente:</label>
+          <p>{{receita.utente}}</p>
+
+          <label>Local:</label>
+          <p>{{receita.local}}</p>
+<!--
+         <ul>
+            <li  *ngFor="let prescricoes of myobj?.receita[0]?.prescricoes;let i = index;">
+               cUCU {{prescricoes.quantidade}}
+            </li>
+          </ul>
+        -->
+
+
+        </div>
+      </div>
+
+   <!--
+
+    <div class="col-md-6 col-md-offset-3">
+      <h1>Prescricoes</h1>
+
+    
+      <div>
+        <ul>
+          <li *ngFor="let prespricao of prescricoes['nodes']">{{receita.prescricoes.quantidade}}</li>
+        </ul>
+
+        <button type="button" class="btn btn-info" (click)="ver()">Ver</button>
+
+      </div>
+    </div>
+
+    <div class="error" *ngIf="error">{{error}}</div>
+
+    <button (click)="voltar()">Voltar</button>
+  </div>
+-->
+</div>
