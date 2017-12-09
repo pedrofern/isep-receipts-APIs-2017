@@ -1,8 +1,24 @@
 <div class="col-md-6 col-md-offset-3">
   <h1>Receitas</h1>
   <div>
-  <ul>
-  <li *ngFor="let receita of receitas">{{receita._id}}</li>
-  </ul>
-  </div>
+    <ul>
+    <div class="radio">
+    <li *ngFor="let receita of receitas" (click)="seleccionarReceita(receita)">
+        <span class="receita-element">
+            <span class="badge">{{receita._id}}</span> {{receita.data | date: 'dd/MM/yyyy HH:mm:ss'}}
+          </span>
+          <!--<label><input type="checkbox" class="radio" value="1"/></label> -->
+
+          <label>
+             <input type="radio" name="optradio">
+          </label>
+     </li> 
+    </div>
+    </ul>
+
+<button type="button" class="btn btn-info" (click)="ver()">Ver</button>
+
+    </div>
  </div>
+
+ <div class="error" *ngIf="error">{{error}}</div>

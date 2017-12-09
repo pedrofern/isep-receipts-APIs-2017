@@ -4,7 +4,7 @@ var mongoose = require("mongoose");
 var idvalidator = require('mongoose-id-validator');
 
 var ReceitaSchema = mongoose.Schema({   
-    data: { type: Date, default: Date.now},    
+    data: String,    
     local: String,
     medico: { type: mongoose.Schema.Types.ObjectId, ref:'Pessoa', required: true},
     utente: { type: mongoose.Schema.Types.ObjectId, ref:'Pessoa', required: true},
@@ -26,7 +26,7 @@ var ReceitaSchema = mongoose.Schema({
             },            
         },   
         aviamentos: [{
-            data_aviamento: Date,
+            data_aviamento: String,
             quantidade: Number,
             farmaceutico: { type: mongoose.Schema.Types.ObjectId, ref:'Pessoa', required: true},
         }],  

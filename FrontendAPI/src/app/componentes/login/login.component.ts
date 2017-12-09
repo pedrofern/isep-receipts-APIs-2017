@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
       .subscribe(result => {
         this.loading = false;
         if (result === true) {
-          this.router.navigate(['/']);
+          this.router.navigate(['/receitas']);
         } else {
           this.error = 'Username ou password incorreta';
         }
