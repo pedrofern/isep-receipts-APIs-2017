@@ -2,10 +2,13 @@
 
   <div class="col-md-6 col-md-offset-3">
     <div class="panel panel-primary">
-      <div class="panel-heading">Receita {{receita._id}}</div>
+      <div class="panel-heading">Receita </div>
 
       <div class="panel-body">
         <div>
+          <label>Id: </label>
+          <p>{{receita._id}}</p>
+
           <label>Medico:</label>
           <p>{{receita.medico}}</p>
 
@@ -14,28 +17,22 @@
 
           <label>Local:</label>
           <p>{{receita.local}}</p>
-<!--
-         <ul>
-            <li  *ngFor="let prescricoes of myobj?.receita[0]?.prescricoes;let i = index;">
-               cUCU {{prescricoes.quantidade}}
-            </li>
-          </ul>
-        -->
-
 
         </div>
       </div>
 
-   <!--
+   
 
     <div class="col-md-6 col-md-offset-3">
       <h1>Prescricoes</h1>
 
     
       <div>
+
         <ul>
-          <li *ngFor="let prespricao of prescricoes['nodes']">{{receita.prescricoes.quantidade}}</li>
-        </ul>
+          <!--</ul> *ngFor="let receita of receitas">-->
+          <li *ngFor="let prescricao of receita?.prescricoes">cuc{{prescricao.quantidade}}</li>
+      </ul>
 
         <button type="button" class="btn btn-info" (click)="ver()">Ver</button>
 
@@ -46,5 +43,4 @@
 
     <button (click)="voltar()">Voltar</button>
   </div>
--->
 </div>
