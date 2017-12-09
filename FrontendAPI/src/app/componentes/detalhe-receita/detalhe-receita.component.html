@@ -6,8 +6,8 @@
 
       <div class="panel-body">
         <div>
-          <label>Id: </label>
-          <p>{{receita._id}}</p>
+          <label >Id: </label>
+          <p >{{receita._id}}</p>
 
           <label>Medico:</label>
           <p>{{receita.medico}}</p>
@@ -22,7 +22,6 @@
           <ol>
             <!--</ul> *ngFor="let receita of receitas">-->
             <li *ngFor="let prescricao of receita?.prescricoes">{{prescricao._id}} - <label>{{prescricao.fechada? 'Aberta' : 'Fechada' }}</label>
-               
                     <style>
                       .hidden { visibility: hidden}
                     </style>
@@ -40,12 +39,17 @@
                           </p>
                           <p><label>Princípio Ativo: </label>{{prescricao.apresentacao.farmaco}}
                           <label>Quantidade Embalagem: </label>{{prescricao.apresentacao.quantidade_embalagem}}
-                          </p>  
-                                       
-                          <button type="button" class="btn btn-xs" id="btn" (click)="verPos=!verPos">{{verPos ? 'Esconder' : 'Ver Posologia Prescrita'}}</button>
+                          <label>Dose: </label>{{prescricao.apresentacao.posologia.dose}}
+
+                           </p>               
+                          <button type="button" class="btn btn-xs" id="btn" (click)="verPos=!verPos">{{verPos ? 'Esconder Posologia' : 'Ver Posologia Prescrita'}}</button>
+                          <br>
                           <div [class.hidden]="!verPos">
-                              <label>Dose: </label>{{prescricao.apresentacao.posologiaPrescrita.dose}}
-                              <label>Via Administração: </label>{{prescricao.apresentacao.medicamento}}
+
+                              <label>Dose: </label>{{prescricao.apresentacao.posologia.dose}}
+                              <label>Via Administração: </label>{{prescricao.apresentacao.posologia.via_administracao}}
+                            <br> <label>Intervalo (horas)</label>{{prescricao.apresentacao.posologia.intervalo_tempo_horas}}
+                             <label>Período tempo (dias)</label>{{prescricao.apresentacao.posologia.periodo_tempo_dias}}
                              
                           </div>
 
@@ -53,7 +57,7 @@
                       </tbody>
                     </table>
                   </div>  
-                              
+                       <br>       
            </li>
 
           </ol>
