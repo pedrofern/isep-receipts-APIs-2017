@@ -7,9 +7,9 @@ import { AutenticacaoService } from '../servicos/autenticacao.service';
 @Injectable()
 export class ReceitasService {
 
-  private receitasUrl = 'http://receitas2017.azurewebsites.net/receita/';
+ // private receitasUrl = 'http://receitas2017.azurewebsites.net/receita/';
 
-  //private receitasUrl = 'http://localhost:8080/receita';
+  private receitasUrl = 'http://localhost:8080/receita';
   //verificar o servidor:porta
  
   constructor(

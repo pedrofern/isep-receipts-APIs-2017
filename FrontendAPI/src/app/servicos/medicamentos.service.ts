@@ -7,8 +7,8 @@ import { AutenticacaoService } from './autenticacao.service';
 @Injectable()
 export class MedicamentosService {
 
- private medicamentosUrl = 'http://medicamentosapi2017.azurewebsites.net/api/medicamento';
- //private medicamentosUrl = 'http://localhost:50647/api/medicamento';
+// private medicamentosUrl = 'http://medicamentosapi2017.azurewebsites.net/api/medicamento';
+ private medicamentosUrl = 'http://localhost:50647/api/medicamento';
   
   //verificar o servidor:porta
 
