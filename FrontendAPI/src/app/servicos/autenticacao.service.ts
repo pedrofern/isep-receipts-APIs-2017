@@ -20,8 +20,8 @@ export class AutenticacaoService {
   constructor(
     private http: HttpClient
   ) {
-    this.userInfo = localStorage.userInfo
-     && JSON.parse(localStorage.userinfo);
+    this.userInfo = localStorage.userInfo;
+     //&& JSON.parse(localStorage.userinfo);
   }
   
   login(nif: string, password: string): Observable<boolean> {
