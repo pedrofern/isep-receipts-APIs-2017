@@ -18,29 +18,54 @@
           <label>Local:</label>
           <p>{{receita.local}}</p>
 
+          <label>Prescrições:</label>
+          <ol>
+            <!--</ul> *ngFor="let receita of receitas">-->
+            <li *ngFor="let prescricao of receita?.prescricoes">{{prescricao._id}} - <label>{{prescricao.fechada? 'Aberta' : 'Fechada' }}</label>
+               
+                    <style>
+                      .hidden { visibility: hidden}
+                    </style>
+                    <button type="button" class="btn btn-info btn-xs" id="btn" (click)="showNgFor=!showNgFor; selectId=prescricao._id">{{showNgFor ? 'Esconder' : 'Ver'}}</button>
+                    
+                    <div *ngIf="selectId===prescricao._id">
+                    <table [class.hidden]="!showNgFor">
+                      <tbody>
+                          <label>Quantidade: </label>{{prescricao.quantidade}}
+                          <label>Validade: </label>{{prescricao.validade |  date: 'dd/MM/yyyy'}}
+                          <p><label>Medicamento: </label>{{prescricao.apresentacao.medicamento}}
+                          <label>Forma: </label>{{prescricao.apresentacao.forma}}
+                          <label>Dosagem: </label>{{prescricao.apresentacao.dosagem}}
+                          <label>Medicamento: </label>{{prescricao.apresentacao.medicamento}}
+                          </p>
+                          <p><label>Princípio Ativo: </label>{{prescricao.apresentacao.farmaco}}
+                          <label>Quantidade Embalagem: </label>{{prescricao.apresentacao.quantidade_embalagem}}
+                          </p>  
+                                       
+                          <button type="button" class="btn btn-xs" id="btn" (click)="verPos=!verPos">{{verPos ? 'Esconder' : 'Ver Posologia Prescrita'}}</button>
+                          <div [class.hidden]="!verPos">
+                              <label>Dose: </label>{{prescricao.apresentacao.posologiaPrescrita.dose}}
+                              <label>Via Administração: </label>{{prescricao.apresentacao.medicamento}}
+                             
+                          </div>
+
+
+                      </tbody>
+                    </table>
+                  </div>  
+                              
+           </li>
+
+          </ol>
+
         </div>
-      </div>
-
-   
-
-    <div class="col-md-6 col-md-offset-3">
-      <h1>Prescricoes</h1>
-
-    
-      <div>
-
-        <ul>
-          <!--</ul> *ngFor="let receita of receitas">-->
-          <li *ngFor="let prescricao of receita?.prescricoes">cuc{{prescricao.quantidade}}</li>
-      </ul>
-
-        <button type="button" class="btn btn-info" (click)="ver()">Ver</button>
 
       </div>
+      <button (click)="voltar()">Voltar</button>
     </div>
 
-    <div class="error" *ngIf="error">{{error}}</div>
-
-    <button (click)="voltar()">Voltar</button>
-  </div>
+    <div class="panel panel-danger" class="error" *ngIf="error">
+      <div class="panel-heading">Erro</div>
+      <div class="panel-body">{{error}}</div>
+    </div>
 </div>

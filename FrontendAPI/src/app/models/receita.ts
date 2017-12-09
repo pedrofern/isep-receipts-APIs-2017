@@ -1,11 +1,13 @@
 export class Receita {
-  _id: string;
+
+  _id = 'mongoose-id-validator';
   utente: string;
   medico: string;
   __v: string;
   local: string;
   data:  Date; 
   prescricoes: [{
+    fechada: boolean;
     quantidade: string;
 
     validade: Date,

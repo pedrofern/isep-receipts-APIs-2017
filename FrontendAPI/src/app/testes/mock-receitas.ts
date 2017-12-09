@@ -10,7 +10,7 @@ export const RECEITAS: Receita[] = [
 
   prescricoes: [{
     quantidade: "12",
-
+    fechada:true,
     validade:  new Date("2017-7-3"),
     apresentacao: {     
         id_apresentacao: 3,

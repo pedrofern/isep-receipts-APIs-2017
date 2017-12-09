@@ -17,8 +17,10 @@
     </ul>
 
 <button type="button" class="btn btn-info" (click)="ver()">Ver</button>
+<div class="alert alert-danger" *ngIf="error">
+        <strong>Erro: </strong> {{error}}
+      </div>
 
     </div>
  </div>
 
- <div class="error" *ngIf="error">{{error}}</div>

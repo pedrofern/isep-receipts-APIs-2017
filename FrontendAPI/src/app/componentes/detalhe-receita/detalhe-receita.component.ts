@@ -15,6 +15,7 @@ export class DetalheReceitaComponent implements OnInit {
   @Input() receita: Receita;
   @Output() close = new EventEmitter();
   error: any;
+  selectId: string;
   navigated =false; // true if navigated here
 
   constructor(
