@@ -10,8 +10,8 @@ class Token { token: string };
 
 @Injectable()
 export class AutenticacaoService {
- // private authUrl = 'http://receitas2017.azurewebsites.net/autenticacao';
-  private authUrl = 'http://localhost:8080/autenticacao';
+  private authUrl = 'http://receitas2017.azurewebsites.net/autenticacao';
+ // private authUrl = 'http://localhost:8080/autenticacao';
   
   //verificar o servidor:porta
   public userInfo: User;
