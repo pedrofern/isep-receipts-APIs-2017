@@ -6,18 +6,23 @@
           </a>
         <ul class="nav navbar-nav">
             <li >
-                    <a *ngIf="userInfo" routerLink="/">Olá {{userInfo.nome}}</a>
-                </li>
+                <a *ngIf="userInfo" routerLink="/">Olá {{userInfo.nome}}</a>
+            </li>
             <li >
                 <a *ngIf="!userInfo" routerLink="/">Registo</a>
-          </li>
-          <li >
-              <a routerLink="/medicamentos">Medicamentos</a>
-          </li>
+          </li>       
          
           <li  class="active">
               <a *ngIf="!userInfo" routerLink="/login">Login</a>
           </li>
+
+          <li>
+            <a *ngIf="userInfo" routerLink="/receitas">Receitas</a>
+        </li>
+        <li>
+            <a  routerLink="/medicamentos">Medicamentos</a>
+        </li>
+                    <!--
           <li>
               <a *ngIf="userInfo && userInfo.medico"
               routerLink="/">Criar Receita</a>
@@ -45,7 +50,7 @@
           <li>
               <a *ngIf="userInfo" routerLink="/login">Logout</a>
               <span class="sr-only">(current)</span>
-          </li>     
+          </li>   -->  
         </ul>
       </nav>
   </div>

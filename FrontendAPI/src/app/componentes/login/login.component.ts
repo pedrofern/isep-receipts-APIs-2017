@@ -11,11 +11,13 @@ export class LoginComponent implements OnInit {
   model: any = {};
   loading = false;
   error = '';
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authenticationService: AutenticacaoService) { }
-  ngOnInit() {
+  
+    ngOnInit() {
     this.authenticationService.logout();
     this.activatedRoute.params.subscribe(params => {
       if (params['u'] !== undefined) {
@@ -24,6 +26,7 @@ export class LoginComponent implements OnInit {
       }
     });
   }
+
   login() {
     this.loading = true;
 
@@ -32,7 +35,7 @@ export class LoginComponent implements OnInit {
       .subscribe(result => {
         this.loading = false;
         if (result === true) {
-          this.router.navigate(['/tabela']);
+          this.router.navigate(['/']);
         } else {
           this.error = 'Username ou password incorreta';
         }

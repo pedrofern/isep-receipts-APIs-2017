@@ -211,9 +211,8 @@ router.use(function (req, res, next) {
 
     // do logging
     console.log('Verificando o token.');
-    console.log(req.headers.authorization);
-
-    var token = req.headers.authorization;
+  
+    var token = req.headers['x-access-token'];
 
     if (token) {
         // verifies secret and checks exp

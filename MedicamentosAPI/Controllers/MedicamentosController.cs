@@ -25,6 +25,7 @@ namespace MedicamentosAPI.Controllers
         }
 
         // GET: api/Medicamentos
+        [AllowAnonymous]
         [HttpGet]
         public IEnumerable<MedicamentoDTO> GetMedicamento()
         {

@@ -32,6 +32,8 @@ namespace MedicamentosAPI
         {
             services.AddMvc();
 
+            services.AddCors();
+
             services.AddDbContext<MedicamentosAPIContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("MedicamentosAPIContext")));
 
@@ -92,6 +94,17 @@ namespace MedicamentosAPI
             }
 
             app.UseAuthentication();
+
+            app.UseCors(
+              options => options.WithOrigins("http://receitas3da2017.azurewebsites.net/").AllowAnyHeader()
+
+          );
+
+            app.UseCors(
+                options => options.WithOrigins("http://localhost:4200").AllowAnyHeader()
+                
+            );
+
             app.UseMvc();
         }
     }

@@ -6,19 +6,10 @@ import { AppRoutingModule } from './/app-routing.module';
 
 //Componentes
 import { AppComponent } from './app.component';
-import { ReceitasComponent } from './componentes/receitas/receitas.component';
-import { ReceitaUpdateComponent } from './componentes/receita-update/receita-update.component';
-import { RECEITAS} from './testes/mock-receitas';
-import { ReceitaDetalheComponent } from './componentes/receita-detalhe/receita-detalhe.component';
-import { MensagensComponent } from './componentes/mensagens/mensagens.component';
-import { TabelaComponent } from './componentes/tabela/tabela.component';
-import { MedicPesquisaComponent} from './componentes/medic-pesquisa/medic-pesquisa.component';
-import {MedicamentosComponent} from './componentes/medicamentos/medicamentos.component';
 
 //Servicos
-import { MensagensService } from './servicos/mensagens.service';
-import { ReceitaService } from './servicos/receita.service';
 import {AutenticacaoService} from './servicos/autenticacao.service';
+import {ReceitasService} from './servicos/receitas.service';
 import {MedicamentosService} from './servicos/medicamentos.service';
 
 //Autententicacao
@@ -28,6 +19,9 @@ import { MedicoGuard } from './guards/medico.guard';
 import { FarmaceuticoGuard } from './guards/farmaceutico.guard';
 import { UtenteGuard } from './guards/utente.guard';
 
+import { ReceitasComponent } from './componentes/receitas/receitas.component';
+import { MedicamentosComponent } from './componentes/medicamentos/medicamentos.component';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -36,15 +30,10 @@ import { UtenteGuard } from './guards/utente.guard';
     HttpClientModule
   ],
   declarations: [
-    AppComponent,
-    ReceitasComponent,
-    ReceitaUpdateComponent,
-    ReceitaDetalheComponent,
-    MensagensComponent,
-    TabelaComponent,
-    MedicPesquisaComponent,
-    LoginComponent,
-    MedicamentosComponent
+    AppComponent,  
+    LoginComponent, 
+    ReceitasComponent, 
+    MedicamentosComponent,
   ],
   providers: [
     //Autenticacao
@@ -54,9 +43,9 @@ import { UtenteGuard } from './guards/utente.guard';
     UtenteGuard,
     //Servicos
     AutenticacaoService,
-    ReceitaService,
-    MedicamentosService, 
-    MensagensService],
+    ReceitasService,
+    MedicamentosService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
