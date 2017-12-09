@@ -11,6 +11,7 @@ export class LoginComponent implements OnInit {
   model: any = {};
   loading = false;
   error = '';
+  logado=false;
 
   constructor(
     private router: Router,
@@ -18,13 +19,14 @@ export class LoginComponent implements OnInit {
     private authenticationService: AutenticacaoService) { }
   
     ngOnInit() {
-    this.authenticationService.logout();
-    this.activatedRoute.params.subscribe(params => {
-      if (params['u'] !== undefined) {
-        ;
-        this.error = 'Não tem permissões.';
-      }
-    });
+      this.authenticationService.logout();
+      this.activatedRoute.params.subscribe(params => {
+        if (params['u'] !== undefined) {
+          ;
+          this.error = 'Não tem permissões.';
+          this.logado=false;
+        }
+      });
   }
 
   login() {
@@ -35,8 +37,10 @@ export class LoginComponent implements OnInit {
       .subscribe(result => {
         this.loading = false;
         if (result === true) {
+          this.logado=true;
           this.router.navigate(['/receitas']);
         } else {
+          this.logado=false;
           this.error = 'Username ou password incorreta';
         }
       });
