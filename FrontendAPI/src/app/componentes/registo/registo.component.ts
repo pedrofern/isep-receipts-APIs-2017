@@ -10,6 +10,15 @@ import { Router } from '@angular/router';
 
 export class RegistoComponent implements OnInit {
   error="";
+  inputNome:string;
+  inputNIF:string;
+  inputNB:string;
+  inputEmail4:string;
+  inputPassword4:string;
+  tentativa:boolean;
+  criado:string;
+  nome:string;
+
 
   constructor(  private registoService: RegistoService,
     private route: Router) { }

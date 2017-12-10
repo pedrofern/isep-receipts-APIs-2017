@@ -24,6 +24,10 @@ export class CriacaoReceitaComponent implements OnInit {
   creating = false;
   prescricoes: PrescricaoCriada[]=[];
   idApres: number;
+  utente:string;
+  data:Date;
+  local:string;
+  verForm:boolean;
 
   constructor(
     private autenticacaoService:AutenticacaoService,
