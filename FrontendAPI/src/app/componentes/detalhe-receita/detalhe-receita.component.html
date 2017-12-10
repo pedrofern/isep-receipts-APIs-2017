@@ -21,7 +21,7 @@
           <label>Prescrições:</label>
           <ol>
             <!--</ul> *ngFor="let receita of receitas">-->
-            <li *ngFor="let prescricao of receita?.prescricoes">{{prescricao._id}} - <label>{{prescricao.fechada? 'Aberta' : 'Fechada' }}</label>
+            <li *ngFor="let prescricao of receita?.prescricoes">{{prescricao._id}} - <label>{{prescricao.fechada? 'Fechada' : 'Aberta' }}</label>
                     <style>
                       .hidden { visibility: hidden}
                     </style>

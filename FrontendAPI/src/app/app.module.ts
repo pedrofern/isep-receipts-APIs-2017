@@ -18,6 +18,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { MedicoGuard } from './guards/medico.guard';
 import { FarmaceuticoGuard } from './guards/farmaceutico.guard';
 import { UtenteGuard } from './guards/utente.guard';
+import { RegisteredGuard } from './guards/registeredGuard';
 
 import { ReceitasComponent } from './componentes/receitas/receitas.component';
 import { MedicamentosComponent } from './componentes/medicamentos/medicamentos.component';
@@ -43,6 +44,7 @@ import { DetalheReceitaComponent } from './componentes/detalhe-receita/detalhe-r
     MedicoGuard,
     FarmaceuticoGuard,
     UtenteGuard,
+    RegisteredGuard,
     //Servicos
     AutenticacaoService,
     ReceitasService,

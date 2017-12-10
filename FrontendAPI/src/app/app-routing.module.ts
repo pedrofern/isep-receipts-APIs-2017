@@ -10,6 +10,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { MedicoGuard } from './guards/medico.guard';
 import { FarmaceuticoGuard } from './guards/farmaceutico.guard';
 import { UtenteGuard } from './guards/utente.guard';
+import { RegisteredGuard } from './guards/registeredGuard';
 
 import { ReceitasComponent} from './componentes/receitas/receitas.component';
 import { MedicamentosComponent} from './componentes/medicamentos/medicamentos.component';
@@ -20,9 +21,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   //RECEITAS PRECISAM DE LOGIN
   { path: 'receitas', component: ReceitasComponent, canActivate:
-  [AuthGuard, MedicoGuard] },
+  [AuthGuard, RegisteredGuard] },
   {path: 'receita/:_id', component: DetalheReceitaComponent,  canActivate:
-  [AuthGuard, MedicoGuard]  },
+  [AuthGuard, RegisteredGuard]  },
   { path: 'medicamentos', component: MedicamentosComponent },  
 ];
 
