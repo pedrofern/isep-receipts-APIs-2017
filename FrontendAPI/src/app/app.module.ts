@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import {AutenticacaoService} from './servicos/autenticacao.service';
 import {ReceitasService} from './servicos/receitas.service';
 import {MedicamentosService} from './servicos/medicamentos.service';
+import {FabReceitasService}from './servicos/fabrica-receitas.service';
 
 //Autententicacao
 import { LoginComponent } from './componentes/login/login.component';
@@ -49,7 +50,8 @@ import { CriacaoReceitaComponent } from './componentes/criacao-receita/criacao-r
     //Servicos
     AutenticacaoService,
     ReceitasService,
-    MedicamentosService
+    MedicamentosService,
+    FabReceitasService
   ],
   bootstrap: [AppComponent]
 })

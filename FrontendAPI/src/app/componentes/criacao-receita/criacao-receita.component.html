@@ -15,7 +15,7 @@
         <ol>
           <!--obrigatorios-->
           <li>
-            <label>Utente: </label>
+            <label>Utente (NIF): </label>
             <input type="text" [(ngModel)]="utente" required/>
           </li>
           <li>
@@ -33,11 +33,6 @@
         <button type="button" class="btn btn-xs" id="btn" (click)="verForm=!verForm">{{verForm? '' : 'Adicionar prescrição'}}</button>
         <br>
         <div [class.hidden]="!verForm">
-
-          <label>Quantidade: </label>
-          <input type="text" [(ngModel)]="quantidade" />
-          <label>Validade: </label>
-          <input type="date" [(ngModel)]="validade" />
 
           <label *ngIf="apresentacoes">Seleccione a apresentação</label>
 
@@ -67,20 +62,39 @@
           
           <ul class="aprSel">
               <li *ngFor="let ap of idsApSelec" (click)="selecciona(apresentacaoSelec.id)" [class.selected]="ap === apresentacaoSelec">
-                <span class="hero-element">
-                  <span class="badge">{{ap}}</span> {{ap.dose}}
+                <span class="ap-element">
+                  <span class="badge">{{ap}}</span> 
+
+                  <label>Quantidade: </label>
+                  <input type="text" [(ngModel)]="qtd" />
+
+                  <label>Validade: </label>
+                  <input type="date" [(ngModel)]="valid" />
+        
                 </span>
                 <button class="delete-button" (click)="removeApresentacao(ap)">Remover</button>
+                <button class="create-button" (click)="criarPrescricao(ap,qtd,valid )">Prescrever</button>
+                <div class="alert alert-warning" *ngIf="error">
+                    <p>{{error}}</p>
+                  </div>
               </li>
             </ul>
+                    
+            <div class>
+                <p>Prescrições Adicionadas:</p> 
+                <ul>
+                  <li *ngFor="let presc of prescricoes">   
+                      <span class="badge">{{presc.apresentacao.id_apresentacao}}</span>
+                      Quantidade: {{presc.quantidade}} | Validade: {{presc.validade | date: 'dd/MM/yyyy'}}
 
-
-
+                      </li>
+                </ul>
+            </div>
         </div>
         <div style="text-align:center" >
-        <button type="button"   class="btn btn-info" (click)="inserirReceita(utente, prescricoes)">Criar</button>
+        <button type="button"   class="btn btn-info" (click)="criarReceita(utente, local, data)">Criar</button>
         </div>
-        <div class="alert alert-warning" *ngIf="error">
+        <div class="alert alert-danger" *ngIf="error">
           <strong>Erro </strong>{{error}}
         </div>
 
