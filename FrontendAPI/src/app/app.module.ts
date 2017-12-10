@@ -23,6 +23,7 @@ import { RegisteredGuard } from './guards/registeredGuard';
 import { ReceitasComponent } from './componentes/receitas/receitas.component';
 import { MedicamentosComponent } from './componentes/medicamentos/medicamentos.component';
 import { DetalheReceitaComponent } from './componentes/detalhe-receita/detalhe-receita.component';
+import { CriacaoReceitaComponent } from './componentes/criacao-receita/criacao-receita.component';
 
 @NgModule({
   imports: [
@@ -36,7 +37,7 @@ import { DetalheReceitaComponent } from './componentes/detalhe-receita/detalhe-r
     LoginComponent, 
     ReceitasComponent, 
     MedicamentosComponent, 
-    DetalheReceitaComponent
+    DetalheReceitaComponent, CriacaoReceitaComponent
   ],
   providers: [
     //Autenticacao

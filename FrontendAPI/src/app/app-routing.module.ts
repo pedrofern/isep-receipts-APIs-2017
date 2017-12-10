@@ -15,16 +15,16 @@ import { RegisteredGuard } from './guards/registeredGuard';
 import { ReceitasComponent} from './componentes/receitas/receitas.component';
 import { MedicamentosComponent} from './componentes/medicamentos/medicamentos.component';
 import { DetalheReceitaComponent} from './componentes/detalhe-receita/detalhe-receita.component';
+import {CriacaoReceitaComponent} from './componentes/criacao-receita/criacao-receita.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   //RECEITAS PRECISAM DE LOGIN
-  { path: 'receitas', component: ReceitasComponent, canActivate:
-  [AuthGuard, RegisteredGuard] },
-  {path: 'receita/:_id', component: DetalheReceitaComponent,  canActivate:
-  [AuthGuard, RegisteredGuard]  },
+  { path: 'receitas', component: ReceitasComponent, canActivate: [AuthGuard, RegisteredGuard] },
+  {path: 'receita/:_id', component: DetalheReceitaComponent,  canActivate:   [AuthGuard, RegisteredGuard]  },
   { path: 'medicamentos', component: MedicamentosComponent },  
+  { path: 'criar_receita', component: CriacaoReceitaComponent, canActivate: [AuthGuard, MedicoGuard] },  
 ];
 
 @NgModule({

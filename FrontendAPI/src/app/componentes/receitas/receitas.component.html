@@ -1,52 +1,64 @@
-<div class="col-md-6 col-md-offset-3">
-  <h1>Receitas</h1>
-  <div *ngIf="userInfo.farmaceutico">
-        <label>Introduza o código da receita: </label>
-        <input type="text" [(ngModel)]="codigo" />
-        
-        <button type="button" class="btn btn-success" (click)="pesquisarReceita(codigo)">Verificar</button>
-       
-        <div class="alert alert-warning" *ngIf="error">
-            <strong>Erro </strong>{{error}}
-          </div>
-        <div class="alert alert-success" *ngIf="encontrada && !error">
-          <strong>Encontrada</strong>
-        </div>
-          <div class="alert alert-warning" *ngIf="codigo && !encontrada && !error">
-              <strong>Verifique se o código inserido está correto</strong>
-          </div>
+<div class="container">
+  <div class="jumbotron">
+      <div style="text-align: center"> 
+        <h1>Receitas</h1>
+      </div>
   </div>
-  <div>
-    <ul>
-    <div class="radio">
-    <li *ngFor="let receita of receitas" (click)="seleccionarReceita(receita)">
-        <span class="receita-element">
-            <span class="badge">{{receita._id}}</span> {{receita.data | date: 'dd/MM/yyyy HH:mm:ss'}}
-          </span>
-          <!--<label><input type="checkbox" class="radio" value="1"/></label> -->
+  <div class="col-md-6 col-md-offset-3" >
+    <h3>Lista de Receitas </h3>
 
-          <label>
-             <input type="radio" name="optradio">
-          </label>
-     </li> 
+    <!-- FARMACEUTICO -->
+    <div *ngIf="userInfo.farmaceutico">
+      <label>Introduza o código da receita: </label>
+      <input type="text" [(ngModel)]="codigo" />
+
+      <button type="button" class="btn btn-success" (click)="pesquisarReceita(codigo)">Verificar</button>
+
+      <div class="alert alert-warning" *ngIf="error">
+        <strong>Erro </strong>{{error}}
+      </div>
+      <div class="alert alert-success" *ngIf="encontrada && !error">
+        <strong>Encontrada</strong>
+      </div>
+      <div class="alert alert-warning" *ngIf="codigo && !encontrada && !error">
+        <strong>Verifique se o código inserido está correto</strong>
+      </div>
     </div>
-    </ul>
-  </div>
 
-  <button type="button" class="btn btn-info" (click)="ver()">Ver</button>
+    <!-- MEDICO OU UTENTE -->
+    <div>
+      <ul>
+        <div class="radio">
+          <li *ngFor="let receita of receitas" (click)="seleccionarReceita(receita)">
+            <span class="receita-element">
+              <span class="badge">{{receita._id}}</span> {{receita.data | date: 'dd/MM/yyyy HH:mm:ss'}}
+            </span>
+            <!--<label><input type="checkbox" class="radio" value="1"/></label> -->
 
-  <div *ngIf="!userInfo.farmaceutico">
-    <div class="alert alert-danger" *ngIf="error">
-            <strong>Erro: </strong> {{error}}
+            <label>
+              <input type="radio" name="optradio">
+            </label>
+            <br>
+          </li>
         </div>
-  </div>
+      </ul>
+    </div>
+    <br>
 
-  <div *ngIf="userInfo.farmaceutico">
+    <div style="text-align: center">
+    <button type="button" class="btn btn-info" (click)="ver()">Ver</button>
+    </div>
+
+    <div *ngIf="!userInfo.farmaceutico">
       <div class="alert alert-danger" *ngIf="error">
-              <strong>Erro: </strong> {{error}}
-          </div>
+        <strong>Erro: </strong> {{error}}
+      </div>
+
+      <div class="alert alert-warning" *ngIf="!encontrada">
+          <strong>Seleccione a receita </strong>
+        </div>
     </div>
 
-  
- </div>
+  </div>
 
+</div>

@@ -54,6 +54,7 @@ export class ReceitasComponent implements OnInit {
       },
       error => { this.error = <any>error },
     )
+    if(!this.error)this.encontrada=true;
   }
 
   ver(): void {
