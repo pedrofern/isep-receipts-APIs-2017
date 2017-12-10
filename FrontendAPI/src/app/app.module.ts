@@ -29,6 +29,8 @@ import { DetalheReceitaComponent } from './componentes/detalhe-receita/detalhe-r
 import { CriacaoReceitaComponent } from './componentes/criacao-receita/criacao-receita.component';
 import { RegistoComponent } from './componentes/registo/registo.component';
 import { AlertasComponent } from './componentes/alertas/alertas.component';
+import { AviamentoComponent } from './componentes/aviamento/aviamento.component';
+import { PesquisarReceitaComponent } from './componentes/pesquisar-receita/pesquisar-receita.component';
 
 @NgModule({
   imports: [
@@ -45,7 +47,8 @@ import { AlertasComponent } from './componentes/alertas/alertas.component';
     DetalheReceitaComponent, 
     CriacaoReceitaComponent, 
     RegistoComponent, 
-    AlertasComponent
+    AlertasComponent, 
+    AviamentoComponent, PesquisarReceitaComponent
   ],
   providers: [
     //Autenticacao

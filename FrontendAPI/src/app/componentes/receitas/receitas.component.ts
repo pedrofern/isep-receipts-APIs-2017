@@ -58,7 +58,6 @@ export class ReceitasComponent implements OnInit {
   }
 
   ver(): void {
-
     this.route.navigate(['/receita', this.receitaSelec._id]);
 
   }

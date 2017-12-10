@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="jumbotron">
+    <div style="text-align: center">
+      <h1>Receitas</h1>
+    </div>
+  </div>
+  <div class="col-md-6 col-md-offset-3">
+    <h3>Aviar Receita </h3>
+
+    <label>Introduza o código da receita: </label>
+    <input type="text" [(ngModel)]="codigo" />
+
+    <button type="button" class="btn btn-success" (click)="pesquisarReceita(codigo)">Verificar</button>
+
+    <div class="alert alert-warning" *ngIf="error">
+      <strong>Erro </strong>{{error}}
+    </div>
+    <div class="alert alert-success" *ngIf="encontrada && !error">
+      <strong>Encontrada</strong>
+    </div>
+    <div class="alert alert-warning" *ngIf="codigo && !encontrada && !error">
+      <strong>Verifique se o código inserido está correto</strong>
+    </div>
+
+    <label>Introduza o código da prescrição: </label>
+    <input type="text" [(ngModel)]="presc" />
+
+    <label>Quantidade a aviar: </label>
+    <input type="number" [(ngModel)]="qtdd" />
+
+
+    <label>Data: </label>
+    <input type="date" [(ngModel)]="data" />
+
+    <button type="button" class="btn btn-success" (click)="adicionarAviamento(qtdd, data)">Adicionar Aviamento</button>
+
+    
+    <div class>
+      <p>Aviamentos Adicionados:</p>
+      <ul>
+        <li *ngFor="let avia of aviamentos">
+          <span class="badge">{{avia.quantidade}}</span>
+          Quantidade: {{avia.quantidade}} | Validade: {{avia.data_aviamento | date: 'dd/MM/yyyy'}}
+
+        </li>
+      </ul>
+    </div>
+  
+
+    <button type="button" class="btn btn-success" (click)="aviar(presc)">Aviar</button>
+    <button type="button" class="btn btn-success" (click)="aviarTodas()">Aviar Totalmente</button>
+  </div>
+</div>

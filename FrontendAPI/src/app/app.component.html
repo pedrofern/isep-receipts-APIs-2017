@@ -27,6 +27,13 @@
             <a *ngIf="userInfo && userInfo.medico"
             routerLink="/criar_receita">Criar Receita</a>
         </li>
+
+        <li>
+                <a *ngIf="userInfo && userInfo.farmaceutico"
+                routerLink="/aviar">Aviar receita</a>
+            </li>
+
+        <!--
           <li>
                 <a *ngIf="userInfo && userInfo.medico"
                 routerLink="/">Atualizar receita</a>
@@ -40,6 +47,7 @@
                 <a *ngIf="userInfo && userInfo.utente"
                 routerLink="/">Info Posologia Prescrita</a>
             </li>
+        -->
 
             <li>
                     <a *ngIf="userInfo" routerLink="/">LogOut</a>

@@ -1,0 +1,14 @@
+  <label>Introduza o código da receita: </label>
+  <input type="text" [(ngModel)]="codigo" />
+
+  <button type="button" class="btn btn-success" (click)="pesquisarReceita(codigo)">Verificar</button>
+
+  <div class="alert alert-warning" *ngIf="error">
+    <strong>Erro </strong>{{error}}
+  </div>
+  <div class="alert alert-success" *ngIf="encontrada && !error">
+    <strong>Encontrada</strong>
+  </div>
+  <div class="alert alert-warning" *ngIf="codigo && !encontrada && !error">
+    <strong>Verifique se o código inserido está correto</strong>
+  </div>

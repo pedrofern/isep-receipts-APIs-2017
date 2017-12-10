@@ -434,7 +434,8 @@ router.route('/:receita_id/prescricao/:id/aviar')
                         var quantidadeTotalPrescrita = receita.prescricoes[i].quantidade;
                         var qtdPossiveisPrescricao = quantidadeTotalPrescrita - quantidadesAviadas;
                         if (qtdPossiveisPrescricao > 0 && qtdPossiveisPrescricao <= quantidadeTotalPrescrita) {
-                            var tam2 = req.body.aviamentos.length;
+                           
+                             var tam2 = req.body.aviamentos.length;
                             for (let k = 0; k < tam2; k++) {
                                 var novoAviamento = {
                                     // coloca automaticamente o id do farmaceutico na prescricao
