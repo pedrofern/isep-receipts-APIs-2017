@@ -6,4 +6,5 @@ export class User {
     utente: boolean;
     nif: number;
     nome: string;
+    id: string;
 }

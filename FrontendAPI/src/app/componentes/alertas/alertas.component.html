@@ -1,5 +1,13 @@
-<div>
+
+  <div>
     <div class="alert alert-danger">
-          <strong>{{alerta}}</strong>
+        <ul>
+            <li *ngFor="let alerta of alertas"> 
+              Receita ({{alerta.receita_id}}) -> A prescrição {{alerta.prescricao_id}} expira no próximo dia {{alerta.validade}} 
+            </li>  
+          </ul>
+       
      </div>
-  </div>
+
+
+  

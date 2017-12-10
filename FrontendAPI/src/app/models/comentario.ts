@@ -3,5 +3,5 @@ export class Comentario {
     apresentacaoId: number;
     nome_medico: string;
     comentario_medico: string;
-    data_comentario: DateTimeFormat;
+    data_comentario: Date;
 }

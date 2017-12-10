@@ -40,7 +40,8 @@ export class AutenticacaoService {
               farmaceutico: tokenDecoded.farmaceutico,
               utente: tokenDecoded.utente,
               nif:tokenDecoded.nif,
-              nome:tokenDecoded.nome
+              nome:tokenDecoded.nome,
+              id:tokenDecoded.id
             }
             localStorage.userInfo = this.userInfo;
 

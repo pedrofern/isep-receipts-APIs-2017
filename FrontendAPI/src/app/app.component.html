@@ -31,28 +31,21 @@
                 <a *ngIf="userInfo && userInfo.medico"
                 routerLink="/">Atualizar receita</a>
             </li>
-            <li>
-                <a *ngIf="(userInfo)"
-                routerLink="/">Consultar Receita</a>
-            </li>
+
             <li>
                 <a *ngIf="userInfo && userInfo.medico"
                 routerLink="/">Comentar Apresentação</a>
             </li>
             <li>
-                <a *ngIf="userInfo && userInfo.farmaceutico"
-                routerLink="/">Aviar Receita</a>
-            </li>
-            <li>
                 <a *ngIf="userInfo && userInfo.utente"
                 routerLink="/">Info Posologia Prescrita</a>
             </li>
-          <li>
-              <a *ngIf="userInfo" routerLink="/login">Logout</a>
-              <span class="sr-only">(current)</span>
-          </li>   -->  
+
+            <li>
+                    <a *ngIf="userInfo" routerLink="/">LogOut</a>
+                    <span class="sr-only">(current)</span>
+            </li> 
         </ul>
       </nav>
   </div>
-  <app-alertas></app-alertas>
   <router-outlet></router-outlet>

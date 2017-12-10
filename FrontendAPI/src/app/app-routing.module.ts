@@ -17,6 +17,7 @@ import { MedicamentosComponent} from './componentes/medicamentos/medicamentos.co
 import { DetalheReceitaComponent} from './componentes/detalhe-receita/detalhe-receita.component';
 import {CriacaoReceitaComponent} from './componentes/criacao-receita/criacao-receita.component';
 import {RegistoComponent} from './componentes/registo/registo.component';
+import { AlertasComponent } from './componentes/alertas/alertas.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'medicamentos', component: MedicamentosComponent },  
   { path: 'criar_receita', component: CriacaoReceitaComponent, canActivate: [AuthGuard, MedicoGuard] },  
   { path: 'registo', component: RegistoComponent },  
+  {path:'alertas', component: AlertasComponent, canActivate:[AuthGuard, RegisteredGuard]}
 ];
 
 @NgModule({

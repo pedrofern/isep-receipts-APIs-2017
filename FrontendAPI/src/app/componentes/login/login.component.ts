@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AutenticacaoService } from '../../servicos/autenticacao.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AlertasService} from '../../servicos/alertas.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private authenticationService: AutenticacaoService) { }
+    private authenticationService: AutenticacaoService,
+    private alertasService: AlertasService) { }
   
     ngOnInit() {
       this.authenticationService.logout();
@@ -38,6 +40,7 @@ export class LoginComponent implements OnInit {
         this.loading = false;
         if (result === true) {
           this.logado=true;
+          this.alertasService.obterAlertas();
           this.router.navigate(['/receitas']);
         } else {
           this.logado=false;
