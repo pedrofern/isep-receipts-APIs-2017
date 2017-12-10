@@ -47,7 +47,7 @@ router.use(function (req, res, next) {
     console.log('Something is happening.');
     console.log(req.headers.authorization);
 
-    var token = req.headers.authorization;
+    var token = req.headers['x-access-token'];
 
     if (token) {
         // verifies secret and checks exp
@@ -109,16 +109,80 @@ router.route('/:utente_id')
 
     // get the pessoa with that id (accessed at GET http://localhost:8080/utente/:utente_id)
     .get(function (req, res) {
-        Pessoa.findById(req.params.utente_id, function (err, utente) {
+        Pessoa.findById(req.params.utente_id, function (err, pessoa) {
             if (err)
-                res.send(err);
-            if (utente.utente) {
-                res.json(utente);
+                return res.send(err);
+            if (pessoa == null || pessoa == undefined) {
+                return res.status(500).json("Não tem permissões de acesso!");
             } else {
-                res.json({ success: false, message: 'Nao e utente.' });
+                if (pessoa.utente == null || pessoa.utente == undefined || pessoa.utente == false) {
+                    return res.status(500).json({ success: false, message: 'Nao e utente.' });
+                } else {
+                    return res.json(pessoa);
+                }
             }
-
         });
+    });
+
+router.route('/:utente_id/expirando')
+
+    .get(function (req, res) {
+        var tokDec = req.decoded;
+        if (tokDec.utente && req.params.utente_id == tokDec.id) {
+
+            Pessoa.findById(tokDec.id, function (err, pessoa) {
+                if (err)
+                    res.send(err);
+                if (pessoa.utente) {
+                    Receita.find({
+                        utente: req.params.utente_id
+                    }, function (err, receitasPessoa) {
+                        if (err) res.send(err);
+
+                        var prescricoes_alerta = [];
+                        receitasPessoa.forEach(function (receita) {
+
+                            receita.prescricoes.forEach(function (prescricao) {
+                                if (prescricao.fechada == false) {
+                                    var data_atual = new Date();
+                                    var data_prescricao = new Date(prescricao.validade);
+                                    var data_pesquisa = new Date(data_prescricao.setTime(data_prescricao.getTime() - config.num_dias_alerta * 86400000));
+                                    if (data_atual >= data_prescricao && data_prescricao >= data_pesquisa) {
+                                        // true a receita ta aberta, false a receita ta fechada
+                                        if (prescricao.fechada === false) {
+                                            var presc = {
+                                                "prescricao_id": prescricao._id,
+                                                "prescricao_validade": prescricao.validade,
+                                                "receita_id": receita._id,
+                                            }
+                                            prescricoes_alerta.push(presc);
+                                        }
+                                    }
+                                }
+                            });
+
+                        });
+
+                        res.json(prescricoes_alerta);
+
+
+                    });
+                } else {
+                    res.json({ success: false, message: 'Nao e utente.' });
+                }
+
+            });
+
+
+        } else {
+            return res.json({ success: false, message: 'Nao tem permissoes.' });
+        }
+
+
+
+
+
+
     });
 
 // utente/{id}/prescricao/poraviar/{?data}

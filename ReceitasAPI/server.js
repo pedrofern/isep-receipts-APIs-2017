@@ -38,11 +38,11 @@ var cors = require('cors');
 app.use(cors());
 
 // alertas para os mails dos utentes a 3 dias de expirar
-var num_dias_alerta = 3;
+var num_dias_alerta = config.num_dias_alerta;
 var job = new CronJob('00 00 22 * * *', function () {
     /*
     * Runs every day 
-    * at 17:30:00 AM. 
+    * at 22:00:00 AM. 
     */
     // buscar todos os utentes    
     Pessoa.find(function (err, todasPessoas) {

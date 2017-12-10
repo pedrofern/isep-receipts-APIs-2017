@@ -10,4 +10,5 @@ module.exports = {
     'loginMedicamentos': '{email:"a@a.pt", password:"Qwerty1!"}',
     'mailUser': 'arqsi3da',
     'mailPass': 'arqsi2017',
+    'num_dias_alerta': '3'
 };
