@@ -12,6 +12,8 @@ import {AutenticacaoService} from './servicos/autenticacao.service';
 import {ReceitasService} from './servicos/receitas.service';
 import {MedicamentosService} from './servicos/medicamentos.service';
 import {FabReceitasService}from './servicos/fabrica-receitas.service';
+import {RegistoService} from './servicos/registo.service';
+import {AlertasService} from './servicos/alertas.service';
 
 //Autententicacao
 import { LoginComponent } from './componentes/login/login.component';
@@ -25,6 +27,8 @@ import { ReceitasComponent } from './componentes/receitas/receitas.component';
 import { MedicamentosComponent } from './componentes/medicamentos/medicamentos.component';
 import { DetalheReceitaComponent } from './componentes/detalhe-receita/detalhe-receita.component';
 import { CriacaoReceitaComponent } from './componentes/criacao-receita/criacao-receita.component';
+import { RegistoComponent } from './componentes/registo/registo.component';
+import { AlertasComponent } from './componentes/alertas/alertas.component';
 
 @NgModule({
   imports: [
@@ -38,7 +42,10 @@ import { CriacaoReceitaComponent } from './componentes/criacao-receita/criacao-r
     LoginComponent, 
     ReceitasComponent, 
     MedicamentosComponent, 
-    DetalheReceitaComponent, CriacaoReceitaComponent
+    DetalheReceitaComponent, 
+    CriacaoReceitaComponent, 
+    RegistoComponent, 
+    AlertasComponent
   ],
   providers: [
     //Autenticacao
@@ -51,7 +58,9 @@ import { CriacaoReceitaComponent } from './componentes/criacao-receita/criacao-r
     AutenticacaoService,
     ReceitasService,
     MedicamentosService,
-    FabReceitasService
+    FabReceitasService,
+    RegistoService,
+    AlertasService
   ],
   bootstrap: [AppComponent]
 })

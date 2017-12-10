@@ -1,0 +1,67 @@
+<div class="container">
+  <div class="col-md-6 col-md-offset-3">
+
+    <div class="panel panel-primary">
+
+      <div class="panel-heading">Registo </div>
+
+      <div class="form-row">
+        <br>
+        <div class="form-group col-md-6">
+          <label for="inputNome">Nome</label>
+          <input type="text" class="form-control" [(ngModel)]="inputNome" placeholder="Nome">
+        </div>
+
+        <div class="form-group col-md-6">
+          <label for="inputNIF">NIF</label>
+          <input type="text" class="form-control" [(ngModel)]="inputNIF" placeholder="NIF (9 digitos)">
+        </div>
+
+        <div class="form-group col-md-6">
+          <label for="inputNIF">Nº Beneficiário</label>
+          <input type="text" class="form-control" [(ngModel)]="inputNB" placeholder="Nº Beneficiário">
+        </div>
+
+        <div class="form-goup col-md-6">
+          <label for="inputEmail4">Email</label>
+          <input type="email" class="form-control" [(ngModel)]="inputEmail4" placeholder="Email">
+          <div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label for="inputPassword4">Password</label>
+          <input type="password" class="form-control" [(ngModel)]="inputPassword4" placeholder="Password">
+        </div>
+      </div>
+
+      <div style="text-align: center">
+
+        <button type="button" class="btn btn-primary" (click)="registar(nome, inputNIF, inputNB, inputEmail4, inputPassword4); tentativa=true">Registar</button>
+      </div>
+
+      <div *ngIf="tentativa && inputNIF">
+        <div class="alert alert-danger" *ngIf="error">
+          <strong>Erro </strong>{{error}}
+        </div>
+
+        <div class="alert alert-warning" *ngIf="!criado">
+          <strong>Verifique se não introduziu um NIF repetido</strong>{{error}}
+        </div>
+      </div>
+      <div *ngIf="criado">
+        <div class="alert alert-success" *ngIf="!criado">
+          <strong>Registado com sucesso</strong>
+        </div>
+      </div>
+      <div *ngIf="!inputNIF || !inputPassword4">
+          <div class="alert alert-warning" *ngIf="!criado">
+              <strong>Necessário introduzir NIF e password</strong>
+            </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</div>

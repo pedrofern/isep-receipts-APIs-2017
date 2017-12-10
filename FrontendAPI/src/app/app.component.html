@@ -9,7 +9,7 @@
                 <a *ngIf="userInfo" routerLink="/">Olá {{userInfo.nome}}</a>
             </li>
             <li >
-                <a *ngIf="!userInfo" routerLink="/">Registo</a>
+                <a *ngIf="!userInfo" routerLink="/registo">Registo</a>
           </li>       
          
           <li  class="active">
@@ -54,4 +54,5 @@
         </ul>
       </nav>
   </div>
+  <app-alertas></app-alertas>
   <router-outlet></router-outlet>
