@@ -18,7 +18,7 @@
         </div>
 
         <div class="form-group col-md-6">
-          <label for="inputNIF">Nº Beneficiário</label>
+          <label for="inputNB">Nº Beneficiário</label>
           <input type="text" class="form-control" [(ngModel)]="inputNB" placeholder="Nº Beneficiário">
         </div>
 
@@ -37,7 +37,7 @@
 
       <div style="text-align: center">
 
-        <button type="button" class="btn btn-primary" (click)="registar(nome, inputNIF, inputNB, inputEmail4, inputPassword4); tentativa=true">Registar</button>
+        <button type="button" class="btn btn-primary" (click)="registar(inputNome, inputNIF, inputNB, inputEmail4, inputPassword4); tentativa=true">Registar</button>
       </div>
 
       <div *ngIf="tentativa && inputNIF">

@@ -22,7 +22,7 @@ export class RegistoService {
       this.getHeaders());
   }
 
-  registar(nome: string,nif :string,nb:string, email:string, password:string){
+  registar(nome: string,nif :string,num_beneficiario:string, email:string, password:string){
     
     return new Observable<UserCriado>(observer=>{
       return this.http.post<UserCriado>(this.registoUrl, {
@@ -30,7 +30,7 @@ export class RegistoService {
           nif:nif,
           email:email,
           password:password,
-          nb:nb,
+          num_beneficiario:num_beneficiario,
           
         }, this.getHeaders()).subscribe(data=>{
 
@@ -41,7 +41,7 @@ export class RegistoService {
               nome:data.nome,
               email:data.email,
               password:data.password,
-              nb:data.nb,
+              num_beneficiario:data.num_beneficiario,
               farmaceutico:false,
               medico:false,
               utente:true

@@ -26,7 +26,7 @@ export class RegistoComponent implements OnInit {
   ngOnInit() {
   }
 
-  registar(nome : string, inputNIF:string, inputNB:string, inputEmail4:string, inputPassword4:string): void{
+  registar(nome:string, inputNIF:string, inputNB:string, inputEmail4:string, inputPassword4:string): void{
     
     if(inputNIF && inputPassword4){
        this.registoService.registar(nome,inputNIF,inputNB, inputEmail4, inputPassword4).subscribe(
