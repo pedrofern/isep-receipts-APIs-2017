@@ -153,7 +153,7 @@ var criaReceita = function (receita, req, res, tokDec) {
     var utenteParse = JSON.stringify(bodyUtente);
     var countUtente = utenteParse.length;
 
-    if (countUtente == 9) {
+    if (countUtente == 11) {
         var nifUtente = req.body.utente;
     } else {
 
@@ -181,6 +181,8 @@ var criaReceita = function (receita, req, res, tokDec) {
             // ciclo para 
             async.each(req.body.prescricoes, function (prescricao, callback) {
                 var idApresentacao = prescricao.id_apresentacao;
+                if(idApresentacao==undefined)
+                    idApresentacao=prescricao.apresentacao.id_apresentacao;
                 var qtd = prescricao.quantidade;
                 var valPresc = prescricao.validade;
                 if (idApresentacao !== null) {

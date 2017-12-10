@@ -9,7 +9,9 @@ import { AutenticacaoService } from '../servicos/autenticacao.service';
 @Injectable()
 export class FabReceitasService {
 
- private receitasUrl = 'http://receitas2017.azurewebsites.net/receita/';
+  private receitasUrl = 'http://localhost:8080/receita';
+ //private receitasUrl = 'http://receitas2017.azurewebsites.net/receita/';
+
  private receita:ReceitaCriada;
  receitaCriada: Subject<ReceitaCriada>=new Subject<ReceitaCriada>();
 

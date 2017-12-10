@@ -23,6 +23,7 @@ export class CriacaoReceitaComponent implements OnInit {
   userInfo:User;
   creating = false;
   prescricoes: PrescricaoCriada[]=[];
+  idApres: number;
 
   constructor(
     private autenticacaoService:AutenticacaoService,
