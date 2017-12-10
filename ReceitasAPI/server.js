@@ -39,12 +39,11 @@ app.use(cors());
 
 // alertas para os mails dos utentes a 3 dias de expirar
 var num_dias_alerta = config.num_dias_alerta;
-var job = new CronJob('00 00 22 * * *', function () {
+var job = new CronJob('00 30 23 * * *', function () {
     /*
     * Runs every day 
-    * at 22:00:00 AM. 
-    */
-    // buscar todos os utentes    
+    * at 23:20:00 AM. 
+    */  
     Pessoa.find(function (err, todasPessoas) {
         if (err) res.send(err);
 
@@ -59,11 +58,11 @@ var job = new CronJob('00 00 22 * * *', function () {
                     
                     receita.prescricoes.forEach(function (prescricao) {
                         if (prescricao.fechada == false) {
-                            var data_atual = new Date();
-                            var data_prescricao = new Date(prescricao.validade);
-                            var data_pesquisa = new Date(data_prescricao.setTime(data_prescricao.getTime() - num_dias_alerta * 86400000));
-                            if (data_atual >= data_prescricao && data_prescricao >= data_pesquisa) {
-                                // true a receita ta aberta, false a receita ta fechada
+                            var data_atual = new Date().toISOString().substring(0, 10);
+                            var data_validade = new Date(prescricao.validade).toISOString().substring(0, 10);
+                            var data_pesquisa = new Date(new Date().setTime(new Date().getTime() + num_dias_alerta * 86400000)).toISOString().substring(0, 10);
+                            if ( data_pesquisa >= data_validade && data_atual <= data_validade){ //  &&  data_validade >= data_pesquisa ) {
+                                // true a receita ta fechada, false a receita ta aberta
                                 if (prescricao.fechada === false) {
                                     var presc={
                                         "prescricao_id": prescricao._id,
@@ -101,7 +100,7 @@ var job = new CronJob('00 00 22 * * *', function () {
     });
 
 
-}, function () { },
+}, null,
     true /* Start the job right now */
 );
 

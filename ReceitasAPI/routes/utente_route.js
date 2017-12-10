@@ -144,13 +144,13 @@ router.route('/:utente_id/expirando')
 
                             receita.prescricoes.forEach(function (prescricao) {
                                 if (prescricao.fechada == false) {
-                                    var data_atual = new Date();
-                                    var data_prescricao = new Date(prescricao.validade);
-                                    var data_pesquisa = new Date(data_prescricao.setTime(data_prescricao.getTime() - config.num_dias_alerta * 86400000));
-                                    if (data_atual >= data_prescricao && data_prescricao >= data_pesquisa) {
-                                        // true a receita ta aberta, false a receita ta fechada
+                                    var data_atual = new Date().toISOString().substring(0, 10);
+                                    var data_validade = new Date(prescricao.validade).toISOString().substring(0, 10);
+                                    var data_pesquisa = new Date(new Date().setTime(new Date().getTime() + config.num_dias_alerta * 86400000)).toISOString().substring(0, 10);
+                                    if ( data_pesquisa >= data_validade && data_atual <= data_validade){ //  &&  data_validade >= data_pesquisa ) {
+                                        // true a receita ta fechada, false a receita ta aberta
                                         if (prescricao.fechada === false) {
-                                            var presc = {
+                                            var presc={
                                                 "prescricao_id": prescricao._id,
                                                 "prescricao_validade": prescricao.validade,
                                                 "receita_id": receita._id,
